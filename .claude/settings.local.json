@@ -13,7 +13,8 @@
       "Bash(file assets/*.jpg)",
       "Bash(sips -s format jpeg -s formatOptions 80 assets/portfolio-05-parfum.jpg --out \"/tmp/lla-compress-test/parfum-q80.jpg\")",
       "Bash(rm -rf /tmp/lla-compress-test /tmp/lla-compressed)",
-      "Bash(python3 -c ' *)"
+      "Bash(python3 -c ' *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }

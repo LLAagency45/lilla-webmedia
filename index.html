@@ -5,13 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LLA Agency | Premium Produktvideos, Webseiten & Branding</title>
 <meta name="description" content="LLA Agency ist eine Premium-Kreativagentur für Produktvideos, Produktbilder, moderne Webseiten, E-Commerce-Listing-Optimierung, Social-Media-Content und Branding für Marken, Unternehmen und Onlineshops.">
+<meta name="robots" content="index, follow">
 
 <!-- Open Graph -->
 <meta property="og:title" content="LLA Agency | Premium Produktvideos, Webseiten & Branding">
 <meta property="og:description" content="LLA Agency entwickelt hochwertige Produktvideos, Produktbilder, moderne Webseiten und optimierte E-Commerce-Listings für Marken, Unternehmen und Onlineshops.">
 <meta property="og:type" content="website">
-<!-- TIPP: Hier kannst du ein Vorschaubild für Social-Media-Vorschauen ergänzen -->
-<!-- <meta property="og:image" content="PFAD-ZU-VORSCHAUBILD.jpg"> -->
+<meta property="og:locale" content="de_DE">
+<!-- TIPP: og:image zeigt aktuell auf das Hero-Bild. Sobald ein eigens gestaltetes
+     Social-Media-Vorschaubild existiert, hier austauschen. -->
+<meta property="og:image" content="assets/hero-background.jpg">
+<meta property="og:image:width" content="1672">
+<meta property="og:image:height" content="941">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="LLA Agency | Premium Produktvideos, Webseiten & Branding">
+<meta name="twitter:description" content="LLA Agency entwickelt hochwertige Produktvideos, Produktbilder, moderne Webseiten und optimierte E-Commerce-Listings für Marken, Unternehmen und Onlineshops.">
+<meta name="twitter:image" content="assets/hero-background.jpg">
 <meta name="theme-color" content="#07080a">
 <!-- Favicon: nutzt dasselbe Logo -->
 <link rel="icon" href="logo.png" type="image/png">
@@ -19,6 +28,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="assets/hero-background.jpg" fetchpriority="high">
 
 <style>
   /* ============================================================
@@ -40,7 +50,7 @@
     --border-strong: rgba(255,255,255,0.14);
     --text-0: #f2f3f4;
     --text-1: #a9adb3;
-    --text-2: #696d73;
+    --text-2: #7d828a; /* aufgehellt für WCAG-AA-Kontrast (~5:1) auf --bg-0 */
     --accent: #2fb4c4;
     --accent-bright: #7fe3ec;
     --accent-deep: #135561;
@@ -52,6 +62,7 @@
     --shadow-lift: 0 30px 80px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03);
     --shadow-glow: 0 20px 54px -18px rgba(47,180,196,0.4);
     --ease: cubic-bezier(.16,.8,.24,1);
+    --ease-luxe: cubic-bezier(.22,1,.36,1);
     --maxw: 1240px;
     --radius: 16px;
     --radius-sm: 10px;
@@ -92,6 +103,19 @@
     border-radius:4px;
   }
 
+  .skip-link{
+    position:fixed; top:-100px; left:16px;
+    z-index:1000;
+    background:var(--accent);
+    color:#04191d;
+    padding:12px 22px;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:600;
+    transition:top .35s var(--ease-luxe);
+  }
+  .skip-link:focus{ top:16px; }
+
   ::-webkit-scrollbar{ width:11px; height:11px; }
   ::-webkit-scrollbar-track{ background:var(--bg-0); }
   ::-webkit-scrollbar-thumb{ background:var(--border-strong); border-radius:100px; border:3px solid var(--bg-0); }
@@ -119,6 +143,15 @@
     background:var(--accent-line);
   }
   .section{ padding:150px 0; position:relative; }
+  #leistungen::before, #preise::before, #kontakt::before{
+    content:'';
+    position:absolute; inset:0;
+    pointer-events:none; z-index:0;
+  }
+  #leistungen::before{ background:radial-gradient(1000px 520px at 12% 0%, rgba(47,180,196,0.055), transparent 62%); }
+  #preise::before{ background:radial-gradient(900px 480px at 88% 100%, rgba(47,180,196,0.06), transparent 60%); }
+  #kontakt::before{ background:radial-gradient(1000px 560px at 85% 10%, rgba(198,204,210,0.04), transparent 65%); }
+  #leistungen > .wrap, #preise > .wrap, #kontakt > .wrap{ position:relative; z-index:1; }
   .section-head{ max-width:640px; margin-bottom:72px; }
   .section-head h2{ font-size:clamp(28px,3.6vw,40px); }
   .section-head p{ margin-top:16px; font-size:17px; }
@@ -143,7 +176,7 @@
     font-weight:600;
     letter-spacing:0.005em;
     border:1px solid transparent;
-    transition:transform .45s var(--ease), background .35s var(--ease), border-color .35s var(--ease), box-shadow .35s var(--ease);
+    transition:transform .6s var(--ease-luxe), background .5s var(--ease-luxe), border-color .5s var(--ease-luxe), box-shadow .6s var(--ease-luxe), letter-spacing .5s var(--ease-luxe);
     white-space:nowrap;
   }
   .btn-primary{
@@ -151,26 +184,30 @@
     background-size:240% 100%;
     background-position:0% 0%;
     color:#04191d;
-    box-shadow:inset 0 1px 0 rgba(255,255,255,0.22);
-    transition:transform .5s var(--ease), background-position .7s var(--ease), box-shadow .4s var(--ease);
+    box-shadow:0 10px 30px -14px rgba(47,180,196,0.45), inset 0 1px 0 rgba(255,255,255,0.22);
+    transition:transform .6s var(--ease-luxe), background-position .9s var(--ease-luxe), box-shadow .6s var(--ease-luxe), letter-spacing .5s var(--ease-luxe);
   }
   .btn-primary:hover{
     transform:translateY(-2px);
     background-position:100% 0%;
-    box-shadow:0 16px 36px -12px var(--accent-line), inset 0 1px 0 rgba(255,255,255,0.3);
+    letter-spacing:0.02em;
+    box-shadow:0 20px 44px -14px var(--accent-line), inset 0 1px 0 rgba(255,255,255,0.32);
   }
-  .btn-primary:active{ transform:translateY(0) scale(0.97); }
+  .btn-primary:active{ transform:translateY(0) scale(0.972); transition-duration:.15s; }
   .btn-ghost{
-    background:transparent;
+    background:rgba(255,255,255,0.015);
     border-color:var(--border-strong);
     color:var(--text-0);
+    box-shadow:0 1px 2px rgba(0,0,0,0.2);
   }
   .btn-ghost:hover{
-    border-color:var(--accent);
+    border-color:var(--accent-line);
     background:var(--accent-soft);
     transform:translateY(-2px);
+    letter-spacing:0.02em;
+    box-shadow:0 16px 34px -18px rgba(47,180,196,0.35);
   }
-  .btn-ghost:active{ transform:translateY(0) scale(0.97); }
+  .btn-ghost:active{ transform:translateY(0) scale(0.972); transition-duration:.15s; }
   .btn-sm{ padding:11px 22px; font-size:13.5px; }
 
   /* ---------- Navigation ---------- */
@@ -178,7 +215,7 @@
     position:fixed; top:0; left:0; right:0;
     z-index:500;
     padding:22px 0;
-    transition:padding .4s var(--ease), background .4s var(--ease), border-color .4s var(--ease);
+    transition:padding .5s var(--ease-luxe), background .5s var(--ease-luxe), border-color .5s var(--ease-luxe), box-shadow .5s var(--ease-luxe);
     border-bottom:1px solid transparent;
   }
   header.scrolled{
@@ -186,6 +223,7 @@
     background:rgba(8,8,10,0.72);
     backdrop-filter:blur(18px) saturate(140%);
     -webkit-backdrop-filter:blur(18px) saturate(140%);
+    box-shadow:0 12px 40px -20px rgba(0,0,0,0.5);
     border-bottom:1px solid var(--border);
   }
   nav.wrap{
@@ -264,21 +302,37 @@
   .mobile-menu{
     position:fixed; inset:0;
     background:rgba(8,8,9,0.98);
-    backdrop-filter:blur(10px);
+    backdrop-filter:blur(20px) saturate(140%);
+    -webkit-backdrop-filter:blur(20px) saturate(140%);
     z-index:490;
     display:flex; flex-direction:column;
     align-items:center; justify-content:center;
-    gap:30px;
+    gap:28px;
     opacity:0; visibility:hidden;
-    transition:opacity .4s var(--ease), visibility .4s var(--ease);
+    transition:opacity .45s var(--ease-luxe), visibility .45s var(--ease-luxe);
   }
   .mobile-menu.open{ opacity:1; visibility:visible; }
+  .mobile-menu > *{
+    opacity:0; transform:translateY(14px);
+    transition:opacity .5s var(--ease-luxe), transform .5s var(--ease-luxe), color .3s var(--ease-luxe);
+  }
+  .mobile-menu.open > *{ opacity:1; transform:translateY(0); }
+  .mobile-menu > *:nth-child(1){ transition-delay:0ms; }
+  .mobile-menu > *:nth-child(2){ transition-delay:45ms; }
+  .mobile-menu > *:nth-child(3){ transition-delay:85ms; }
+  .mobile-menu > *:nth-child(4){ transition-delay:125ms; }
+  .mobile-menu > *:nth-child(5){ transition-delay:165ms; }
+  .mobile-menu > *:nth-child(6){ transition-delay:205ms; }
+  .mobile-menu > *:nth-child(7){ transition-delay:245ms; }
+  .mobile-menu > *:nth-child(8){ transition-delay:285ms; }
+  .mobile-menu > *:nth-child(9){ transition-delay:325ms; }
   .mobile-menu a{
     font-family:'Space Grotesk',sans-serif;
     font-size:28px; font-weight:600; color:var(--text-0);
   }
+  .mobile-menu a:hover, .mobile-menu a:focus-visible{ color:var(--accent); }
   .mobile-menu .btn{ margin-top:12px; }
-  .mobile-logo{ width:60px; height:60px; border-radius:50%; margin-bottom:8px; }
+  .mobile-logo{ width:60px; height:60px; border-radius:50%; margin-bottom:8px; border:1px solid var(--border); }
 
   @media (max-width:900px){
     .nav-links{ display:none; }
@@ -301,8 +355,17 @@
     position:absolute; inset:0;
     width:100%; height:100%;
     object-fit:cover;
-    opacity:.38;
+    opacity:.34;
     z-index:0;
+    pointer-events:none;
+    transform:scale(1.09);
+    will-change:transform;
+  }
+  .hero::after{
+    content:'';
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(7,8,10,0.15) 0%, transparent 30%, transparent 60%, rgba(7,8,10,0.65) 100%);
+    z-index:1;
     pointer-events:none;
   }
   .hero-glow{
@@ -310,7 +373,8 @@
     height:900px;
     background:
       radial-gradient(560px 420px at 20% 16%, rgba(47,180,196,0.15), transparent 65%),
-      radial-gradient(680px 460px at 84% 4%, rgba(198,204,210,0.07), transparent 60%);
+      radial-gradient(680px 460px at 84% 4%, rgba(198,204,210,0.07), transparent 60%),
+      radial-gradient(420px 380px at 55% 55%, rgba(47,180,196,0.06), transparent 70%);
     pointer-events:none;
     filter:blur(10px);
     z-index:0;
@@ -320,6 +384,16 @@
     from{ transform:translate3d(0,0,0) scale(1); }
     to{ transform:translate3d(1.5%,2.5%,0) scale(1.05); }
   }
+  .hero-spotlight{
+    position:absolute; inset:0;
+    background:radial-gradient(640px 640px at var(--mx,50%) var(--my,28%), rgba(127,227,236,0.08), transparent 62%);
+    pointer-events:none;
+    z-index:1;
+    opacity:0;
+    transition:opacity .6s var(--ease-luxe);
+  }
+  .hero:hover .hero-spotlight{ opacity:1; }
+  @media (hover:none), (pointer:coarse){ .hero-spotlight{ display:none; } }
   .hero-grain{
     position:absolute; inset:0;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
@@ -362,10 +436,18 @@
     border:1px solid var(--border);
     border-radius:100px;
     font-size:12.5px;
+    letter-spacing:0.01em;
     color:var(--text-1);
     background:rgba(255,255,255,0.035);
     backdrop-filter:blur(14px) saturate(140%);
     -webkit-backdrop-filter:blur(14px) saturate(140%);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.05);
+    transition:border-color .4s var(--ease-luxe), background .4s var(--ease-luxe), transform .4s var(--ease-luxe);
+  }
+  .hero-badge:hover{
+    border-color:var(--accent-line);
+    background:rgba(255,255,255,0.055);
+    transform:translateY(-1px);
   }
   .hero-badge .dot{ width:5px; height:5px; border-radius:50%; background:var(--accent); }
 
@@ -420,7 +502,9 @@
     width:100%; height:100%;
     object-fit:cover;
     z-index:0;
+    transition:transform 1.1s var(--ease-luxe), filter .6s var(--ease-luxe);
   }
+  .showreel-frame:hover .showreel-img{ transform:scale(1.045); filter:brightness(1.05); }
   .showreel-scrim{
     position:absolute; inset:0;
     background:linear-gradient(0deg, rgba(6,7,8,.55) 0%, rgba(6,7,8,.15) 45%, rgba(6,7,8,.35) 100%);
@@ -538,10 +622,11 @@
     background:var(--card);
     border:1px solid var(--border);
     border-radius:var(--radius);
-    padding:36px 28px 32px;
-    backdrop-filter:blur(18px) saturate(140%);
-    -webkit-backdrop-filter:blur(18px) saturate(140%);
-    transition:background .45s var(--ease), border-color .45s var(--ease), transform .45s var(--ease), box-shadow .45s var(--ease);
+    padding:38px 30px 34px;
+    backdrop-filter:blur(20px) saturate(150%);
+    -webkit-backdrop-filter:blur(20px) saturate(150%);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.045);
+    transition:background .6s var(--ease-luxe), border-color .6s var(--ease-luxe), transform .6s var(--ease-luxe), box-shadow .6s var(--ease-luxe);
     position:relative;
     overflow:hidden;
   }
@@ -550,13 +635,13 @@
     position:absolute; top:0; left:24px; right:24px; height:1px;
     background:linear-gradient(90deg, transparent, var(--accent-bright), transparent);
     opacity:0; transform:scaleX(0.4);
-    transition:opacity .5s var(--ease), transform .5s var(--ease);
+    transition:opacity .6s var(--ease-luxe), transform .6s var(--ease-luxe);
   }
   .service-card:hover{
     background:var(--card-hover);
     border-color:var(--accent-line);
-    transform:translateY(-6px);
-    box-shadow:var(--shadow-lift);
+    transform:translateY(-7px);
+    box-shadow:var(--shadow-lift), inset 0 1px 0 rgba(255,255,255,0.07);
   }
   .service-card:hover::before{ opacity:1; transform:scaleX(1); }
   .service-icon{
@@ -566,11 +651,12 @@
     display:flex; align-items:center; justify-content:center;
     margin-bottom:26px;
     color:var(--accent);
-    transition:border-color .4s var(--ease), transform .45s var(--ease);
+    transition:border-color .5s var(--ease-luxe), transform .5s var(--ease-luxe), box-shadow .5s var(--ease-luxe);
   }
   .service-card:hover .service-icon{
     border-color:var(--accent-line);
     transform:translateY(-3px) rotate(-4deg);
+    box-shadow:0 8px 22px -10px var(--accent-line);
   }
   .service-card h3{
     font-size:19px; margin-bottom:12px;
@@ -599,20 +685,22 @@
   }
   .feature-item{
     display:flex; align-items:center; gap:12px;
-    padding:14px 16px;
+    padding:15px 17px;
     border:1px solid var(--border);
     border-radius:12px;
     background:rgba(255,255,255,0.03);
     backdrop-filter:blur(14px) saturate(140%);
     -webkit-backdrop-filter:blur(14px) saturate(140%);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
     font-size:14px;
     color:var(--text-0);
-    transition:border-color .4s var(--ease), background .4s var(--ease), transform .4s var(--ease);
+    transition:border-color .5s var(--ease-luxe), background .5s var(--ease-luxe), transform .5s var(--ease-luxe), box-shadow .5s var(--ease-luxe);
   }
   .feature-item:hover{
     border-color:var(--accent-line);
     background:var(--card-hover);
     transform:translateY(-2px);
+    box-shadow:0 10px 26px -16px rgba(47,180,196,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
   }
   .feature-item .f-icon{
     width:30px; height:30px;
@@ -638,12 +726,16 @@
     content:'';
     position:absolute; inset:0;
     background:radial-gradient(360px 260px at 25% 15%, rgba(47,180,196,0.16), transparent 70%);
+    z-index:1;
+    pointer-events:none;
   }
   .browser-body img{
     position:absolute; inset:0;
     width:100%; height:100%;
     object-fit:cover;
+    transition:transform 1.1s var(--ease-luxe);
   }
+  .browser-mock:hover .browser-body img{ transform:scale(1.035); }
   @media (max-width:900px){
     .webs-grid{ grid-template-columns:1fr; gap:40px; }
     .browser-mock{ order:-1; }
@@ -663,12 +755,13 @@
     border:1px solid var(--border);
     overflow:hidden;
     background:var(--bg-1);
-    transition:transform .5s var(--ease), border-color .5s var(--ease), box-shadow .5s var(--ease);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.03);
+    transition:transform .6s var(--ease-luxe), border-color .6s var(--ease-luxe), box-shadow .6s var(--ease-luxe);
   }
   .ba-card:hover{
-    transform:translateY(-5px);
+    transform:translateY(-6px);
     border-color:var(--accent-line);
-    box-shadow:var(--shadow-lift);
+    box-shadow:var(--shadow-lift), inset 0 1px 0 rgba(255,255,255,0.05);
   }
   .ba-visual{
     aspect-ratio:4/3;
@@ -680,7 +773,10 @@
     position:absolute; inset:0;
     width:100%; height:100%;
     object-fit:cover;
+    transition:transform 1.1s var(--ease-luxe), filter .6s var(--ease-luxe);
   }
+  .ba-card:hover .ba-visual img{ transform:scale(1.045); }
+  .ba-visual.before img{ filter:saturate(0.85) brightness(0.92); }
   .ba-visual.before{
     background:repeating-linear-gradient(45deg,#131315,#131315 18px,#171719 18px,#171719 36px);
   }
@@ -729,9 +825,9 @@
     border:1px solid var(--border);
     background:var(--bg-1);
     cursor:pointer;
-    transition:transform .5s var(--ease), border-color .5s var(--ease);
+    transition:transform .6s var(--ease-luxe), border-color .6s var(--ease-luxe), box-shadow .6s var(--ease-luxe);
   }
-  .p-card:hover{ transform:translateY(-6px); border-color:var(--accent-line); box-shadow:var(--shadow-lift); }
+  .p-card:hover{ transform:translateY(-7px); border-color:var(--accent-line); box-shadow:var(--shadow-lift); }
   .p-visual{
     aspect-ratio:4/5;
     position:relative;
@@ -774,13 +870,13 @@
   .p-visual-inner{
     position:absolute; inset:0;
     display:flex; align-items:center; justify-content:center;
-    transition:transform .7s var(--ease);
+    transition:transform .9s var(--ease-luxe);
   }
   .p-visual-inner img{
     width:100%; height:100%;
     object-fit:cover;
   }
-  .p-card:hover .p-visual-inner{ transform:scale(1.06); }
+  .p-card:hover .p-visual-inner{ transform:scale(1.07); }
   .p-meta{
     position:absolute; left:20px; right:20px; bottom:16px; z-index:3;
   }
@@ -913,19 +1009,20 @@
   .price-card{
     border:1px solid var(--border);
     border-radius:var(--radius);
-    padding:34px 26px;
+    padding:36px 28px;
     background:var(--bg-1);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.03);
     display:flex; flex-direction:column;
     position:relative;
-    transition:transform .4s var(--ease), border-color .4s var(--ease);
+    transition:transform .6s var(--ease-luxe), border-color .6s var(--ease-luxe), box-shadow .6s var(--ease-luxe);
   }
-  .price-card:hover{ transform:translateY(-6px); border-color:var(--border-strong); box-shadow:var(--shadow-lift); }
+  .price-card:hover{ transform:translateY(-7px); border-color:var(--border-strong); box-shadow:var(--shadow-lift), inset 0 1px 0 rgba(255,255,255,0.05); }
   .price-card.featured{
     background:linear-gradient(165deg, rgba(47,180,196,0.08), var(--bg-1) 55%);
     border-color:var(--accent-line);
-    box-shadow:0 20px 60px -26px rgba(47,180,196,0.3);
+    box-shadow:0 20px 60px -26px rgba(47,180,196,0.3), inset 0 1px 0 rgba(255,255,255,0.06);
   }
-  .price-card.featured:hover{ box-shadow:var(--shadow-glow); }
+  .price-card.featured:hover{ box-shadow:var(--shadow-glow), inset 0 1px 0 rgba(255,255,255,0.08); }
   .price-tag{
     position:absolute; top:-13px; left:26px;
     background:var(--accent);
@@ -967,17 +1064,22 @@
     border:1px solid var(--border);
     position:relative;
     overflow:hidden;
+    box-shadow:var(--shadow-soft);
   }
   .about-visual::before{
     content:'';
     position:absolute; inset:0;
     background:radial-gradient(320px 260px at 25% 20%, rgba(47,180,196,0.16), transparent 70%);
+    z-index:1;
+    pointer-events:none;
   }
   .about-visual img{
     position:absolute; inset:0;
     width:100%; height:100%;
     object-fit:cover;
+    transition:transform 1.2s var(--ease-luxe);
   }
+  .about-visual:hover img{ transform:scale(1.04); }
   .about-text p{ font-size:16px; margin-bottom:18px; }
   .about-text p:last-child{ margin-bottom:0; }
   @media (max-width:900px){
@@ -998,9 +1100,10 @@
     background:rgba(255,255,255,0.03);
     backdrop-filter:blur(14px) saturate(140%);
     -webkit-backdrop-filter:blur(14px) saturate(140%);
-    transition:border-color .35s var(--ease), transform .35s var(--ease), background .35s var(--ease);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+    transition:border-color .5s var(--ease-luxe), transform .5s var(--ease-luxe), background .5s var(--ease-luxe), box-shadow .5s var(--ease-luxe);
   }
-  .contact-btn:hover{ border-color:var(--accent-line); background:var(--accent-soft); transform:translateX(4px); }
+  .contact-btn:hover{ border-color:var(--accent-line); background:var(--accent-soft); transform:translateX(5px); box-shadow:0 12px 30px -18px rgba(47,180,196,0.4), inset 0 1px 0 rgba(255,255,255,0.06); }
   .contact-btn .icon{
     width:42px; height:42px; border-radius:11px;
     background:rgba(255,255,255,0.04);
@@ -1013,8 +1116,9 @@
   .form-card{
     border:1px solid var(--border);
     border-radius:var(--radius);
-    padding:36px;
+    padding:38px;
     background:var(--bg-1);
+    box-shadow:var(--shadow-soft), inset 0 1px 0 rgba(255,255,255,0.03);
   }
   .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
   .field{ margin-bottom:18px; }
@@ -1027,10 +1131,11 @@
     border-radius:10px;
     color:var(--text-0);
     font-size:14.5px;
-    transition:border-color .3s var(--ease), background .3s var(--ease);
+    transition:border-color .4s var(--ease-luxe), background .4s var(--ease-luxe), box-shadow .4s var(--ease-luxe);
   }
   .field input:focus, .field select:focus, .field textarea:focus{
     outline:none; border-color:var(--accent); background:rgba(255,255,255,0.035);
+    box-shadow:0 0 0 3.5px var(--accent-soft);
   }
   .field textarea{ resize:vertical; min-height:110px; }
   .field select{ appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23b6b5bd' stroke-width='1.4' fill='none'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 15px center; }
@@ -1088,15 +1193,33 @@
   /* ---------- Reveal on scroll ---------- */
   .reveal{
     opacity:0;
-    transform:translateY(26px) scale(0.985);
-    transition:opacity .8s var(--ease), transform .8s var(--ease);
+    transform:translateY(22px);
+    filter:blur(5px);
+    transition:opacity 1.1s var(--ease-luxe), transform 1.1s var(--ease-luxe), filter 1.1s var(--ease-luxe);
   }
-  .reveal.is-visible{ opacity:1; transform:translateY(0) scale(1); }
-  .reveal-stagger > *{ transition-delay:calc(var(--i,0) * 70ms); }
+  .reveal.is-visible{ opacity:1; transform:translateY(0); filter:blur(0); }
+
+  /* Gestaffeltes Erscheinen für Karten-Raster: Eltern-Fade wird neutralisiert,
+     jedes Kind bekommt eine eigene, leicht versetzte Reveal-Animation. */
+  .reveal-stagger{ opacity:1; transform:none; filter:none; transition:none; }
+  .reveal-stagger > *{
+    opacity:0;
+    transform:translateY(20px);
+    filter:blur(4px);
+    transition:opacity .8s var(--ease-luxe), transform .8s var(--ease-luxe), filter .8s var(--ease-luxe);
+  }
+  .reveal-stagger.is-visible > *{ opacity:1; transform:translateY(0); filter:blur(0); }
+  .reveal-stagger > *:nth-child(1){ transition-delay:0ms; }
+  .reveal-stagger > *:nth-child(2){ transition-delay:70ms; }
+  .reveal-stagger > *:nth-child(3){ transition-delay:140ms; }
+  .reveal-stagger > *:nth-child(4){ transition-delay:210ms; }
+  .reveal-stagger > *:nth-child(5){ transition-delay:280ms; }
+  .reveal-stagger > *:nth-child(6){ transition-delay:350ms; }
+  .reveal-stagger > *:nth-child(7){ transition-delay:420ms; }
 
   @media (prefers-reduced-motion: reduce){
     *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important; }
-    .reveal{ opacity:1; transform:none; }
+    .reveal, .reveal-stagger > *{ opacity:1; transform:none; filter:none; }
     .hero-glow{ animation:none; }
   }
 </style>
@@ -1115,6 +1238,8 @@
 </head>
 <body>
 
+<a href="#top" class="skip-link">Zum Inhalt springen</a>
+
 <!-- =========================================================
      NAVIGATION
 ========================================================= -->
@@ -1122,7 +1247,7 @@
   <nav class="wrap">
     <!-- Logo: logo.png liegt im selben Ordner wie diese HTML-Datei -->
     <a href="#top" class="logo nav-link">
-      <img src="logo.png" alt="LLA Agency Logo" class="logo-img">
+      <img src="logo.png" alt="LLA Agency Logo" class="logo-img" width="256" height="256" decoding="async">
       <span class="logo-divider"></span>
       <span class="logo-word">Agency</span>
     </a>
@@ -1145,7 +1270,7 @@
 </header>
 
 <div class="mobile-menu" id="mobileMenu">
-  <img src="logo.png" alt="LLA Agency Logo" class="mobile-logo">
+  <img src="logo.png" alt="LLA Agency Logo" class="mobile-logo" width="256" height="256" decoding="async">
   <a href="#top" class="nav-link">Start</a>
   <a href="#leistungen" class="nav-link">Leistungen</a>
   <a href="#webseiten" class="nav-link">Webseiten</a>
@@ -1160,8 +1285,9 @@
      HERO
 ========================================================= -->
 <section class="hero" id="top">
-  <img src="assets/hero-background.jpg" alt="" aria-hidden="true" class="hero-bg-img">
+  <img src="assets/hero-background.jpg" alt="" aria-hidden="true" class="hero-bg-img" width="1672" height="941" fetchpriority="high" decoding="async">
   <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-spotlight" aria-hidden="true"></div>
   <div class="hero-grain" aria-hidden="true"></div>
   <div class="hero-frame-line top" aria-hidden="true"></div>
   <div class="hero-frame-line bottom" aria-hidden="true"></div>
@@ -1198,7 +1324,7 @@
          oder mit einem eingebetteten YouTube-/Vimeo-iframe. -->
     <div class="showreel reveal" style="transition-delay:.5s">
       <div class="showreel-frame viewfinder" id="showreelFrame" tabindex="0" role="button" aria-label="Showreel abspielen (Konzeptvorschau)">
-        <img src="assets/showreel-poster.jpg" alt="LLA Agency Showreel – Studioaufnahme einer Produktion" class="showreel-img">
+        <img src="assets/showreel-poster.jpg" alt="LLA Agency Showreel – Studioaufnahme einer Produktion" class="showreel-img" width="1774" height="887" decoding="async">
         <span class="showreel-scrim" aria-hidden="true"></span>
         <div class="showreel-play">
           <div class="play-circle">
@@ -1237,7 +1363,7 @@
       <h2>Alles, was deine Marke stärker macht.</h2>
     </div>
 
-    <div class="service-grid reveal">
+    <div class="service-grid reveal reveal-stagger">
       <div class="service-card">
         <div class="service-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M16 10l6-3v10l-6-3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
@@ -1331,7 +1457,7 @@
 
       <div class="browser-mock viewfinder reveal">
         <div class="browser-body">
-          <img src="assets/webseiten-mockup.jpg" alt="Beispiel einer Premium-Webseite von LLA Agency (Konzeptprojekt)" loading="lazy">
+          <img src="assets/webseiten-mockup.jpg" alt="Beispiel einer Premium-Webseite von LLA Agency (Konzeptprojekt)" loading="lazy" decoding="async" width="1536" height="1024">
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
       </div>
@@ -1349,10 +1475,10 @@
       <h2>Aus einfachem Content wird ein Premium-Auftritt.</h2>
     </div>
 
-    <div class="ba-grid reveal">
+    <div class="ba-grid reveal reveal-stagger">
       <div class="ba-card">
         <div class="ba-visual before">
-          <img src="assets/vorher-beispiel.jpg" alt="Vorher: einfache Produktfotografie mit Smartphone-Kamera" loading="lazy">
+          <img src="assets/vorher-beispiel.jpg" alt="Vorher: einfache Produktfotografie mit Smartphone-Kamera" loading="lazy" decoding="async" width="1448" height="1086">
           <span class="ba-tag">Vorher</span>
         </div>
         <div class="ba-body">
@@ -1368,7 +1494,7 @@
 
       <div class="ba-card">
         <div class="ba-visual after">
-          <img src="assets/nachher-beispiel.jpg" alt="Nachher: professionelle Studio-Produktfotografie von LLA Agency" loading="lazy">
+          <img src="assets/nachher-beispiel.jpg" alt="Nachher: professionelle Studio-Produktfotografie von LLA Agency" loading="lazy" decoding="async" width="1448" height="1086">
           <span class="ba-tag">Nachher</span>
         </div>
         <div class="ba-body after">
@@ -1398,13 +1524,13 @@
     <!-- Konzeptprojekte: KI-generierte Demo-Bilder (siehe "bildprompts-lla-agency.md" für
          die verwendeten Prompts). Sobald echte Kundenprojekte vorliegen, hier einfach die
          Bilddateien in assets/ austauschen und das "Konzeptprojekt"-Badge entfernen. -->
-    <div class="portfolio-grid reveal">
+    <div class="portfolio-grid reveal reveal-stagger">
 
       <!-- BILD: portfolio-01-webseite.jpg (Format 21:8, quer) -->
       <div class="p-card wide viewfinder" tabindex="0" data-title="Corporate Website Relaunch" data-cat="Premium Webseiten" data-desc="Individuelle, responsive Webseite mit modernem Design, klarer Markenführung, schnellen Ladezeiten und integriertem Kontaktformular.">
         <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#101a1c;--tint2:#0a0c0e;">
-          <div class="p-visual-inner"><img src="assets/portfolio-01-webseite.jpg" alt="Corporate Website Relaunch – Konzeptprojekt von LLA Agency" loading="lazy"></div>
+          <div class="p-visual-inner"><img src="assets/portfolio-01-webseite.jpg" alt="Corporate Website Relaunch – Konzeptprojekt von LLA Agency" loading="lazy" decoding="async" width="2032" height="774"></div>
           <div class="p-meta"><span class="cat">Premium Webseiten</span><h4>Corporate Website Relaunch</h4></div>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
@@ -1414,7 +1540,7 @@
       <div class="p-card viewfinder" tabindex="0" data-title="Premium Sneaker Ad" data-cat="Produktvideo" data-desc="Dynamisches Werbevideo für einen Sneaker-Release mit starkem visuellem Rhythmus und schwebender Produktinszenierung.">
         <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#15181c;--tint2:#0b0b0d;">
-          <div class="p-visual-inner"><img src="assets/portfolio-02-sneaker.jpg" alt="Premium Sneaker Ad – Konzeptprojekt von LLA Agency" loading="lazy"></div>
+          <div class="p-visual-inner"><img src="assets/portfolio-02-sneaker.jpg" alt="Premium Sneaker Ad – Konzeptprojekt von LLA Agency" loading="lazy" decoding="async" width="1122" height="1402"></div>
           <div class="p-meta"><span class="cat">Produktvideo</span><h4>Premium Sneaker Ad</h4></div>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
@@ -1424,7 +1550,7 @@
       <div class="p-card viewfinder" tabindex="0" data-title="Protein Drink Splash" data-cat="Produktvideo" data-desc="Cinematisches Produktvideo für ein Getränkeprodukt mit dynamischem Splash-Moment – inszeniert für Social Media und Werbeanzeigen.">
         <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#1c1712;--tint2:#0b0b0d;">
-          <div class="p-visual-inner"><img src="assets/portfolio-03-protein-drink.jpg" alt="Protein Drink Splash – Konzeptprojekt von LLA Agency" loading="lazy"></div>
+          <div class="p-visual-inner"><img src="assets/portfolio-03-protein-drink.jpg" alt="Protein Drink Splash – Konzeptprojekt von LLA Agency" loading="lazy" decoding="async" width="1122" height="1402"></div>
           <div class="p-meta"><span class="cat">Produktvideo</span><h4>Protein Drink Splash</h4></div>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
@@ -1434,7 +1560,7 @@
       <div class="p-card viewfinder" tabindex="0" data-title="Kabellose Kopfhörer Listing" data-cat="Listing-Optimierung" data-desc="Vollständige Überarbeitung eines Amazon-Listings für kabellose Kopfhörer mit neuen Produktbildern und klarer Struktur.">
         <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#1a1a1a;--tint2:#0b0b0d;">
-          <div class="p-visual-inner"><img src="assets/portfolio-04-kopfhoerer.jpg" alt="Kabellose Kopfhörer Listing – Konzeptprojekt von LLA Agency" loading="lazy"></div>
+          <div class="p-visual-inner"><img src="assets/portfolio-04-kopfhoerer.jpg" alt="Kabellose Kopfhörer Listing – Konzeptprojekt von LLA Agency" loading="lazy" decoding="async" width="1122" height="1402"></div>
           <div class="p-meta"><span class="cat">Listing-Optimierung</span><h4>Kabellose Kopfhörer Listing</h4></div>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
@@ -1444,7 +1570,7 @@
       <div class="p-card viewfinder" tabindex="0" data-title="Luxury Parfum Visual" data-cat="Produktbilder" data-desc="Elegante Produktbildserie für ein Parfum mit dramatischer Lichtstimmung und feinen Reflexionen.">
         <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#1c1519;--tint2:#0b0b0d;">
-          <div class="p-visual-inner"><img src="assets/portfolio-05-parfum.jpg" alt="Luxury Parfum Visual – Konzeptprojekt von LLA Agency" loading="lazy"></div>
+          <div class="p-visual-inner"><img src="assets/portfolio-05-parfum.jpg" alt="Luxury Parfum Visual – Konzeptprojekt von LLA Agency" loading="lazy" decoding="async" width="1122" height="1402"></div>
           <div class="p-meta"><span class="cat">Produktbilder</span><h4>Luxury Parfum Visual</h4></div>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
@@ -1454,7 +1580,7 @@
       <div class="p-card viewfinder" tabindex="0" data-title="Smartwatch Detail Shots" data-cat="Produktbilder" data-desc="Reduzierte, technisch anmutende Makro- und Detailaufnahmen für eine Smartwatch.">
         <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#14161c;--tint2:#0b0b0d;">
-          <div class="p-visual-inner"><img src="assets/portfolio-06-smartwatch.jpg" alt="Smartwatch Detail Shots – Konzeptprojekt von LLA Agency" loading="lazy"></div>
+          <div class="p-visual-inner"><img src="assets/portfolio-06-smartwatch.jpg" alt="Smartwatch Detail Shots – Konzeptprojekt von LLA Agency" loading="lazy" decoding="async" width="1122" height="1402"></div>
           <div class="p-meta"><span class="cat">Produktbilder</span><h4>Smartwatch Detail Shots</h4></div>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
@@ -1464,7 +1590,7 @@
       <div class="p-card viewfinder" tabindex="0" data-title="Skincare Studio Campaign" data-cat="Produktbilder" data-desc="Kreative Bildserie für eine Skincare-Kampagne mit weichem Studiolicht und stimmigem, hochwertigem Look.">
         <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#151a19;--tint2:#0b0b0d;">
-          <div class="p-visual-inner"><img src="assets/portfolio-07-skincare.jpg" alt="Skincare Studio Campaign – Konzeptprojekt von LLA Agency" loading="lazy"></div>
+          <div class="p-visual-inner"><img src="assets/portfolio-07-skincare.jpg" alt="Skincare Studio Campaign – Konzeptprojekt von LLA Agency" loading="lazy" decoding="async" width="1122" height="1402"></div>
           <div class="p-meta"><span class="cat">Produktbilder</span><h4>Skincare Studio Campaign</h4></div>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
@@ -1518,7 +1644,7 @@
       <h2>Transparente Pakete für jeden Bedarf.</h2>
     </div>
 
-    <div class="price-grid reveal">
+    <div class="price-grid reveal reveal-stagger">
       <div class="price-card">
         <h3>Social Package</h3>
         <div class="price-from">Einstiegspaket</div>
@@ -1584,7 +1710,7 @@
   <div class="wrap">
     <div class="about-grid">
       <div class="about-visual reveal">
-        <img src="assets/about-studio.jpg" alt="LLA Agency Kreativ-Studio bei einer Produktion" loading="lazy">
+        <img src="assets/about-studio.jpg" alt="LLA Agency Kreativ-Studio bei einer Produktion" loading="lazy" decoding="async" width="1122" height="1402">
       </div>
       <div class="about-text reveal">
         <span class="eyebrow">Über LLA Agency</span>
@@ -1680,7 +1806,7 @@
     <div class="footer-top">
       <div class="footer-brand">
         <a href="#top" class="logo nav-link">
-          <img src="logo.png" alt="LLA Agency Logo" class="logo-img">
+          <img src="logo.png" alt="LLA Agency Logo" class="logo-img" width="256" height="256" decoding="async">
           <span class="logo-divider"></span>
           <span class="logo-word">Agency</span>
         </a>
@@ -1785,6 +1911,30 @@
   }
   window.addEventListener('scroll', onScroll, { passive:true });
   onScroll();
+
+  /* ---------- Hero: Parallax & Spotlight ---------- */
+  var heroEl = document.querySelector('.hero');
+  var heroBg = document.querySelector('.hero-bg-img');
+  if(heroEl && heroBg && !reduceMotion){
+    var heroTicking = false;
+    function updateHeroParallax(){
+      var rect = heroEl.getBoundingClientRect();
+      if(rect.bottom > 0 && rect.top < window.innerHeight){
+        var offset = Math.max(0, -rect.top);
+        heroBg.style.transform = 'translate3d(0,' + (offset * 0.14).toFixed(1) + 'px,0) scale(1.09)';
+      }
+      heroTicking = false;
+    }
+    window.addEventListener('scroll', function(){
+      if(!heroTicking){ requestAnimationFrame(updateHeroParallax); heroTicking = true; }
+    }, { passive:true });
+
+    heroEl.addEventListener('pointermove', function(e){
+      var r = heroEl.getBoundingClientRect();
+      heroEl.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
+      heroEl.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
+    }, { passive:true });
+  }
 
   /* ---------- Mobiles Menü ---------- */
   var burger = document.getElementById('burger');
