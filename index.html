@@ -1,0 +1,1872 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLA Agency | Premium Produktvideos, Webseiten & Branding</title>
+<meta name="description" content="LLA Agency ist eine Premium-Kreativagentur für Produktvideos, Produktbilder, moderne Webseiten, E-Commerce-Listing-Optimierung, Social-Media-Content und Branding für Marken, Unternehmen und Onlineshops.">
+
+<!-- Open Graph -->
+<meta property="og:title" content="LLA Agency | Premium Produktvideos, Webseiten & Branding">
+<meta property="og:description" content="LLA Agency entwickelt hochwertige Produktvideos, Produktbilder, moderne Webseiten und optimierte E-Commerce-Listings für Marken, Unternehmen und Onlineshops.">
+<meta property="og:type" content="website">
+<!-- TIPP: Hier kannst du ein Vorschaubild für Social-Media-Vorschauen ergänzen -->
+<!-- <meta property="og:image" content="PFAD-ZU-VORSCHAUBILD.jpg"> -->
+<meta name="theme-color" content="#07080a">
+<!-- Favicon: nutzt dasselbe Logo -->
+<link rel="icon" href="logo.png" type="image/png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ============================================================
+     LLA AGENCY — DESIGN TOKENS
+     Farbwelt: Anthrazit/Schwarz + gebürstetes Silber + Petrol-/Teal-Akzent
+     Typografie: Space Grotesk (Headlines) + Inter (Fließtext)
+     Signatur-Element: "Viewfinder"-Ecken (Kamera-Fokusrahmen),
+     die an Kamera-Sucher erinnern – passend zur Foto-/Videowelt.
+     ============================================================ */
+  :root{
+    /* Farbwelt abgeleitet vom LLA-Agency-Logo:
+       tiefes Schwarz/Anthrazit, gebürstetes Silber, Petrol-/Teal-Akzent */
+    --bg-0: #07080a;
+    --bg-1: #0c0d0f;
+    --bg-2: #121316;
+    --card: rgba(255,255,255,0.028);
+    --card-hover: rgba(255,255,255,0.05);
+    --border: rgba(255,255,255,0.065);
+    --border-strong: rgba(255,255,255,0.14);
+    --text-0: #f2f3f4;
+    --text-1: #a9adb3;
+    --text-2: #696d73;
+    --accent: #2fb4c4;
+    --accent-bright: #7fe3ec;
+    --accent-deep: #135561;
+    --silver: #c6ccd2;
+    --silver-soft: rgba(198,204,210,0.14);
+    --accent-soft: rgba(47,180,196,0.10);
+    --accent-line: rgba(47,180,196,0.38);
+    --shadow-soft: 0 24px 70px -24px rgba(0,0,0,0.7);
+    --ease: cubic-bezier(.16,.8,.24,1);
+    --maxw: 1240px;
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--bg-0);
+    color:var(--text-0);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:600;
+    line-height:1.12;
+    letter-spacing:-0.02em;
+    margin:0;
+    color:var(--text-0);
+  }
+  p{ margin:0; color:var(--text-1); }
+  a{ color:inherit; text-decoration:none; }
+  ul{ margin:0; padding:0; list-style:none; }
+  img{ max-width:100%; display:block; }
+  button{ font-family:inherit; cursor:pointer; }
+  input,select,textarea{ font-family:inherit; }
+
+  ::selection{ background:var(--accent); color:#0a0a0a; }
+
+  :focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  .wrap{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:0 32px;
+  }
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-size:12.5px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+    margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:22px; height:1px;
+    background:var(--accent-line);
+  }
+  .section{ padding:150px 0; position:relative; }
+  .section-head{ max-width:640px; margin-bottom:72px; }
+  .section-head h2{ font-size:clamp(28px,3.6vw,40px); }
+  .section-head p{ margin-top:16px; font-size:17px; }
+  @media (max-width:768px){
+    .section{ padding:96px 0; }
+    .wrap{ padding:0 22px; }
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    padding:15px 30px;
+    border-radius:100px;
+    font-size:15px;
+    font-weight:600;
+    border:1px solid transparent;
+    transition:transform .45s var(--ease), background .35s var(--ease), border-color .35s var(--ease), box-shadow .35s var(--ease);
+    white-space:nowrap;
+  }
+  .btn-primary{
+    background:linear-gradient(120deg, var(--accent-bright) 0%, var(--accent) 28%, var(--accent-deep) 50%, var(--accent) 72%, var(--accent-bright) 100%);
+    background-size:240% 100%;
+    background-position:0% 0%;
+    color:#04191d;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.22);
+    transition:transform .5s var(--ease), background-position .7s var(--ease), box-shadow .4s var(--ease);
+  }
+  .btn-primary:hover{
+    transform:translateY(-2px);
+    background-position:100% 0%;
+    box-shadow:0 16px 36px -12px var(--accent-line), inset 0 1px 0 rgba(255,255,255,0.3);
+  }
+  .btn-ghost{
+    background:transparent;
+    border-color:var(--border-strong);
+    color:var(--text-0);
+  }
+  .btn-ghost:hover{
+    border-color:var(--accent);
+    background:var(--accent-soft);
+    transform:translateY(-2px);
+  }
+  .btn-sm{ padding:11px 22px; font-size:13.5px; }
+
+  /* ---------- Navigation ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0;
+    z-index:500;
+    padding:22px 0;
+    transition:padding .4s var(--ease), background .4s var(--ease), border-color .4s var(--ease);
+    border-bottom:1px solid transparent;
+  }
+  header.scrolled{
+    padding:14px 0;
+    background:rgba(8,8,10,0.72);
+    backdrop-filter:blur(18px) saturate(140%);
+    -webkit-backdrop-filter:blur(18px) saturate(140%);
+    border-bottom:1px solid var(--border);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .logo{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:600;
+    font-size:13px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    display:flex; align-items:center; gap:14px;
+    color:var(--text-1);
+  }
+  .logo-img{
+    width:42px; height:42px;
+    border-radius:50%;
+    display:block;
+    flex-shrink:0;
+    transition:filter .4s var(--ease), transform .4s var(--ease);
+  }
+  a.logo:hover .logo-img{ filter:brightness(1.12) drop-shadow(0 0 10px var(--accent-line)); transform:scale(1.04); }
+  .logo-divider{ width:1px; height:16px; background:var(--border-strong); }
+  .logo-word{ color:var(--text-0); }
+  .logo-word b{ color:var(--accent); font-weight:600; }
+  footer .logo{ font-size:12.5px; }
+  footer .logo-img{ width:34px; height:34px; }
+  .nav-links{
+    display:flex; align-items:center; gap:38px;
+  }
+  .nav-links a{
+    font-size:14.5px;
+    color:var(--text-1);
+    font-weight:500;
+    position:relative;
+    padding:4px 0;
+    transition:color .3s var(--ease);
+  }
+  .nav-links a::after{
+    content:'';
+    position:absolute; left:0; bottom:-2px;
+    width:0; height:1px;
+    background:var(--accent);
+    transition:width .35s var(--ease);
+  }
+  .nav-links a:hover{ color:var(--text-0); }
+  .nav-links a:hover::after{ width:100%; }
+  .nav-right{ display:flex; align-items:center; gap:22px; }
+  .burger{
+    display:none;
+    width:38px; height:38px;
+    border:1px solid var(--border-strong);
+    border-radius:10px;
+    background:transparent;
+    position:relative;
+  }
+  .burger span, .burger span::before, .burger span::after{
+    content:'';
+    position:absolute;
+    left:9px; right:9px;
+    height:1px;
+    background:var(--text-0);
+    transition:transform .3s var(--ease), opacity .3s var(--ease), top .3s var(--ease);
+  }
+  .burger span{ top:18px; }
+  .burger span::before{ top:-6px; }
+  .burger span::after{ top:6px; }
+  .burger.active span{ background:transparent; }
+  .burger.active span::before{ top:0; transform:rotate(45deg); }
+  .burger.active span::after{ top:0; transform:rotate(-45deg); }
+
+  .mobile-menu{
+    position:fixed; inset:0;
+    background:rgba(8,8,9,0.98);
+    backdrop-filter:blur(10px);
+    z-index:490;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    gap:30px;
+    opacity:0; visibility:hidden;
+    transition:opacity .4s var(--ease), visibility .4s var(--ease);
+  }
+  .mobile-menu.open{ opacity:1; visibility:visible; }
+  .mobile-menu a{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:28px; font-weight:600; color:var(--text-0);
+  }
+  .mobile-menu .btn{ margin-top:12px; }
+  .mobile-logo{ width:60px; height:60px; border-radius:50%; margin-bottom:8px; }
+
+  @media (max-width:900px){
+    .nav-links{ display:none; }
+    .burger{ display:block; }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    min-height:100svh;
+    display:flex; flex-direction:column; justify-content:center;
+    position:relative;
+    padding-top:140px; padding-bottom:70px;
+    overflow:hidden;
+  }
+  .hero-bg-img{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+    opacity:.38;
+    z-index:0;
+    pointer-events:none;
+  }
+  .hero-glow{
+    position:absolute; inset:-20% -10% auto -10%;
+    height:900px;
+    background:
+      radial-gradient(560px 420px at 20% 16%, rgba(47,180,196,0.15), transparent 65%),
+      radial-gradient(680px 460px at 84% 4%, rgba(198,204,210,0.07), transparent 60%);
+    pointer-events:none;
+    filter:blur(10px);
+    z-index:0;
+    animation:driftGlow 26s ease-in-out infinite alternate;
+  }
+  @keyframes driftGlow{
+    from{ transform:translate3d(0,0,0) scale(1); }
+    to{ transform:translate3d(1.5%,2.5%,0) scale(1.05); }
+  }
+  .hero-grain{
+    position:absolute; inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events:none; z-index:1; mix-blend-mode:overlay;
+  }
+  .hero-frame-line{
+    position:absolute; left:0; right:0;
+    height:1px;
+    background:linear-gradient(90deg, transparent, var(--border-strong) 20%, var(--border-strong) 80%, transparent);
+    z-index:1;
+  }
+  .hero-frame-line.top{ top:104px; }
+  .hero-frame-line.bottom{ bottom:0; }
+
+  .hero .wrap{ position:relative; z-index:2; }
+  .hero-badges{
+    display:flex; flex-wrap:wrap; gap:12px;
+    margin-bottom:30px;
+  }
+  .hero-badge{
+    display:flex; align-items:center; gap:8px;
+    padding:8px 16px;
+    border:1px solid var(--border);
+    border-radius:100px;
+    font-size:12.5px;
+    color:var(--text-1);
+    background:rgba(255,255,255,0.035);
+    backdrop-filter:blur(14px) saturate(140%);
+    -webkit-backdrop-filter:blur(14px) saturate(140%);
+  }
+  .hero-badge .dot{ width:5px; height:5px; border-radius:50%; background:var(--accent); }
+
+  .hero h1{
+    font-size:clamp(38px, 9.5vw, 98px);
+    max-width:980px;
+    letter-spacing:-0.03em;
+  }
+  .hero h1 em{
+    font-style:normal;
+    background:linear-gradient(115deg, var(--accent-bright) 0%, var(--silver) 48%, var(--accent) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .hero-sub{
+    max-width:580px;
+    margin-top:30px;
+    font-size:19px;
+    line-height:1.65;
+    color:var(--text-1);
+  }
+  .hero-actions{
+    display:flex; gap:18px; flex-wrap:wrap;
+    margin-top:44px;
+  }
+
+  /* Showreel */
+  .showreel{
+    margin-top:86px;
+    position:relative;
+  }
+  .showreel-frame{
+    position:relative;
+    aspect-ratio:16/8;
+    border-radius:var(--radius);
+    overflow:hidden;
+    border:1px solid var(--border);
+    background:
+      linear-gradient(160deg, #17171b, #0c0c0e 65%);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:var(--shadow-soft);
+  }
+  .showreel-frame::before{
+    content:'';
+    position:absolute; inset:0;
+    background:
+      radial-gradient(480px 300px at 78% 88%, rgba(47,180,196,0.07), transparent 70%);
+  }
+  .showreel-img{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+    z-index:0;
+  }
+  .showreel-scrim{
+    position:absolute; inset:0;
+    background:linear-gradient(0deg, rgba(6,7,8,.55) 0%, rgba(6,7,8,.15) 45%, rgba(6,7,8,.35) 100%);
+    z-index:1;
+  }
+  .showreel-play{
+    position:relative; z-index:2;
+    display:flex; flex-direction:column; align-items:center; gap:18px;
+  }
+  .play-circle{
+    width:78px; height:78px;
+    border-radius:50%;
+    border:1px solid var(--border-strong);
+    background:rgba(255,255,255,0.04);
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    transition:transform .45s var(--ease), border-color .45s var(--ease), background .45s var(--ease), box-shadow .45s var(--ease);
+  }
+  .play-circle::before{
+    content:'';
+    position:absolute; inset:-7px;
+    border-radius:50%;
+    border:1px solid var(--border);
+    opacity:0;
+    transition:opacity .45s var(--ease), transform .45s var(--ease);
+    transform:scale(0.9);
+  }
+  .showreel-frame:hover .play-circle{
+    transform:scale(1.08);
+    border-color:var(--accent);
+    background:var(--accent-soft);
+    box-shadow:0 0 30px -4px var(--accent-line);
+  }
+  .showreel-frame:hover .play-circle::before{
+    opacity:1; transform:scale(1);
+  }
+  .showreel-note{
+    font-size:13px; color:var(--text-2); letter-spacing:0.02em;
+  }
+  .showreel-tag{
+    position:absolute; top:18px; left:18px;
+    font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--text-2);
+    display:flex; align-items:center; gap:8px;
+    z-index:2;
+  }
+  .showreel-tag .rec{
+    width:7px; height:7px; border-radius:50%; background:#c96b6b;
+    box-shadow:0 0 8px rgba(201,107,107,0.7);
+  }
+
+  /* ---------- Viewfinder corners (signature element) ---------- */
+  .viewfinder{ position:relative; }
+  .vf-corner{
+    position:absolute;
+    width:22px; height:22px;
+    border-color:var(--accent);
+    opacity:0;
+    transform:scale(0.6);
+    transition:opacity .45s var(--ease), transform .45s var(--ease);
+    pointer-events:none;
+    z-index:5;
+  }
+  .vf-tl{ top:12px; left:12px; border-top:1.5px solid; border-left:1.5px solid; }
+  .vf-tr{ top:12px; right:12px; border-top:1.5px solid; border-right:1.5px solid; }
+  .vf-bl{ bottom:12px; left:12px; border-bottom:1.5px solid; border-left:1.5px solid; }
+  .vf-br{ bottom:12px; right:12px; border-bottom:1.5px solid; border-right:1.5px solid; }
+  .viewfinder:hover .vf-corner, .viewfinder:focus-within .vf-corner{
+    opacity:1; transform:scale(1);
+  }
+
+  /* ---------- Trust strip ---------- */
+  .trust{
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+    padding:52px 0;
+  }
+  .trust .wrap{
+    display:flex; align-items:center; justify-content:space-between; gap:40px; flex-wrap:wrap;
+  }
+  .trust-headline{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:22px; font-weight:600;
+    max-width:340px;
+    color:var(--text-0);
+  }
+  .trust-list{
+    display:flex; gap:36px; flex-wrap:wrap;
+  }
+  .trust-item{
+    display:flex; align-items:center; gap:10px;
+    font-size:14px; color:var(--text-1);
+  }
+  .trust-item svg{ flex-shrink:0; }
+
+  /* ---------- Services ---------- */
+  .service-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+  }
+  .service-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:36px 28px 32px;
+    backdrop-filter:blur(18px) saturate(140%);
+    -webkit-backdrop-filter:blur(18px) saturate(140%);
+    transition:background .45s var(--ease), border-color .45s var(--ease), transform .45s var(--ease), box-shadow .45s var(--ease);
+    position:relative;
+  }
+  .service-card:hover{
+    background:var(--card-hover);
+    border-color:var(--accent-line);
+    transform:translateY(-5px);
+    box-shadow:var(--shadow-soft);
+  }
+  .service-icon{
+    width:46px; height:46px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:26px;
+    color:var(--accent);
+    transition:border-color .4s var(--ease), transform .45s var(--ease);
+  }
+  .service-card:hover .service-icon{
+    border-color:var(--accent-line);
+    transform:translateY(-3px) rotate(-4deg);
+  }
+  .service-card h3{
+    font-size:19px; margin-bottom:12px;
+  }
+  .service-card p{ font-size:14.5px; }
+  @media (max-width:980px){
+    .service-grid{ grid-template-columns:repeat(2,1fr); }
+  }
+  @media (max-width:600px){
+    .service-grid{ grid-template-columns:1fr; }
+  }
+
+  /* ---------- Premium Webseiten ---------- */
+  .webs-grid{
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:70px;
+    align-items:center;
+  }
+  .webs-text h2{ margin-bottom:20px; }
+  .webs-text > p{ font-size:16px; margin-bottom:36px; max-width:520px; }
+  .feature-list{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  .feature-item{
+    display:flex; align-items:center; gap:12px;
+    padding:14px 16px;
+    border:1px solid var(--border);
+    border-radius:12px;
+    background:rgba(255,255,255,0.03);
+    backdrop-filter:blur(14px) saturate(140%);
+    -webkit-backdrop-filter:blur(14px) saturate(140%);
+    font-size:14px;
+    color:var(--text-0);
+    transition:border-color .4s var(--ease), background .4s var(--ease), transform .4s var(--ease);
+  }
+  .feature-item:hover{
+    border-color:var(--accent-line);
+    background:var(--card-hover);
+    transform:translateY(-2px);
+  }
+  .feature-item .f-icon{
+    width:30px; height:30px;
+    border-radius:8px;
+    background:var(--accent-soft);
+    color:var(--accent);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .browser-mock{
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    overflow:hidden;
+    background:var(--bg-1);
+    box-shadow:var(--shadow-soft);
+  }
+  .browser-body{
+    aspect-ratio:3/2;
+    position:relative;
+    background:linear-gradient(160deg,#12161a,#0a0c0e 78%);
+  }
+  .browser-body::before{
+    content:'';
+    position:absolute; inset:0;
+    background:radial-gradient(360px 260px at 25% 15%, rgba(47,180,196,0.16), transparent 70%);
+  }
+  .browser-body img{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+  }
+  @media (max-width:900px){
+    .webs-grid{ grid-template-columns:1fr; gap:40px; }
+    .browser-mock{ order:-1; }
+  }
+  @media (max-width:560px){
+    .feature-list{ grid-template-columns:1fr; }
+  }
+
+  /* ---------- Before / After ---------- */
+  .ba-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
+  }
+  .ba-card{
+    border-radius:var(--radius);
+    border:1px solid var(--border);
+    overflow:hidden;
+    background:var(--bg-1);
+    transition:transform .5s var(--ease), border-color .5s var(--ease), box-shadow .5s var(--ease);
+  }
+  .ba-card:hover{
+    transform:translateY(-4px);
+    border-color:var(--border-strong);
+    box-shadow:var(--shadow-soft);
+  }
+  .ba-visual{
+    aspect-ratio:4/3;
+    position:relative;
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+  .ba-visual img{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+  }
+  .ba-visual.before{
+    background:repeating-linear-gradient(45deg,#131315,#131315 18px,#171719 18px,#171719 36px);
+  }
+  .ba-visual.after{
+    background:linear-gradient(155deg,#101619,#0b0c0e 70%);
+  }
+  .ba-visual.after::after{
+    content:'';
+    position:absolute; inset:0;
+    background:radial-gradient(340px 240px at 70% 20%, rgba(47,180,196,0.20), transparent 70%);
+  }
+  .ba-label{
+    font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--text-2);
+  }
+  .ba-visual .ba-tag{
+    position:absolute; top:16px; left:16px;
+    font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
+    padding:6px 12px; border-radius:100px;
+    border:1px solid var(--border-strong);
+    background:rgba(8,8,10,0.55);
+    z-index:2;
+  }
+  .ba-visual.after .ba-tag{ border-color:var(--accent-line); color:var(--accent-bright); }
+  .ba-body{ padding:26px 26px 30px; }
+  .ba-body h4{ font-size:17px; margin-bottom:14px; }
+  .ba-body ul li{
+    font-size:14px; color:var(--text-1);
+    padding:7px 0;
+    border-top:1px solid var(--border);
+    display:flex; gap:10px;
+  }
+  .ba-body ul li:first-child{ border-top:none; }
+  .ba-body.after ul li{ color:var(--text-0); }
+  @media (max-width:800px){ .ba-grid{ grid-template-columns:1fr; } }
+
+  /* ---------- Portfolio ---------- */
+  .portfolio-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+  }
+  .p-card{
+    border-radius:var(--radius);
+    overflow:hidden;
+    border:1px solid var(--border);
+    background:var(--bg-1);
+    cursor:pointer;
+    transition:transform .5s var(--ease), border-color .5s var(--ease);
+  }
+  .p-card:hover{ transform:translateY(-6px); border-color:var(--border-strong); box-shadow:var(--shadow-soft); }
+  .p-visual{
+    aspect-ratio:4/5;
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(155deg, var(--tint1,#18181c), var(--tint2,#0b0b0d) 75%);
+  }
+  .p-visual::after{
+    content:'';
+    position:absolute; inset:0;
+    background:linear-gradient(0deg, rgba(0,0,0,0.55), transparent 45%);
+  }
+  .p-visual img.ph-icon{
+    position:absolute; inset:0; margin:auto;
+    width:34px; height:34px; opacity:0.35;
+  }
+  /* Platzhalter-Icon (bis echte/KI-generierte Bilder eingesetzt werden) */
+  .p-icon{
+    position:absolute; inset:0; margin:auto;
+    width:56px; height:56px;
+    color:var(--silver);
+    opacity:0.28;
+    z-index:1;
+  }
+  .p-card.wide .p-icon{ width:64px; height:64px; }
+  /* "Konzeptprojekt"-Kennzeichnung: macht deutlich, dass es sich um
+     Demo-/Beispielarbeiten handelt, bis echte Kundenprojekte folgen */
+  .p-concept-badge{
+    position:absolute; top:16px; left:16px; z-index:3;
+    display:flex; align-items:center; gap:6px;
+    font-size:10.5px; letter-spacing:0.06em; text-transform:uppercase;
+    color:var(--text-1);
+    padding:6px 12px;
+    border-radius:100px;
+    border:1px solid var(--border-strong);
+    background:rgba(8,8,10,0.55);
+    backdrop-filter:blur(10px) saturate(140%);
+    -webkit-backdrop-filter:blur(10px) saturate(140%);
+  }
+  .p-concept-badge .dot{ width:5px; height:5px; border-radius:50%; background:var(--accent); flex-shrink:0; }
+  .p-visual-inner{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    transition:transform .7s var(--ease);
+  }
+  .p-visual-inner img{
+    width:100%; height:100%;
+    object-fit:cover;
+  }
+  .p-card:hover .p-visual-inner{ transform:scale(1.06); }
+  .p-meta{
+    position:absolute; left:20px; right:20px; bottom:16px; z-index:3;
+  }
+  .p-meta .cat{
+    font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent-bright);
+    margin-bottom:5px; display:block;
+  }
+  .p-meta h4{ font-size:17px; color:#fff; }
+  .p-card.wide{ grid-column:1/-1; }
+  .p-card.wide .p-visual{ aspect-ratio:21/8; }
+  .p-card.wide .p-meta h4{ font-size:20px; }
+  @media (max-width:700px){ .p-card.wide .p-visual{ aspect-ratio:4/5; } }
+  @media (max-width:980px){ .portfolio-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:600px){ .portfolio-grid{ grid-template-columns:1fr; } }
+
+  /* Modal (portfolio + legal) */
+  .modal-overlay{
+    position:fixed; inset:0; z-index:900;
+    background:rgba(6,6,7,0.82);
+    backdrop-filter:blur(6px);
+    display:flex; align-items:center; justify-content:center;
+    padding:26px;
+    opacity:0; visibility:hidden;
+    transition:opacity .35s var(--ease), visibility .35s var(--ease);
+  }
+  .modal-overlay.open{ opacity:1; visibility:visible; }
+  .modal-box{
+    background:var(--bg-1);
+    border:1px solid var(--border-strong);
+    border-radius:var(--radius);
+    max-width:640px; width:100%;
+    max-height:82vh; overflow-y:auto;
+    padding:38px;
+    transform:translateY(16px) scale(0.98);
+    transition:transform .4s var(--ease);
+  }
+  .modal-overlay.open .modal-box{ transform:translateY(0) scale(1); }
+  .modal-visual{
+    aspect-ratio:16/10;
+    border-radius:var(--radius-sm);
+    background:linear-gradient(155deg,#18181c,#0b0b0d 75%);
+    margin-bottom:24px;
+    border:1px solid var(--border);
+    overflow:hidden;
+    position:relative;
+  }
+  .modal-close{
+    float:right;
+    width:34px; height:34px;
+    border-radius:50%;
+    border:1px solid var(--border-strong);
+    background:transparent;
+    color:var(--text-0);
+    display:flex; align-items:center; justify-content:center;
+    margin-left:12px;
+  }
+  .modal-close:hover{ border-color:var(--accent); color:var(--accent); }
+  .modal-box h3{ font-size:24px; margin-bottom:8px; }
+  .modal-box .cat{ color:var(--accent); font-size:12.5px; letter-spacing:0.08em; text-transform:uppercase; }
+  .modal-box p.desc{ margin-top:16px; font-size:15px; }
+  .modal-concept-badge{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:10.5px; letter-spacing:0.06em; text-transform:uppercase;
+    color:var(--text-1);
+    padding:5px 12px; margin-top:14px;
+    border-radius:100px;
+    border:1px solid var(--border);
+    background:var(--card);
+  }
+  .modal-concept-badge .dot{ width:5px; height:5px; border-radius:50%; background:var(--accent); }
+
+  /* ---------- Process ---------- */
+  .process-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:0;
+    position:relative;
+  }
+  .process-grid::before{
+    content:'';
+    position:absolute; top:26px; left:0; right:0; height:1px;
+    background:linear-gradient(90deg, transparent, var(--border-strong), transparent);
+  }
+  .p-step{ padding:0 26px 0 0; position:relative; }
+  .p-step:first-child{ padding-left:0; }
+  .p-num{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:14px; font-weight:600;
+    color:var(--bg-0);
+    background:var(--accent);
+    width:52px; height:52px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:26px;
+    position:relative; z-index:2;
+  }
+  .p-step h4{ font-size:17.5px; margin-bottom:10px; }
+  .p-step p{ font-size:14px; }
+  @media (max-width:900px){
+    .process-grid{ grid-template-columns:1fr 1fr; row-gap:44px; }
+    .process-grid::before{ display:none; }
+  }
+  @media (max-width:560px){ .process-grid{ grid-template-columns:1fr; } }
+
+  /* ---------- Pricing ---------- */
+  .price-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+    align-items:stretch;
+  }
+  .price-card{
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:34px 26px;
+    background:var(--bg-1);
+    display:flex; flex-direction:column;
+    position:relative;
+    transition:transform .4s var(--ease), border-color .4s var(--ease);
+  }
+  .price-card:hover{ transform:translateY(-5px); border-color:var(--border-strong); box-shadow:var(--shadow-soft); }
+  .price-card.featured{
+    background:linear-gradient(165deg, rgba(47,180,196,0.08), var(--bg-1) 55%);
+    border-color:var(--accent-line);
+  }
+  .price-tag{
+    position:absolute; top:-13px; left:26px;
+    background:var(--accent);
+    color:#04191d;
+    font-size:11.5px; font-weight:700; letter-spacing:0.04em;
+    padding:6px 14px; border-radius:100px;
+  }
+  .price-card h3{ font-size:18px; margin-bottom:6px; }
+  .price-from{ font-size:12.5px; color:var(--text-2); margin-bottom:22px; }
+  .price-amount{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:clamp(26px,2.6vw,36px); font-weight:600; color:var(--text-0);
+    margin-bottom:26px;
+  }
+  .price-amount span{ font-size:15px; color:var(--text-2); font-weight:500; }
+  .price-card ul{ margin-bottom:30px; flex-grow:1; }
+  .price-card ul li{
+    display:flex; gap:10px; align-items:flex-start;
+    font-size:14px; color:var(--text-1);
+    padding:9px 0;
+    border-top:1px solid var(--border);
+  }
+  .price-card ul li:first-child{ border-top:none; }
+  .price-card ul li svg{ flex-shrink:0; margin-top:3px; color:var(--accent); }
+  .price-note{
+    text-align:center; margin-top:44px; font-size:13.5px; color:var(--text-2); max-width:520px; margin-left:auto; margin-right:auto;
+  }
+  @media (max-width:1180px){ .price-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:640px){ .price-grid{ grid-template-columns:1fr; } }
+
+  /* ---------- About ---------- */
+  .about-grid{
+    display:grid; grid-template-columns:1.05fr 0.95fr; gap:70px; align-items:center;
+  }
+  .about-visual{
+    aspect-ratio:4/5;
+    border-radius:var(--radius);
+    background:linear-gradient(160deg,#17171b,#0a0a0c 75%);
+    border:1px solid var(--border);
+    position:relative;
+    overflow:hidden;
+  }
+  .about-visual::before{
+    content:'';
+    position:absolute; inset:0;
+    background:radial-gradient(320px 260px at 25% 20%, rgba(47,180,196,0.16), transparent 70%);
+  }
+  .about-visual img{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+  }
+  .about-text p{ font-size:16px; margin-bottom:18px; }
+  .about-text p:last-child{ margin-bottom:0; }
+  @media (max-width:900px){
+    .about-grid{ grid-template-columns:1fr; gap:38px; }
+    .about-visual{ aspect-ratio:16/9; order:-1; }
+  }
+
+  /* ---------- Contact ---------- */
+  .contact-grid{
+    display:grid; grid-template-columns:0.85fr 1.15fr; gap:60px;
+  }
+  .contact-buttons{ display:flex; flex-direction:column; gap:14px; margin-top:34px; }
+  .contact-btn{
+    display:flex; align-items:center; gap:14px;
+    padding:18px 22px;
+    border:1px solid var(--border);
+    border-radius:14px;
+    background:rgba(255,255,255,0.03);
+    backdrop-filter:blur(14px) saturate(140%);
+    -webkit-backdrop-filter:blur(14px) saturate(140%);
+    transition:border-color .35s var(--ease), transform .35s var(--ease), background .35s var(--ease);
+  }
+  .contact-btn:hover{ border-color:var(--accent-line); background:var(--accent-soft); transform:translateX(4px); }
+  .contact-btn .icon{
+    width:42px; height:42px; border-radius:11px;
+    background:rgba(255,255,255,0.04);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--accent); flex-shrink:0;
+  }
+  .contact-btn .label-l{ font-size:11.5px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-2); display:block; margin-bottom:2px; }
+  .contact-btn .label-m{ font-size:15.5px; font-weight:600; color:var(--text-0); }
+
+  .form-card{
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:36px;
+    background:var(--bg-1);
+  }
+  .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .field{ margin-bottom:18px; }
+  .field label{ display:block; font-size:13px; color:var(--text-1); margin-bottom:8px; }
+  .field input, .field select, .field textarea{
+    width:100%;
+    padding:13px 15px;
+    background:rgba(255,255,255,0.02);
+    border:1px solid var(--border);
+    border-radius:10px;
+    color:var(--text-0);
+    font-size:14.5px;
+    transition:border-color .3s var(--ease), background .3s var(--ease);
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{
+    outline:none; border-color:var(--accent); background:rgba(255,255,255,0.035);
+  }
+  .field textarea{ resize:vertical; min-height:110px; }
+  .field select{ appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23b6b5bd' stroke-width='1.4' fill='none'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 15px center; }
+  .form-note{
+    font-size:13px; color:var(--text-2); margin-top:16px; display:flex; align-items:center; gap:8px;
+  }
+  .form-alt{ font-size:13.5px; margin-top:10px; }
+  .form-alt a{ color:var(--accent); border-bottom:1px solid var(--accent-line); }
+  .confirm-box{
+    display:none;
+    margin-top:18px;
+    padding:14px 16px;
+    border:1px solid var(--accent-line);
+    background:var(--accent-soft);
+    border-radius:10px;
+    font-size:13.5px;
+    color:var(--accent-bright);
+    align-items:center; gap:10px;
+  }
+  .confirm-box.show{ display:flex; }
+  @media (max-width:900px){
+    .contact-grid{ grid-template-columns:1fr; gap:40px; }
+  }
+  @media (max-width:560px){
+    .form-row{ grid-template-columns:1fr; }
+  }
+
+  /* ---------- Footer ---------- */
+  footer{
+    border-top:1px solid var(--border);
+    padding:70px 0 34px;
+  }
+  .footer-top{
+    display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:50px;
+    padding-bottom:50px;
+  }
+  .footer-brand p{ margin-top:14px; font-size:14px; max-width:280px; }
+  .footer-col h5{
+    font-size:13px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-2);
+    margin-bottom:18px; font-weight:600;
+  }
+  .footer-col ul li{ margin-bottom:12px; }
+  .footer-col ul li a{ font-size:14.5px; color:var(--text-1); transition:color .3s var(--ease); }
+  .footer-col ul li a:hover{ color:var(--accent); }
+  .footer-bottom{
+    border-top:1px solid var(--border);
+    padding-top:26px;
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;
+  }
+  .footer-bottom p{ font-size:13px; color:var(--text-2); }
+  @media (max-width:768px){
+    .footer-top{ grid-template-columns:1fr; gap:32px; }
+  }
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(26px) scale(0.985);
+    transition:opacity .8s var(--ease), transform .8s var(--ease);
+  }
+  .reveal.is-visible{ opacity:1; transform:translateY(0) scale(1); }
+  .reveal-stagger > *{ transition-delay:calc(var(--i,0) * 70ms); }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important; }
+    .reveal{ opacity:1; transform:none; }
+    .hero-glow{ animation:none; }
+  }
+</style>
+<!-- Strukturierte Daten für Suchmaschinen (SEO-Grundlage).
+     WICHTIG: Instagram-Link und E-Mail-Adresse auch hier eintragen. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "LLA Agency",
+  "description": "Premium-Kreativagentur für Produktvideos, Produktbilder, moderne Webseiten, E-Commerce-Listing-Optimierung, Social-Media-Content und Branding.",
+  "areaServed": "DE",
+  "sameAs": ["INSTAGRAM-LINK-HIER-EINFÜGEN"],
+  "email": "E-MAIL-ADRESSE-HIER-EINFÜGEN"
+}
+</script>
+</head>
+<body>
+
+<!-- =========================================================
+     NAVIGATION
+========================================================= -->
+<header id="siteHeader">
+  <nav class="wrap">
+    <!-- Logo: logo.png liegt im selben Ordner wie diese HTML-Datei -->
+    <a href="#top" class="logo nav-link">
+      <img src="logo.png" alt="LLA Agency Logo" class="logo-img">
+      <span class="logo-divider"></span>
+      <span class="logo-word">Agency</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#top" class="nav-link">Start</a></li>
+      <li><a href="#leistungen" class="nav-link">Leistungen</a></li>
+      <li><a href="#webseiten" class="nav-link">Webseiten</a></li>
+      <li><a href="#projekte" class="nav-link">Projekte</a></li>
+      <li><a href="#ablauf" class="nav-link">Ablauf</a></li>
+      <li><a href="#preise" class="nav-link">Preise</a></li>
+      <li><a href="#kontakt" class="nav-link">Kontakt</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <a href="#kontakt" class="btn btn-primary btn-sm nav-link">Projekt anfragen</a>
+      <button class="burger" id="burger" aria-label="Menü öffnen" aria-expanded="false"><span></span></button>
+    </div>
+  </nav>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <img src="logo.png" alt="LLA Agency Logo" class="mobile-logo">
+  <a href="#top" class="nav-link">Start</a>
+  <a href="#leistungen" class="nav-link">Leistungen</a>
+  <a href="#webseiten" class="nav-link">Webseiten</a>
+  <a href="#projekte" class="nav-link">Projekte</a>
+  <a href="#ablauf" class="nav-link">Ablauf</a>
+  <a href="#preise" class="nav-link">Preise</a>
+  <a href="#kontakt" class="nav-link">Kontakt</a>
+  <a href="#kontakt" class="btn btn-primary nav-link">Projekt anfragen</a>
+</div>
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+<section class="hero" id="top">
+  <img src="img/hero-background.jpg" alt="" aria-hidden="true" class="hero-bg-img">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-grain" aria-hidden="true"></div>
+  <div class="hero-frame-line top" aria-hidden="true"></div>
+  <div class="hero-frame-line bottom" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <div class="hero-badges reveal" style="transition-delay:.05s">
+      <span class="hero-badge"><span class="dot"></span>Premium Produktvideos</span>
+      <span class="hero-badge"><span class="dot"></span>Produktbilder</span>
+      <span class="hero-badge"><span class="dot"></span>Premium Webseiten</span>
+      <span class="hero-badge"><span class="dot"></span>Listing-Optimierung</span>
+      <span class="hero-badge"><span class="dot"></span>Social-Media-Content</span>
+      <span class="hero-badge"><span class="dot"></span>Branding &amp; Creative Design</span>
+    </div>
+
+    <h1 class="reveal" style="transition-delay:.15s">Premium Content.<br>Stärkere Marken.<br><em>Mehr Wirkung.</em></h1>
+
+    <p class="hero-sub reveal" style="transition-delay:.28s">LLA Agency entwickelt hochwertige Produktvideos, Produktbilder, moderne Webseiten und optimierte E-Commerce-Listings für Unternehmen, Marken und Onlineshops, die professionell auftreten und nachhaltig wachsen möchten.</p>
+
+    <div class="hero-actions reveal" style="transition-delay:.38s">
+      <a href="#kontakt" class="btn btn-primary nav-link">Projekt anfragen</a>
+      <a href="#projekte" class="btn btn-ghost nav-link">Projekte ansehen</a>
+    </div>
+
+    <!-- SHOWREEL: Platzhalter — später mit eigenem Video ersetzen.
+         BILD: showreel-poster.jpg (Format 16:8, quer) — siehe "bildprompts-lla-agency.md".
+         Ersetze den Inhalt von .showreel-frame z. B. durch:
+         <video controls poster="showreel-poster.jpg" style="width:100%;height:100%;object-fit:cover;">
+           <source src="dein-showreel.mp4" type="video/mp4">
+         </video>
+         oder mit einem eingebetteten YouTube-/Vimeo-iframe. -->
+    <div class="showreel reveal" style="transition-delay:.5s">
+      <div class="showreel-frame viewfinder" id="showreelFrame" tabindex="0" role="button" aria-label="Showreel abspielen (Konzeptvorschau)">
+        <img src="img/showreel-poster.jpg" alt="LLA Agency Showreel – Studioaufnahme einer Produktion" class="showreel-img">
+        <span class="showreel-scrim" aria-hidden="true"></span>
+        <div class="showreel-play">
+          <div class="play-circle">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 5v14l12-7L8 5z" fill="var(--text-0)"/></svg>
+          </div>
+          <span class="showreel-note">Video folgt in Kürze</span>
+        </div>
+        <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     VERTRAUENSBEREICH
+========================================================= -->
+<section class="trust reveal">
+  <div class="wrap">
+    <div class="trust-headline">Content, der Marken hochwertiger wirken lässt.</div>
+    <div class="trust-list">
+      <div class="trust-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/></svg>Individuelle Konzepte</div>
+      <div class="trust-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/></svg>Schnelle Umsetzung</div>
+      <div class="trust-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/></svg>Moderne KI-Workflows</div>
+      <div class="trust-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/></svg>Optimiert für Social Media &amp; E-Commerce</div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     LEISTUNGEN
+========================================================= -->
+<section class="section" id="leistungen">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Leistungen</span>
+      <h2>Alles, was deine Marke stärker macht.</h2>
+    </div>
+
+    <div class="service-grid reveal">
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M16 10l6-3v10l-6-3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Premium Produktvideos</h3>
+        <p>Cinematische Produktvideos für Instagram, TikTok, Webseiten, Werbeanzeigen und Onlineshops.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="9" cy="10" r="1.6" stroke="currentColor" stroke-width="1.5"/><path d="M4 17l5-5 4 4 3-3 4 4" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Produktbilder</h3>
+        <p>Hochwertige Produktbilder, kreative Szenen, Freisteller und visuelle Inhalte für Marken und Shops.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 19V9M11 19V4M18 19v-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Listing-Optimierung</h3>
+        <p>Verbesserung von Amazon- und Onlineshop-Listings durch stärkere Bilder, klare Strukturen und verkaufsorientierte Inhalte.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="4.5" width="18" height="15" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M3 9h18" stroke="currentColor" stroke-width="1.5"/><circle cx="6.6" cy="6.75" r=".7" fill="currentColor"/><circle cx="9.2" cy="6.75" r=".7" fill="currentColor"/></svg>
+        </div>
+        <h3>Premium Webseiten</h3>
+        <p>Individuelle, moderne und responsive Webseiten mit hochwertigem Design, schnellen Ladezeiten und klarer Markenwirkung.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="6" cy="12" r="2.5" stroke="currentColor" stroke-width="1.5"/><circle cx="18" cy="6" r="2.5" stroke="currentColor" stroke-width="1.5"/><circle cx="18" cy="18" r="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M8.2 10.8L15.8 7.2M8.2 13.2l7.6 3.6" stroke="currentColor" stroke-width="1.5"/></svg>
+        </div>
+        <h3>Social-Media-Content</h3>
+        <p>Moderne Kurzvideos und Produktinhalte, die Marken professioneller und hochwertiger wirken lassen.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="9.5" cy="12" r="6" stroke="currentColor" stroke-width="1.5"/><circle cx="15.5" cy="12" r="6" stroke="currentColor" stroke-width="1.5"/></svg>
+        </div>
+        <h3>Branding &amp; Creative Design</h3>
+        <p>Visuelle Markenidentität, Design-Systeme und kreative Konzepte für einen einheitlichen, hochwertigen Markenauftritt.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     PREMIUM WEBSEITEN
+========================================================= -->
+<section class="section" id="webseiten">
+  <div class="wrap">
+    <div class="webs-grid">
+      <div class="webs-text reveal">
+        <span class="eyebrow">Digitaler Markenauftritt</span>
+        <h2>Premium Webseiten für deine Marke.</h2>
+        <p>Individuelle, moderne und responsive Webseiten mit hochwertigem Design, schnellen Ladezeiten und einer klaren Markenwirkung. Ideal für Unternehmen, E-Commerce, Start-ups und Personal Brands.</p>
+
+        <div class="feature-list">
+          <div class="feature-item">
+            <span class="f-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            Individuelles Design
+          </div>
+          <div class="feature-item">
+            <span class="f-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            Mobile Optimierung
+          </div>
+          <div class="feature-item">
+            <span class="f-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            Schnelle Ladezeiten
+          </div>
+          <div class="feature-item">
+            <span class="f-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            SEO-Basis
+          </div>
+          <div class="feature-item">
+            <span class="f-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            Kontaktformulare
+          </div>
+          <div class="feature-item">
+            <span class="f-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            Moderne Animationen
+          </div>
+          <div class="feature-item" style="grid-column:1/-1;">
+            <span class="f-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            Wartungsfreundlicher Aufbau
+          </div>
+        </div>
+
+        <a href="#kontakt" class="btn btn-primary nav-link" style="margin-top:34px;">Webseiten-Projekt anfragen</a>
+      </div>
+
+      <div class="browser-mock viewfinder reveal">
+        <div class="browser-body">
+          <img src="img/webseiten-mockup.jpg" alt="Beispiel einer Premium-Webseite von LLA Agency (Konzeptprojekt)" loading="lazy">
+        </div>
+        <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     VORHER / NACHHER
+========================================================= -->
+<section class="section" id="vorher-nachher">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Der Unterschied</span>
+      <h2>Aus einfachem Content wird ein Premium-Auftritt.</h2>
+    </div>
+
+    <div class="ba-grid reveal">
+      <div class="ba-card">
+        <div class="ba-visual before">
+          <img src="img/vorher-beispiel.jpg" alt="Vorher: einfache Produktfotografie mit Smartphone-Kamera" loading="lazy">
+          <span class="ba-tag">Vorher</span>
+        </div>
+        <div class="ba-body">
+          <h4>Vorher</h4>
+          <ul>
+            <li>Einfache Produktbilder</li>
+            <li>Schwaches Listing</li>
+            <li>Kein einheitliches Design</li>
+            <li>Wenig Markenwirkung</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ba-card">
+        <div class="ba-visual after">
+          <img src="img/nachher-beispiel.jpg" alt="Nachher: professionelle Studio-Produktfotografie von LLA Agency" loading="lazy">
+          <span class="ba-tag">Nachher</span>
+        </div>
+        <div class="ba-body after">
+          <h4>Nachher</h4>
+          <ul>
+            <li>Hochwertige Produktvideos</li>
+            <li>Professionelle Produktbilder</li>
+            <li>Klares Markendesign</li>
+            <li>Stärkerer Auftritt</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     PROJEKTE / PORTFOLIO
+========================================================= -->
+<section class="section" id="projekte">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Portfolio</span>
+      <h2>Ausgewählte Projekte</h2>
+    </div>
+
+    <!-- Konzeptprojekte: KI-generierte Demo-Bilder (siehe "bildprompts-lla-agency.md" für
+         die verwendeten Prompts). Sobald echte Kundenprojekte vorliegen, hier einfach die
+         Bilddateien in img/ austauschen und das "Konzeptprojekt"-Badge entfernen. -->
+    <div class="portfolio-grid reveal">
+
+      <!-- BILD: portfolio-01-webseite.jpg (Format 21:8, quer) -->
+      <div class="p-card wide viewfinder" tabindex="0" data-title="Corporate Website Relaunch" data-cat="Premium Webseiten" data-desc="Individuelle, responsive Webseite mit modernem Design, klarer Markenführung, schnellen Ladezeiten und integriertem Kontaktformular.">
+        <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
+        <div class="p-visual" style="--tint1:#101a1c;--tint2:#0a0c0e;">
+          <div class="p-visual-inner"><img src="img/portfolio-01-webseite.jpg" alt="Corporate Website Relaunch – Konzeptprojekt von LLA Agency" loading="lazy"></div>
+          <div class="p-meta"><span class="cat">Premium Webseiten</span><h4>Corporate Website Relaunch</h4></div>
+        </div>
+        <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
+      </div>
+
+      <!-- BILD: portfolio-02-sneaker.jpg (Format 4:5, hochkant) -->
+      <div class="p-card viewfinder" tabindex="0" data-title="Premium Sneaker Ad" data-cat="Produktvideo" data-desc="Dynamisches Werbevideo für einen Sneaker-Release mit starkem visuellem Rhythmus und schwebender Produktinszenierung.">
+        <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
+        <div class="p-visual" style="--tint1:#15181c;--tint2:#0b0b0d;">
+          <div class="p-visual-inner"><img src="img/portfolio-02-sneaker.jpg" alt="Premium Sneaker Ad – Konzeptprojekt von LLA Agency" loading="lazy"></div>
+          <div class="p-meta"><span class="cat">Produktvideo</span><h4>Premium Sneaker Ad</h4></div>
+        </div>
+        <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
+      </div>
+
+      <!-- BILD: portfolio-03-protein-drink.jpg (Format 4:5, hochkant) -->
+      <div class="p-card viewfinder" tabindex="0" data-title="Protein Drink Splash" data-cat="Produktvideo" data-desc="Cinematisches Produktvideo für ein Getränkeprodukt mit dynamischem Splash-Moment – inszeniert für Social Media und Werbeanzeigen.">
+        <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
+        <div class="p-visual" style="--tint1:#1c1712;--tint2:#0b0b0d;">
+          <div class="p-visual-inner"><img src="img/portfolio-03-protein-drink.jpg" alt="Protein Drink Splash – Konzeptprojekt von LLA Agency" loading="lazy"></div>
+          <div class="p-meta"><span class="cat">Produktvideo</span><h4>Protein Drink Splash</h4></div>
+        </div>
+        <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
+      </div>
+
+      <!-- BILD: portfolio-04-kopfhoerer.jpg (Format 4:5, hochkant) -->
+      <div class="p-card viewfinder" tabindex="0" data-title="Kabellose Kopfhörer Listing" data-cat="Listing-Optimierung" data-desc="Vollständige Überarbeitung eines Amazon-Listings für kabellose Kopfhörer mit neuen Produktbildern und klarer Struktur.">
+        <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
+        <div class="p-visual" style="--tint1:#1a1a1a;--tint2:#0b0b0d;">
+          <div class="p-visual-inner"><img src="img/portfolio-04-kopfhoerer.jpg" alt="Kabellose Kopfhörer Listing – Konzeptprojekt von LLA Agency" loading="lazy"></div>
+          <div class="p-meta"><span class="cat">Listing-Optimierung</span><h4>Kabellose Kopfhörer Listing</h4></div>
+        </div>
+        <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
+      </div>
+
+      <!-- BILD: portfolio-05-parfum.jpg (Format 4:5, hochkant) -->
+      <div class="p-card viewfinder" tabindex="0" data-title="Luxury Parfum Visual" data-cat="Produktbilder" data-desc="Elegante Produktbildserie für ein Parfum mit dramatischer Lichtstimmung und feinen Reflexionen.">
+        <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
+        <div class="p-visual" style="--tint1:#1c1519;--tint2:#0b0b0d;">
+          <div class="p-visual-inner"><img src="img/portfolio-05-parfum.jpg" alt="Luxury Parfum Visual – Konzeptprojekt von LLA Agency" loading="lazy"></div>
+          <div class="p-meta"><span class="cat">Produktbilder</span><h4>Luxury Parfum Visual</h4></div>
+        </div>
+        <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
+      </div>
+
+      <!-- BILD: portfolio-06-smartwatch.jpg (Format 4:5, hochkant) -->
+      <div class="p-card viewfinder" tabindex="0" data-title="Smartwatch Detail Shots" data-cat="Produktbilder" data-desc="Reduzierte, technisch anmutende Makro- und Detailaufnahmen für eine Smartwatch.">
+        <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
+        <div class="p-visual" style="--tint1:#14161c;--tint2:#0b0b0d;">
+          <div class="p-visual-inner"><img src="img/portfolio-06-smartwatch.jpg" alt="Smartwatch Detail Shots – Konzeptprojekt von LLA Agency" loading="lazy"></div>
+          <div class="p-meta"><span class="cat">Produktbilder</span><h4>Smartwatch Detail Shots</h4></div>
+        </div>
+        <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
+      </div>
+
+      <!-- BILD: portfolio-07-skincare.jpg (Format 4:5, hochkant) -->
+      <div class="p-card viewfinder" tabindex="0" data-title="Skincare Studio Campaign" data-cat="Produktbilder" data-desc="Kreative Bildserie für eine Skincare-Kampagne mit weichem Studiolicht und stimmigem, hochwertigem Look.">
+        <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
+        <div class="p-visual" style="--tint1:#151a19;--tint2:#0b0b0d;">
+          <div class="p-visual-inner"><img src="img/portfolio-07-skincare.jpg" alt="Skincare Studio Campaign – Konzeptprojekt von LLA Agency" loading="lazy"></div>
+          <div class="p-meta"><span class="cat">Produktbilder</span><h4>Skincare Studio Campaign</h4></div>
+        </div>
+        <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     ABLAUF
+========================================================= -->
+<section class="section" id="ablauf">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Ablauf</span>
+      <h2>Von der Idee bis zur fertigen Datei.</h2>
+    </div>
+
+    <div class="process-grid reveal">
+      <div class="p-step">
+        <div class="p-num">01</div>
+        <h4>Anfrage</h4>
+        <p>Der Kunde beschreibt sein Produkt und das gewünschte Ergebnis.</p>
+      </div>
+      <div class="p-step">
+        <div class="p-num">02</div>
+        <h4>Konzept</h4>
+        <p>LLA Agency erstellt die visuelle Idee und den passenden Stil.</p>
+      </div>
+      <div class="p-step">
+        <div class="p-num">03</div>
+        <h4>Produktion</h4>
+        <p>Produktvideo, Produktbilder, Webseite oder Listing-Inhalte werden erstellt.</p>
+      </div>
+      <div class="p-step">
+        <div class="p-num">04</div>
+        <h4>Lieferung</h4>
+        <p>Der Kunde erhält die fertigen Inhalte zur direkten Nutzung.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     PREISE
+========================================================= -->
+<section class="section" id="preise">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Preise</span>
+      <h2>Transparente Pakete für jeden Bedarf.</h2>
+    </div>
+
+    <div class="price-grid reveal">
+      <div class="price-card">
+        <h3>Social Package</h3>
+        <div class="price-from">Einstiegspaket</div>
+        <div class="price-amount">Ab 199&nbsp;€</div>
+        <ul>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Kurzes Produktvideo</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Optimiert für Social Media</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Full-HD-Ausgabe</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Eine Korrekturrunde</li>
+        </ul>
+        <a href="#kontakt" class="btn btn-ghost nav-link" style="width:100%;">Projekt anfragen</a>
+      </div>
+
+      <div class="price-card featured">
+        <span class="price-tag">Beliebt</span>
+        <h3>Premium Package</h3>
+        <div class="price-from">Für den starken Auftritt</div>
+        <div class="price-amount">Ab 299&nbsp;€</div>
+        <ul>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Hochwertiges Produktvideo</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Individuelle Szenen</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Premium-Look</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Zwei Korrekturrunden</li>
+        </ul>
+        <a href="#kontakt" class="btn btn-primary nav-link" style="width:100%;">Projekt anfragen</a>
+      </div>
+
+      <div class="price-card">
+        <h3>Brand Bundle</h3>
+        <div class="price-from">Für ganze Kampagnen</div>
+        <div class="price-amount">Ab 549&nbsp;€</div>
+        <ul>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Drei Produktvideos</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Einheitlicher Markenstil</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Mehrere Formate</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Ideal für Kampagnen</li>
+        </ul>
+        <a href="#kontakt" class="btn btn-ghost nav-link" style="width:100%;">Projekt anfragen</a>
+      </div>
+
+      <div class="price-card">
+        <h3>Webseiten Package</h3>
+        <div class="price-from">Für den digitalen Auftritt</div>
+        <div class="price-amount">Individuell</div>
+        <ul>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Individuelles, responsives Design</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Schnelle Ladezeiten &amp; SEO-Basis</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Kontaktformular integriert</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Wartungsfreundlicher Aufbau</li>
+        </ul>
+        <a href="#kontakt" class="btn btn-ghost nav-link" style="width:100%;">Projekt anfragen</a>
+      </div>
+    </div>
+
+    <p class="price-note reveal">Alle Projekte werden individuell kalkuliert. Der genaue Preis richtet sich nach Umfang, Produkt und gewünschter Umsetzung.</p>
+  </div>
+</section>
+
+<!-- =========================================================
+     ÜBER LLA AGENCY
+========================================================= -->
+<section class="section" id="ueber">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-visual reveal">
+        <img src="img/about-studio.jpg" alt="LLA Agency Kreativ-Studio bei einer Produktion" loading="lazy">
+      </div>
+      <div class="about-text reveal">
+        <span class="eyebrow">Über LLA Agency</span>
+        <h2 style="margin-bottom:22px;">Kreativer Content für moderne Marken.</h2>
+        <p>LLA Agency unterstützt Marken, Unternehmen und Onlineshops dabei, ihre Produkte und ihren digitalen Auftritt hochwertiger zu präsentieren. Der Fokus liegt auf modernen Produktvideos, starken Produktbildern, verkaufsorientierten Listings, Premium-Webseiten und stimmigem Branding.</p>
+        <p>Durch moderne Kreativ-Tools, KI-gestützte Workflows und ein klares Verständnis für E-Commerce entstehen Inhalte und digitale Auftritte, die professionell wirken und Aufmerksamkeit erzeugen – als verlässlicher Partner für den gesamten Markenauftritt.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     KONTAKT
+========================================================= -->
+<section class="section" id="kontakt">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div class="reveal">
+        <span class="eyebrow">Kontakt</span>
+        <h2>Lass uns deine Marke hochwertig präsentieren.</h2>
+        <p style="margin-top:20px; font-size:16px;">Du hast ein Projekt oder eine Idee? Schreib mir direkt über Instagram oder sende mir eine E-Mail. Ich melde mich schnellstmöglich bei dir.</p>
+
+        <div class="contact-buttons">
+          <!-- WICHTIG: Instagram-Link unten eintragen -->
+          <a class="contact-btn" href="INSTAGRAM-LINK-HIER-EINFÜGEN" target="_blank" rel="noopener">
+            <span class="icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor"/></svg></span>
+            <span><span class="label-l">Instagram</span><span class="label-m">Auf Instagram schreiben</span></span>
+          </a>
+          <!-- WICHTIG: E-Mail-Adresse unten im mailto-Link eintragen -->
+          <a class="contact-btn" href="mailto:E-MAIL-ADRESSE-HIER-EINFÜGEN">
+            <span class="icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M4 6.5l8 6 8-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+            <span><span class="label-l">E-Mail</span><span class="label-m">E-Mail senden</span></span>
+          </a>
+        </div>
+      </div>
+
+      <div class="form-card reveal">
+        <!-- Kontaktformular: baut beim Absenden automatisch eine mailto-Nachricht auf.
+             WICHTIG: Trage deine E-Mail-Adresse unten im JavaScript bei CONTACT_EMAIL ein. -->
+        <form id="contactForm" novalidate>
+          <div class="form-row">
+            <div class="field">
+              <label for="c-name">Name</label>
+              <input type="text" id="c-name" name="name" required autocomplete="name">
+            </div>
+            <div class="field">
+              <label for="c-company">Unternehmen</label>
+              <input type="text" id="c-company" name="company" autocomplete="organization">
+            </div>
+          </div>
+          <div class="field">
+            <label for="c-email">E-Mail</label>
+            <input type="email" id="c-email" name="email" required autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="c-service">Gewünschte Leistung</label>
+            <select id="c-service" name="service" required>
+              <option value="" disabled selected>Bitte wählen</option>
+              <option value="Produktvideo">Produktvideo</option>
+              <option value="Produktbilder">Produktbilder</option>
+              <option value="Listing-Optimierung">Listing-Optimierung</option>
+              <option value="Premium Webseiten">Premium Webseiten</option>
+              <option value="Social-Media-Content">Social-Media-Content</option>
+              <option value="Branding & Creative Design">Branding &amp; Creative Design</option>
+              <option value="Komplettpaket">Komplettpaket</option>
+              <option value="Sonstiges">Sonstiges</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="c-message">Nachricht</label>
+            <textarea id="c-message" name="message" required placeholder="Erzähl mir kurz von deinem Projekt und deiner Idee ..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width:100%;">Anfrage per E-Mail senden</button>
+
+          <p class="form-note" id="formNote">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M12 8v5M12 16h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Beim Absenden öffnet sich deine E-Mail-Anwendung mit den ausgefüllten Angaben.
+          </p>
+          <div class="confirm-box" id="confirmBox">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Deine E-Mail-Anwendung wird geöffnet.
+          </div>
+          <p class="form-alt">Alternativ direkt <a href="INSTAGRAM-LINK-HIER-EINFÜGEN" target="_blank" rel="noopener">über Instagram schreiben</a>.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#top" class="logo nav-link">
+          <img src="logo.png" alt="LLA Agency Logo" class="logo-img">
+          <span class="logo-divider"></span>
+          <span class="logo-word">Agency</span>
+        </a>
+        <p>Premium Produktvideos, Produktbilder, Webseiten und Branding.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Navigation</h5>
+        <ul>
+          <li><a href="#top" class="nav-link">Start</a></li>
+          <li><a href="#leistungen" class="nav-link">Leistungen</a></li>
+          <li><a href="#webseiten" class="nav-link">Webseiten</a></li>
+          <li><a href="#projekte" class="nav-link">Projekte</a></li>
+          <li><a href="#kontakt" class="nav-link">Kontakt</a></li>
+          <li><a href="#" data-modal="impressum">Impressum</a></li>
+          <li><a href="#" data-modal="datenschutz">Datenschutz</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Kontakt</h5>
+        <ul>
+          <!-- WICHTIG: auch hier Instagram-Link und E-Mail eintragen -->
+          <li><a href="INSTAGRAM-LINK-HIER-EINFÜGEN" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="mailto:E-MAIL-ADRESSE-HIER-EINFÜGEN">E-Mail</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 LLA Agency. Alle Rechte vorbehalten.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- =========================================================
+     MODALS: Portfolio-Detail, Impressum, Datenschutz
+========================================================= -->
+<div class="modal-overlay" id="portfolioModal">
+  <div class="modal-box">
+    <button class="modal-close" id="closePortfolioModal" aria-label="Schließen">✕</button>
+    <div class="modal-visual"></div>
+    <span class="cat" id="modalCat"></span>
+    <h3 id="modalTitle"></h3>
+    <p class="desc" id="modalDesc"></p>
+    <span class="modal-concept-badge"><span class="dot"></span>Konzeptprojekt — Demo-Arbeit von LLA Agency</span>
+  </div>
+</div>
+
+<div class="modal-overlay" id="impressumModal">
+  <div class="modal-box">
+    <button class="modal-close" data-close-modal aria-label="Schließen">✕</button>
+    <h3>Impressum</h3>
+    <p class="desc">
+      <!-- TODO: Hier die vollständigen, rechtlich erforderlichen Angaben ergänzen
+           (Name, Anschrift, Kontakt, ggf. USt-ID). -->
+      Die rechtlich erforderlichen Angaben zu diesem Impressum werden hier noch ergänzt.
+    </p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="datenschutzModal">
+  <div class="modal-box">
+    <button class="modal-close" data-close-modal aria-label="Schließen">✕</button>
+    <h3>Datenschutz</h3>
+    <p class="desc">
+      <!-- TODO: Hier die vollständige Datenschutzerklärung ergänzen. -->
+      Die vollständige Datenschutzerklärung wird hier noch ergänzt.
+    </p>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============ WICHTIGE EINSTELLUNGEN ============
+     Trage hier deine E-Mail-Adresse ein — sie wird für
+     das Kontaktformular (mailto) verwendet. */
+  var CONTACT_EMAIL = "E-MAIL-ADRESSE-HIER-EINFÜGEN";
+  /* ================================================= */
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- Sticky Header ---------- */
+  var header = document.getElementById('siteHeader');
+  function onScroll(){
+    if(window.scrollY > 40){ header.classList.add('scrolled'); }
+    else{ header.classList.remove('scrolled'); }
+  }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  onScroll();
+
+  /* ---------- Mobiles Menü ---------- */
+  var burger = document.getElementById('burger');
+  var mobileMenu = document.getElementById('mobileMenu');
+  function closeMenu(){
+    burger.classList.remove('active');
+    burger.setAttribute('aria-expanded','false');
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  burger.addEventListener('click', function(){
+    var isOpen = mobileMenu.classList.toggle('open');
+    burger.classList.toggle('active', isOpen);
+    burger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+
+  /* ---------- Sanftes Scrollen zu Ankern (auch für Buttons) ---------- */
+  document.querySelectorAll('.nav-link').forEach(function(link){
+    link.addEventListener('click', function(e){
+      var href = link.getAttribute('href');
+      if(href && href.charAt(0) === '#' && href.length > 1){
+        var target = document.querySelector(href);
+        if(target){
+          e.preventDefault();
+          closeMenu();
+          target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block:'start' });
+        }
+      } else {
+        closeMenu();
+      }
+    });
+  });
+
+  /* ---------- Scroll-Reveal-Animationen ---------- */
+  var revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('is-visible'); });
+  }
+
+  /* ---------- Viewfinder-Ecken automatisch für Showreel & Portfolio ---------- */
+  /* (Ecken sind bereits im Markup enthalten; dieses Snippet ist ein Fallback
+     falls weitere .viewfinder-Elemente ohne Ecken ergänzt werden) */
+  document.querySelectorAll('.viewfinder').forEach(function(el){
+    if(el.querySelector('.vf-corner')) return;
+    ['vf-tl','vf-tr','vf-bl','vf-br'].forEach(function(cls){
+      var span = document.createElement('span');
+      span.className = 'vf-corner ' + cls;
+      el.appendChild(span);
+    });
+  });
+
+  /* ---------- Showreel Platzhalter-Klick ---------- */
+  var showreel = document.getElementById('showreelFrame');
+  showreel.addEventListener('click', function(){
+    alert('Hier kannst du dein eigenes Showreel-Video einbinden.\nErsetze den Inhalt von .showreel-frame im HTML durch ein <video>-Tag oder einen YouTube/Vimeo-Embed.');
+  });
+  showreel.addEventListener('keypress', function(e){
+    if(e.key === 'Enter' || e.key === ' '){ showreel.click(); }
+  });
+
+  /* ---------- Portfolio-Modal ---------- */
+  var portfolioModal = document.getElementById('portfolioModal');
+  var modalTitle = document.getElementById('modalTitle');
+  var modalCat = document.getElementById('modalCat');
+  var modalDesc = document.getElementById('modalDesc');
+  var modalVisual = portfolioModal.querySelector('.modal-visual');
+
+  document.querySelectorAll('.p-card').forEach(function(card){
+    function openCard(){
+      modalTitle.textContent = card.getAttribute('data-title') || '';
+      modalCat.textContent = card.getAttribute('data-cat') || '';
+      modalDesc.textContent = card.getAttribute('data-desc') || '';
+      var img = card.querySelector('.p-visual-inner img');
+      if(img){
+        modalVisual.style.background = '';
+        modalVisual.innerHTML = '<img src="' + img.getAttribute('src') + '" alt="' + img.getAttribute('alt') + '" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">';
+      } else {
+        var tint1 = getComputedStyle(card.querySelector('.p-visual')).getPropertyValue('--tint1');
+        var tint2 = getComputedStyle(card.querySelector('.p-visual')).getPropertyValue('--tint2');
+        modalVisual.innerHTML = '';
+        modalVisual.style.background = 'linear-gradient(155deg,' + tint1 + ',' + tint2 + ' 75%)';
+      }
+      openModal(portfolioModal);
+    }
+    card.addEventListener('click', openCard);
+    card.addEventListener('keypress', function(e){
+      if(e.key === 'Enter' || e.key === ' '){ openCard(); }
+    });
+  });
+
+  /* ---------- Legal Modals (Impressum / Datenschutz) ---------- */
+  document.querySelectorAll('[data-modal]').forEach(function(trigger){
+    trigger.addEventListener('click', function(e){
+      e.preventDefault();
+      var id = trigger.getAttribute('data-modal') + 'Modal';
+      var modal = document.getElementById(id);
+      if(modal) openModal(modal);
+    });
+  });
+
+  /* ---------- Modal Helpers ---------- */
+  function openModal(modal){
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModalEl(modal){
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.querySelectorAll('.modal-overlay').forEach(function(overlay){
+    overlay.addEventListener('click', function(e){
+      if(e.target === overlay){ closeModalEl(overlay); }
+    });
+  });
+  document.querySelectorAll('[data-close-modal], #closePortfolioModal').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      closeModalEl(btn.closest('.modal-overlay'));
+    });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){
+      document.querySelectorAll('.modal-overlay.open').forEach(closeModalEl);
+      closeMenu();
+    }
+  });
+
+  /* ---------- Kontaktformular -> mailto ---------- */
+  var form = document.getElementById('contactForm');
+  var confirmBox = document.getElementById('confirmBox');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    var name = document.getElementById('c-name').value.trim();
+    var company = document.getElementById('c-company').value.trim();
+    var email = document.getElementById('c-email').value.trim();
+    var service = document.getElementById('c-service').value;
+    var message = document.getElementById('c-message').value.trim();
+
+    if(!name || !email || !service || !message){
+      alert('Bitte fülle alle Pflichtfelder aus (Name, E-Mail, gewünschte Leistung, Nachricht).');
+      return;
+    }
+
+    var subject = 'Projektanfrage über LLA Agency';
+    var bodyLines = [
+      'Name: ' + name,
+      'Unternehmen: ' + (company || '-'),
+      'E-Mail: ' + email,
+      'Gewünschte Leistung: ' + service,
+      '',
+      'Nachricht:',
+      message
+    ];
+    var body = bodyLines.join('\n');
+
+    var mailtoLink = 'mailto:' + CONTACT_EMAIL +
+      '?subject=' + encodeURIComponent(subject) +
+      '&body=' + encodeURIComponent(body);
+
+    window.location.href = mailtoLink;
+
+    confirmBox.classList.add('show');
+  });
+
+})();
+</script>
+
+</body>
+</html>
