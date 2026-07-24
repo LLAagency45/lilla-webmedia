@@ -872,9 +872,10 @@
     display:flex; align-items:center; justify-content:center;
     transition:transform .9s var(--ease-luxe);
   }
-  .p-visual-inner img{
+  .p-visual-inner img, .p-visual-inner video{
     width:100%; height:100%;
     object-fit:cover;
+    display:block;
   }
   .p-card:hover .p-visual-inner{ transform:scale(1.07); }
   .p-meta{
@@ -1613,11 +1614,11 @@
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
       </div>
 
-      <!-- BILD: portfolio-03-protein-drink.jpg (Format 4:5, hochkant) -->
+      <!-- VIDEO: portfolio-03-protein-drink.mp4 (Hochformat 9:16), Poster: portfolio-03-protein-drink.jpg -->
       <div class="p-card viewfinder" tabindex="0" data-title="Produktvideo für Proteingetränk" data-cat="Produktvideo" data-desc="Hochwertiges Produktvideo für ein Getränk mit dynamischem Spritzeffekt – inszeniert für Social Media und Werbeanzeigen.">
         <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#1c1712;--tint2:#0b0b0d;">
-          <div class="p-visual-inner"><img src="assets/portfolio-03-protein-drink.jpg" alt="Produktvideo für Proteingetränk – Konzeptprojekt von LLA Agency" loading="lazy" decoding="async" width="1122" height="1402"></div>
+          <div class="p-visual-inner"><video src="videos/portfolio-03-protein-drink.mp4" poster="assets/portfolio-03-protein-drink.jpg" muted loop playsinline preload="metadata" width="1080" height="1920" aria-label="Produktvideo für Proteingetränk – Konzeptprojekt von LLA Agency"></video></div>
           <div class="p-meta"><span class="cat">Produktvideo</span><h4>Produktvideo für Proteingetränk</h4></div>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
@@ -2065,6 +2066,18 @@
     revealEls.forEach(function(el){ el.classList.add('is-visible'); });
   }
 
+  /* ---------- Portfolio-Videos: nur abspielen, wenn sichtbar ---------- */
+  var portfolioVideos = document.querySelectorAll('.p-visual-inner video');
+  if(portfolioVideos.length && 'IntersectionObserver' in window && !reduceMotion){
+    var videoIO = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){ entry.target.play().catch(function(){}); }
+        else{ entry.target.pause(); }
+      });
+    }, { threshold: 0.4 });
+    portfolioVideos.forEach(function(v){ videoIO.observe(v); });
+  }
+
   /* ---------- Viewfinder-Ecken automatisch für Showreel & Portfolio ---------- */
   /* (Ecken sind bereits im Markup enthalten; dieses Snippet ist ein Fallback
      falls weitere .viewfinder-Elemente ohne Ecken ergänzt werden) */
@@ -2098,10 +2111,15 @@
       modalTitle.textContent = card.getAttribute('data-title') || '';
       modalCat.textContent = card.getAttribute('data-cat') || '';
       modalDesc.textContent = card.getAttribute('data-desc') || '';
-      var img = card.querySelector('.p-visual-inner img');
-      if(img){
+      var media = card.querySelector('.p-visual-inner img, .p-visual-inner video');
+      if(media && media.tagName === 'VIDEO'){
+        var cardVideo = card.querySelector('.p-visual-inner video');
+        if(cardVideo) cardVideo.pause();
         modalVisual.style.background = '';
-        modalVisual.innerHTML = '<img src="' + img.getAttribute('src') + '" alt="' + img.getAttribute('alt') + '" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">';
+        modalVisual.innerHTML = '<video src="' + media.getAttribute('src') + '" poster="' + media.getAttribute('poster') + '" controls playsinline preload="metadata" aria-label="' + media.getAttribute('aria-label') + '" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;"></video>';
+      } else if(media){
+        modalVisual.style.background = '';
+        modalVisual.innerHTML = '<img src="' + media.getAttribute('src') + '" alt="' + media.getAttribute('alt') + '" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">';
       } else {
         var tint1 = getComputedStyle(card.querySelector('.p-visual')).getPropertyValue('--tint1');
         var tint2 = getComputedStyle(card.querySelector('.p-visual')).getPropertyValue('--tint2');
@@ -2134,6 +2152,8 @@
   function closeModalEl(modal){
     modal.classList.remove('open');
     document.body.style.overflow = '';
+    var video = modal.querySelector('video');
+    if(video) video.pause();
   }
   document.querySelectorAll('.modal-overlay').forEach(function(overlay){
     overlay.addEventListener('click', function(e){

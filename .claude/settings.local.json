@@ -14,7 +14,9 @@
       "Bash(sips -s format jpeg -s formatOptions 80 assets/portfolio-05-parfum.jpg --out \"/tmp/lla-compress-test/parfum-q80.jpg\")",
       "Bash(rm -rf /tmp/lla-compress-test /tmp/lla-compressed)",
       "Bash(python3 -c ' *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(brew list *)",
+      "Bash(cd \"/Users/simon/Desktop/Simon P/Insta Post/LLA /LLA Webseite\" && mv \"videos/hf_20260724_114420_c16ee376-a6d7-452d-87ec-9ed291d8cd6c.mp4\" \"videos/portfolio-03-protein-drink.mp4\" && ls -la videos/)"
     ]
   }
 }
