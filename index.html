@@ -1389,14 +1389,14 @@
 
     <!-- SHOWREEL: videos/hero-showreel.mp4, Poster: assets/showreel-poster.jpg -->
     <div class="showreel reveal" style="transition-delay:.5s">
-      <div class="showreel-frame viewfinder" id="showreelFrame" tabindex="0" role="button" aria-label="Showreel abspielen">
-        <video id="showreelVideo" class="showreel-video" src="videos/hero-showreel.mp4" poster="assets/showreel-poster.jpg" playsinline preload="metadata" width="1920" height="1080" aria-label="LLA Agency Showreel – Studioaufnahme einer Produktion"></video>
+      <div class="showreel-frame viewfinder" id="showreelFrame">
+        <video id="showreelVideo" class="showreel-video" src="videos/hero-showreel.mp4" poster="assets/showreel-poster.jpg" muted loop playsinline preload="metadata" width="1920" height="1080" aria-hidden="true"></video>
         <span class="showreel-scrim" aria-hidden="true"></span>
         <div class="showreel-play">
           <div class="play-circle">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 5v14l12-7L8 5z" fill="var(--text-0)"/></svg>
           </div>
-          <span class="showreel-note">Showreel ansehen</span>
+          <span class="showreel-note">Showreel</span>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
       </div>
@@ -2088,23 +2088,35 @@
     });
   });
 
-  /* ---------- Showreel: Klick startet echte Wiedergabe mit Ton ---------- */
+  /* ---------- Showreel: automatische, stumme Wiedergabe wenn sichtbar ---------- */
   var showreel = document.getElementById('showreelFrame');
   var showreelVideo = document.getElementById('showreelVideo');
   var showreelStarted = false;
-  function playShowreel(){
+  function startShowreel(){
     if(showreelStarted) return;
-    showreelStarted = true;
-    showreel.classList.add('is-playing');
-    showreel.removeAttribute('role');
-    showreel.removeAttribute('tabindex');
-    showreelVideo.controls = true;
-    showreelVideo.play().catch(function(){});
+    showreelVideo.play().then(function(){
+      showreelStarted = true;
+      showreel.classList.add('is-playing');
+    }).catch(function(){});
   }
-  showreel.addEventListener('click', playShowreel);
-  showreel.addEventListener('keypress', function(e){
-    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); playShowreel(); }
-  });
+  if(!reduceMotion && 'IntersectionObserver' in window){
+    var showreelIO = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){ startShowreel(); }
+        else if(showreelStarted){ showreelVideo.pause(); }
+      });
+    }, { threshold: 0.35 });
+    showreelIO.observe(showreelVideo);
+  } else {
+    /* Bewegung reduziert gewünscht: kein Autoplay, Video bleibt manuell startbar */
+    showreel.setAttribute('tabindex', '0');
+    showreel.setAttribute('role', 'button');
+    showreel.setAttribute('aria-label', 'Showreel abspielen');
+    showreel.addEventListener('click', startShowreel);
+    showreel.addEventListener('keypress', function(e){
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); startShowreel(); }
+    });
+  }
 
   /* ---------- Portfolio-Modal ---------- */
   var portfolioModal = document.getElementById('portfolioModal');
