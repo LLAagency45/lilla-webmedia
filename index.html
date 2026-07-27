@@ -2381,25 +2381,43 @@
     }
   }
 
-  /* ---------- Webseiten-Bereich: Build-Sequenz ---------- */
+  /* ---------- Webseiten-Bereich: Build-Sequenz (Endlos-Loop) ---------- */
   var buildScene = document.getElementById('buildScene');
   if(buildScene){
     if(reduceMotion || !('IntersectionObserver' in window)){
       buildScene.classList.add('is-built');
     } else {
+      var buildActive = false;
+      var buildTimer = null;
+      function buildCycle(){
+        if(!buildActive) return;
+        buildScene.classList.remove('is-built');
+        buildScene.classList.add('is-building');
+        buildTimer = setTimeout(function(){
+          if(!buildActive) return;
+          buildScene.classList.remove('is-building');
+          buildScene.classList.add('is-styling');
+          buildTimer = setTimeout(function(){
+            if(!buildActive) return;
+            buildScene.classList.remove('is-styling');
+            buildScene.classList.add('is-built');
+            buildTimer = setTimeout(function(){
+              if(!buildActive) return;
+              buildScene.classList.remove('is-built');
+              buildTimer = setTimeout(buildCycle, 900);
+            }, 2200);
+          }, 700);
+        }, 650);
+      }
       var buildIO = new IntersectionObserver(function(entries){
         entries.forEach(function(entry){
-          if(entry.isIntersecting){
-            buildScene.classList.add('is-building');
-            setTimeout(function(){
-              buildScene.classList.remove('is-building');
-              buildScene.classList.add('is-styling');
-              setTimeout(function(){
-                buildScene.classList.remove('is-styling');
-                buildScene.classList.add('is-built');
-              }, 700);
-            }, 650);
-            buildIO.unobserve(entry.target);
+          if(entry.isIntersecting && !buildActive){
+            buildActive = true;
+            buildCycle();
+          } else if(!entry.isIntersecting && buildActive){
+            buildActive = false;
+            clearTimeout(buildTimer);
+            buildScene.classList.remove('is-building', 'is-styling', 'is-built');
           }
         });
       }, { threshold:0.4 });
