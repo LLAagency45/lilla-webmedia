@@ -1453,47 +1453,6 @@
     *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important; }
     .reveal, .reveal-stagger > *{ opacity:1; transform:none; filter:none; }
     .hero-glow{ animation:none; }
-    .cursor-dot, .cursor-ring{ display:none !important; }
-  }
-
-  /* ---------- Premium-Cursor (Viewfinder) ---------- */
-  .cursor-dot, .cursor-ring{
-    position:fixed; top:0; left:0;
-    pointer-events:none;
-    z-index:2500;
-    opacity:0;
-    will-change:transform;
-  }
-  .cursor-dot{
-    width:6px; height:6px; margin:-3px 0 0 -3px;
-    background:var(--accent-bright);
-    border-radius:50%;
-    transition:opacity .3s var(--ease-luxe), width .3s var(--ease-luxe), height .3s var(--ease-luxe), margin .3s var(--ease-luxe);
-  }
-  .cursor-ring{
-    width:38px; height:38px; margin:-19px 0 0 -19px;
-    transition:opacity .3s var(--ease-luxe), width .4s var(--ease-luxe), height .4s var(--ease-luxe), margin .4s var(--ease-luxe);
-  }
-  .cr-corner{
-    position:absolute; width:10px; height:10px;
-    border:1.5px solid var(--accent);
-    opacity:.9;
-    transition:width .4s var(--ease-luxe), height .4s var(--ease-luxe), border-color .4s var(--ease-luxe);
-  }
-  .cr-corner.cr-tl{ top:0; left:0; border-right:none; border-bottom:none; }
-  .cr-corner.cr-tr{ top:0; right:0; border-left:none; border-bottom:none; }
-  .cr-corner.cr-bl{ bottom:0; left:0; border-right:none; border-top:none; }
-  .cr-corner.cr-br{ bottom:0; right:0; border-left:none; border-top:none; }
-  .cursor-dot.cr-visible, .cursor-ring.cr-visible{ opacity:1; }
-  body.cursor-active, body.cursor-active a, body.cursor-active button,
-  body.cursor-active .p-card, body.cursor-active .service-card, body.cursor-active .price-card,
-  body.cursor-active input, body.cursor-active textarea, body.cursor-active select,
-  body.cursor-active .ba-handle, body.cursor-active label{ cursor:none; }
-  .cursor-ring.cr-hover{ width:64px; height:64px; margin:-32px 0 0 -32px; }
-  .cursor-ring.cr-hover .cr-corner{ width:14px; height:14px; border-color:var(--accent-bright); }
-  .cursor-ring.cr-down{ width:30px; height:30px; margin:-15px 0 0 -15px; }
-  @media (hover:none), (pointer:coarse){
-    .cursor-dot, .cursor-ring{ display:none !important; }
   }
 </style>
 <!-- Strukturierte Daten für Suchmaschinen (SEO-Grundlage). -->
@@ -2211,11 +2170,6 @@
   </div>
 </div>
 
-<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
-<div class="cursor-ring" id="cursorRing" aria-hidden="true">
-  <span class="cr-corner cr-tl"></span><span class="cr-corner cr-tr"></span><span class="cr-corner cr-bl"></span><span class="cr-corner cr-br"></span>
-</div>
-
 <script>
 (function(){
   "use strict";
@@ -2320,60 +2274,6 @@
         btn.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)';
       });
       btn.addEventListener('mouseleave', function(){ btn.style.transform = ''; });
-    });
-  }
-
-  /* ---------- Premium-Cursor (Viewfinder) ---------- */
-  var cursorDot = document.getElementById('cursorDot');
-  var cursorRing = document.getElementById('cursorRing');
-  if(cursorDot && cursorRing && !reduceMotion && window.matchMedia('(hover:hover) and (pointer:fine)').matches){
-    document.body.classList.add('cursor-active');
-    var curX = window.innerWidth / 2, curY = window.innerHeight / 2;
-    var ringX = curX, ringY = curY;
-    function moveCursorDot(){
-      cursorDot.style.transform = 'translate3d(' + curX.toFixed(1) + 'px,' + curY.toFixed(1) + 'px,0)';
-    }
-    function ringLoop(){
-      ringX += (curX - ringX) * 0.18;
-      ringY += (curY - ringY) * 0.18;
-      cursorRing.style.transform = 'translate3d(' + ringX.toFixed(1) + 'px,' + ringY.toFixed(1) + 'px,0)';
-      requestAnimationFrame(ringLoop);
-    }
-    requestAnimationFrame(ringLoop);
-    document.addEventListener('mousemove', function(e){
-      curX = e.clientX; curY = e.clientY;
-      moveCursorDot();
-      cursorDot.classList.add('cr-visible');
-      cursorRing.classList.add('cr-visible');
-    });
-    document.addEventListener('mouseleave', function(){
-      cursorDot.classList.remove('cr-visible');
-      cursorRing.classList.remove('cr-visible');
-    });
-    document.addEventListener('mousedown', function(){ cursorRing.classList.add('cr-down'); });
-    document.addEventListener('mouseup', function(){ cursorRing.classList.remove('cr-down'); });
-    var cursorHoverSelector = 'a, button, .p-card, .service-card, .price-card, .btn, .ba-handle, [role="slider"], .burger';
-    var cursorTextSelector = 'input, textarea, select';
-    document.addEventListener('mouseover', function(e){
-      var target = e.target;
-      if(!target.closest) return;
-      if(target.closest(cursorTextSelector)){
-        cursorDot.classList.remove('cr-visible');
-        cursorRing.classList.remove('cr-visible');
-      } else if(target.closest(cursorHoverSelector)){
-        cursorRing.classList.add('cr-hover');
-      }
-    });
-    document.addEventListener('mouseout', function(e){
-      var target = e.target;
-      if(!target.closest) return;
-      if(target.closest(cursorTextSelector)){
-        cursorDot.classList.add('cr-visible');
-        cursorRing.classList.add('cr-visible');
-      }
-      if(target.closest(cursorHoverSelector)){
-        cursorRing.classList.remove('cr-hover');
-      }
     });
   }
 
