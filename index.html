@@ -817,6 +817,11 @@
   .browser-body{
     aspect-ratio:3/2;
     position:relative;
+    background:#e9ebec;
+    transition:background 1s var(--ease-luxe);
+  }
+  .build-scene.is-styling .browser-body,
+  .build-scene.is-built .browser-body{
     background:linear-gradient(160deg,#12161a,#0a0c0e 78%);
   }
   .browser-body::before{
@@ -825,7 +830,11 @@
     background:radial-gradient(360px 260px at 25% 15%, rgba(47,180,196,0.16), transparent 70%);
     z-index:1;
     pointer-events:none;
+    opacity:0;
+    transition:opacity 1s var(--ease-luxe);
   }
+  .build-scene.is-styling .browser-body::before,
+  .build-scene.is-built .browser-body::before{ opacity:1; }
   .browser-body img{
     position:absolute; inset:0;
     width:100%; height:100%;
@@ -838,25 +847,45 @@
   .build-wire{ position:absolute; inset:0; z-index:2; }
   .wire-block{
     position:absolute;
-    background:linear-gradient(120deg, rgba(255,255,255,0.10), rgba(47,180,196,0.16));
-    border:1px solid rgba(255,255,255,0.14);
-    border-radius:6px;
+    background:rgba(20,22,26,0.14);
+    border:1px solid rgba(20,22,26,0.16);
+    border-radius:3px;
     opacity:0;
     transform:scale(0.92);
-    transition:opacity .45s var(--ease-luxe), transform .45s var(--ease-luxe);
+    transition:opacity .45s var(--ease-luxe), transform .45s var(--ease-luxe), background .7s var(--ease-luxe), border-color .7s var(--ease-luxe), border-radius .7s var(--ease-luxe), box-shadow .7s var(--ease-luxe);
   }
-  .build-scene.is-building .wire-block{ opacity:1; transform:scale(1); }
+  .build-scene.is-building .wire-block,
+  .build-scene.is-styling .wire-block{ opacity:1; transform:scale(1); }
   .build-scene.is-building .wire-header{ transition-delay:0ms; }
   .build-scene.is-building .wire-hero{ transition-delay:110ms; }
   .build-scene.is-building .wire-line1{ transition-delay:230ms; }
   .build-scene.is-building .wire-line2{ transition-delay:310ms; }
   .build-scene.is-building .wire-btn{ transition-delay:390ms; }
+  .build-scene.is-styling .wire-block{
+    background:linear-gradient(120deg, rgba(255,255,255,0.10), rgba(47,180,196,0.16));
+    border-color:rgba(255,255,255,0.14);
+    box-shadow:0 8px 22px -14px rgba(47,180,196,0.5);
+  }
+  .build-scene.is-styling .wire-header{ transition-delay:0ms; }
+  .build-scene.is-styling .wire-hero{ transition-delay:90ms; }
+  .build-scene.is-styling .wire-line1{ transition-delay:180ms; }
+  .build-scene.is-styling .wire-line2{ transition-delay:240ms; }
+  .build-scene.is-styling .wire-btn{ transition-delay:320ms; }
   .build-scene.is-built .wire-block{ opacity:0; transform:scale(1.04); transition-delay:0ms; }
   .wire-header{ top:9%; left:9%; right:9%; height:8%; }
-  .wire-hero{ top:21%; left:9%; right:9%; height:32%; border-radius:10px; }
+  .wire-hero{ top:21%; left:9%; right:9%; height:32%; }
+  .build-scene.is-styling .wire-hero,
+  .build-scene.is-built .wire-hero{ border-radius:10px; }
   .wire-line1{ top:58%; left:9%; width:46%; height:6%; }
   .wire-line2{ top:67%; left:9%; width:30%; height:6%; }
-  .wire-btn{ top:79%; left:9%; width:24%; height:9%; border-radius:100px; background:linear-gradient(120deg, var(--accent-bright), var(--accent)); border-color:transparent; }
+  .wire-btn{ top:79%; left:9%; width:24%; height:9%; }
+  .build-scene.is-styling .wire-btn,
+  .build-scene.is-built .wire-btn{
+    border-radius:100px;
+    background:linear-gradient(120deg, var(--accent-bright), var(--accent));
+    border-color:transparent;
+    box-shadow:0 10px 24px -10px rgba(47,180,196,0.55);
+  }
   .build-scene.is-built .browser-body{ animation:buildSettle .9s var(--ease-luxe); }
   @keyframes buildSettle{
     0%{ box-shadow:0 0 0 0 rgba(47,180,196,0); }
@@ -2364,8 +2393,12 @@
             buildScene.classList.add('is-building');
             setTimeout(function(){
               buildScene.classList.remove('is-building');
-              buildScene.classList.add('is-built');
-            }, 850);
+              buildScene.classList.add('is-styling');
+              setTimeout(function(){
+                buildScene.classList.remove('is-styling');
+                buildScene.classList.add('is-built');
+              }, 700);
+            }, 650);
             buildIO.unobserve(entry.target);
           }
         });
