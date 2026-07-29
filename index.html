@@ -766,9 +766,9 @@
   /* ---------- Premium Webseiten ---------- */
   .webs-grid{
     display:grid;
-    grid-template-columns:1.05fr 0.95fr;
-    gap:70px;
-    align-items:center;
+    grid-template-columns:1fr;
+    max-width:760px;
+    margin:0 auto;
   }
   .webs-text h2{ margin-bottom:20px; }
   .webs-text > p{ font-size:16px; margin-bottom:36px; max-width:520px; }
@@ -804,28 +804,8 @@
     display:flex; align-items:center; justify-content:center;
     flex-shrink:0;
   }
-  .browser-mock{
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    overflow:hidden;
-    background:var(--bg-1);
-    box-shadow:var(--shadow-soft);
-  }
-  .browser-body{
-    aspect-ratio:16/9;
-    position:relative;
-    background:#0a0b0d;
-  }
-  .browser-body video{
-    position:absolute; inset:0;
-    width:100%; height:100%;
-    object-fit:cover;
-    transition:transform 1.1s var(--ease-luxe);
-  }
-  .browser-mock:hover .browser-body video{ transform:scale(1.035); }
   @media (max-width:900px){
-    .webs-grid{ grid-template-columns:1fr; gap:40px; }
-    .browser-mock{ order:-1; }
+    .webs-grid{ gap:40px; }
   }
   @media (max-width:560px){
     .feature-list{ grid-template-columns:1fr; }
@@ -1584,14 +1564,6 @@
 
         <a href="#kontakt" class="btn btn-primary nav-link" style="margin-top:34px;">Webseiten-Projekt anfragen</a>
       </div>
-
-      <!-- VIDEO: webseiten-showcase.mp4 (verschiedene Webseiten-Projekte, 16:9), Poster: webseiten-showcase-poster.jpg -->
-      <div class="browser-mock viewfinder reveal" id="webseitenVideoFrame">
-        <div class="browser-body">
-          <video id="webseitenVideo" src="videos/webseiten-showcase.mp4" poster="assets/webseiten-showcase-poster.jpg" muted loop playsinline preload="metadata" width="1920" height="1080" aria-label="Zeitraffer verschiedener Webseiten-Projekte von LLA Agency"></video>
-        </div>
-        <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
-      </div>
     </div>
   </div>
 </section>
@@ -2312,18 +2284,6 @@
     } else {
       revealEls.forEach(function(el){ el.classList.add('is-visible'); });
     }
-  }
-
-  /* ---------- Webseiten-Video: nur abspielen, wenn sichtbar ---------- */
-  var webseitenVideo = document.getElementById('webseitenVideo');
-  if(webseitenVideo && 'IntersectionObserver' in window && !reduceMotion){
-    var webseitenVideoIO = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if(entry.isIntersecting){ entry.target.play().catch(function(){}); }
-        else{ entry.target.pause(); }
-      });
-    }, { threshold: 0.4 });
-    webseitenVideoIO.observe(webseitenVideo);
   }
 
   /* ---------- Vorher/Nachher: interaktiver Regler ---------- */
