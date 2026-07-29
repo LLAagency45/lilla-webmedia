@@ -563,6 +563,13 @@
     margin-top:86px;
     position:relative;
   }
+  .leistungen-reel{
+    max-width:820px;
+    margin:0 auto 64px;
+  }
+  @media (max-width:768px){
+    .leistungen-reel{ margin-bottom:44px; }
+  }
   .showreel-frame{
     position:relative;
     aspect-ratio:16/8;
@@ -1533,21 +1540,6 @@
 </section>
 
 <!-- =========================================================
-     VERTRAUENSBEREICH
-========================================================= -->
-<section class="trust reveal">
-  <div class="wrap">
-    <div class="trust-headline">Ergebnisse, die Marken hochwertiger wirken lassen.</div>
-    <div class="trust-list">
-      <div class="trust-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/></svg>Individuelle Konzepte</div>
-      <div class="trust-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/></svg>Schnelle Umsetzung</div>
-      <div class="trust-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/></svg>Moderne KI-Unterstützung</div>
-      <div class="trust-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/></svg>Optimiert für Social Media &amp; Onlineshops</div>
-    </div>
-  </div>
-</section>
-
-<!-- =========================================================
      PREMIUM WEBSEITEN
 ========================================================= -->
 <section class="section" id="webseiten">
@@ -1605,10 +1597,40 @@
 </section>
 
 <!-- =========================================================
+     VERTRAUENSBEREICH
+========================================================= -->
+<section class="trust reveal">
+  <div class="wrap">
+    <div class="trust-headline">Ergebnisse, die Marken hochwertiger wirken lassen.</div>
+    <div class="trust-list">
+      <div class="trust-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/></svg>Individuelle Konzepte</div>
+      <div class="trust-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/></svg>Schnelle Umsetzung</div>
+      <div class="trust-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/></svg>Hochwertiges Design</div>
+      <div class="trust-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/></svg>Optimiert für Social Media &amp; Onlineshops</div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
      WEITERE LEISTUNGEN
 ========================================================= -->
 <section class="section" id="leistungen">
   <div class="wrap">
+    <!-- VIDEO: hero-showreel.mp4, Poster: showreel-poster.jpg (umgezogen aus dem Hero) -->
+    <div class="leistungen-reel reveal">
+      <div class="showreel-frame viewfinder" id="leistungenShowreelFrame">
+        <video id="leistungenShowreelVideo" class="showreel-video" src="videos/hero-showreel.mp4" poster="assets/showreel-poster.jpg" muted loop playsinline preload="metadata" width="1920" height="1080" aria-hidden="true"></video>
+        <span class="showreel-scrim" aria-hidden="true"></span>
+        <div class="showreel-play">
+          <div class="play-circle">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 5v14l12-7L8 5z" fill="var(--text-0)"/></svg>
+          </div>
+          <span class="showreel-note">Showreel</span>
+        </div>
+        <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
+      </div>
+    </div>
+
     <div class="section-head reveal">
       <span class="eyebrow">Weitere Leistungen</span>
       <h2>Und das gehört bei uns auch dazu.</h2>
@@ -2378,35 +2400,38 @@
     });
   });
 
-  /* ---------- Showreel: automatische, stumme Wiedergabe wenn sichtbar ---------- */
-  var showreel = document.getElementById('showreelFrame');
-  var showreelVideo = document.getElementById('showreelVideo');
-  var showreelStarted = false;
-  function startShowreel(){
-    if(showreelStarted) return;
-    showreelVideo.play().then(function(){
-      showreelStarted = true;
-      showreel.classList.add('is-playing');
-    }).catch(function(){});
-  }
-  if(!reduceMotion && 'IntersectionObserver' in window){
-    var showreelIO = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if(entry.isIntersecting){ startShowreel(); }
-        else if(showreelStarted){ showreelVideo.pause(); }
+  /* ---------- Showreel-Videos: automatische, stumme Wiedergabe wenn sichtbar ---------- */
+  function initShowreel(frame, video){
+    if(!frame || !video) return;
+    var started = false;
+    function start(){
+      if(started) return;
+      video.play().then(function(){
+        started = true;
+        frame.classList.add('is-playing');
+      }).catch(function(){});
+    }
+    if(!reduceMotion && 'IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){ start(); }
+          else if(started){ video.pause(); }
+        });
+      }, { threshold: 0.35 });
+      io.observe(video);
+    } else {
+      /* Bewegung reduziert gewünscht: kein Autoplay, Video bleibt manuell startbar */
+      frame.setAttribute('tabindex', '0');
+      frame.setAttribute('role', 'button');
+      frame.setAttribute('aria-label', 'Video abspielen');
+      frame.addEventListener('click', start);
+      frame.addEventListener('keypress', function(e){
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); start(); }
       });
-    }, { threshold: 0.35 });
-    showreelIO.observe(showreelVideo);
-  } else {
-    /* Bewegung reduziert gewünscht: kein Autoplay, Video bleibt manuell startbar */
-    showreel.setAttribute('tabindex', '0');
-    showreel.setAttribute('role', 'button');
-    showreel.setAttribute('aria-label', 'Showreel abspielen');
-    showreel.addEventListener('click', startShowreel);
-    showreel.addEventListener('keypress', function(e){
-      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); startShowreel(); }
-    });
+    }
   }
+  initShowreel(document.getElementById('showreelFrame'), document.getElementById('showreelVideo'));
+  initShowreel(document.getElementById('leistungenShowreelFrame'), document.getElementById('leistungenShowreelVideo'));
 
   /* ---------- Portfolio-Modal ---------- */
   var portfolioModal = document.getElementById('portfolioModal');
