@@ -2364,11 +2364,8 @@
   /* ---------- Showreel-Videos: automatische, stumme Wiedergabe wenn sichtbar ---------- */
   function initShowreel(frame, video){
     if(!frame || !video) return;
-    var started = false;
     function start(){
-      if(started) return;
       video.play().then(function(){
-        started = true;
         frame.classList.add('is-playing');
       }).catch(function(){});
     }
@@ -2376,7 +2373,7 @@
       var io = new IntersectionObserver(function(entries){
         entries.forEach(function(entry){
           if(entry.isIntersecting){ start(); }
-          else if(started){ video.pause(); }
+          else{ video.pause(); }
         });
       }, { threshold: 0.35 });
       io.observe(video);
