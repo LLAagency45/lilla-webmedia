@@ -651,17 +651,6 @@
   .showreel-note{
     font-size:13px; color:var(--text-2); letter-spacing:0.02em;
   }
-  .showreel-tag{
-    position:absolute; top:18px; left:18px;
-    font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase;
-    color:var(--text-2);
-    display:flex; align-items:center; gap:8px;
-    z-index:2;
-  }
-  .showreel-tag .rec{
-    width:7px; height:7px; border-radius:50%; background:#c96b6b;
-    box-shadow:0 0 8px rgba(201,107,107,0.7);
-  }
 
   /* ---------- Viewfinder corners (signature element) ---------- */
   .viewfinder{ position:relative; }
@@ -924,19 +913,6 @@
     position:absolute; inset:0;
     background:linear-gradient(0deg, rgba(0,0,0,0.55), transparent 45%);
   }
-  .p-visual img.ph-icon{
-    position:absolute; inset:0; margin:auto;
-    width:34px; height:34px; opacity:0.35;
-  }
-  /* Platzhalter-Icon (bis echte/KI-generierte Bilder eingesetzt werden) */
-  .p-icon{
-    position:absolute; inset:0; margin:auto;
-    width:56px; height:56px;
-    color:var(--silver);
-    opacity:0.28;
-    z-index:1;
-  }
-  .p-card.wide .p-icon{ width:64px; height:64px; }
   /* "Konzeptprojekt"-Kennzeichnung: macht deutlich, dass es sich um
      Demo-/Beispielarbeiten handelt, bis echte Kundenprojekte folgen */
   .p-concept-badge{
@@ -2157,7 +2133,12 @@
       scrollProgress.style.width = pct + '%';
     }
   }
-  window.addEventListener('scroll', onScroll, { passive:true });
+  var scrollTicking = false;
+  window.addEventListener('scroll', function(){
+    if(scrollTicking) return;
+    scrollTicking = true;
+    requestAnimationFrame(function(){ onScroll(); scrollTicking = false; });
+  }, { passive:true });
   onScroll();
 
   /* ---------- Scroll-Spy Navigation ---------- */
@@ -2202,11 +2183,18 @@
   var magneticEls = document.querySelectorAll('.btn-magnetic');
   if(magneticEls.length && !reduceMotion && window.matchMedia('(hover:hover) and (pointer:fine)').matches){
     magneticEls.forEach(function(btn){
+      var btnTicking = false, lastMoveEvent = null;
       btn.addEventListener('mousemove', function(e){
-        var r = btn.getBoundingClientRect();
-        var x = (e.clientX - r.left - r.width/2) * 0.28;
-        var y = (e.clientY - r.top - r.height/2) * 0.4;
-        btn.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)';
+        lastMoveEvent = e;
+        if(btnTicking) return;
+        btnTicking = true;
+        requestAnimationFrame(function(){
+          var r = btn.getBoundingClientRect();
+          var x = (lastMoveEvent.clientX - r.left - r.width/2) * 0.28;
+          var y = (lastMoveEvent.clientY - r.top - r.height/2) * 0.4;
+          btn.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)';
+          btnTicking = false;
+        });
       });
       btn.addEventListener('mouseleave', function(){ btn.style.transform = ''; });
     });
@@ -2229,10 +2217,17 @@
       if(!heroTicking){ requestAnimationFrame(updateHeroParallax); heroTicking = true; }
     }, { passive:true });
 
+    var heroPointerTicking = false, lastHeroPointerEvent = null;
     heroEl.addEventListener('pointermove', function(e){
-      var r = heroEl.getBoundingClientRect();
-      heroEl.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
-      heroEl.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
+      lastHeroPointerEvent = e;
+      if(heroPointerTicking) return;
+      heroPointerTicking = true;
+      requestAnimationFrame(function(){
+        var r = heroEl.getBoundingClientRect();
+        heroEl.style.setProperty('--mx', ((lastHeroPointerEvent.clientX - r.left) / r.width * 100).toFixed(1) + '%');
+        heroEl.style.setProperty('--my', ((lastHeroPointerEvent.clientY - r.top) / r.height * 100).toFixed(1) + '%');
+        heroPointerTicking = false;
+      });
     }, { passive:true });
   }
 
