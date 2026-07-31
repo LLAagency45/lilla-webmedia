@@ -3,13 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LLA Agency | Produktvideos, Webseiten & Markenauftritt</title>
-<meta name="description" content="LLA Agency ist eine Kreativagentur für Produktvideos, Produktbilder, moderne Webseiten, die Optimierung von Amazon- und Onlineshop-Seiten, Social-Media-Inhalte und Markenauftritte – für Unternehmen, Marken und Onlineshops.">
+<!-- Theme so früh wie möglich setzen, damit kein falsches Design kurz aufblitzt -->
+<script>
+(function(){
+  try{
+    if(localStorage.getItem('lillaTheme') === 'light'){
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  }catch(e){}
+})();
+</script>
+<title>Lilla Web & Media | Produktvideos, Webseiten & Markenauftritt</title>
+<meta name="description" content="Lilla Web & Media ist eine Kreativagentur für Produktvideos, Produktbilder, moderne Webseiten, die Optimierung von Amazon- und Onlineshop-Seiten, Social-Media-Inhalte und Markenauftritte – für Unternehmen, Marken und Onlineshops.">
 <meta name="robots" content="index, follow">
 
 <!-- Open Graph -->
-<meta property="og:title" content="LLA Agency | Produktvideos, Webseiten & Markenauftritt">
-<meta property="og:description" content="LLA Agency entwickelt hochwertige Produktvideos, Produktbilder, moderne Webseiten und optimierte Produktseiten für Marken, Unternehmen und Onlineshops.">
+<meta property="og:title" content="Lilla Web & Media | Produktvideos, Webseiten & Markenauftritt">
+<meta property="og:description" content="Lilla Web & Media entwickelt hochwertige Produktvideos, Produktbilder, moderne Webseiten und optimierte Produktseiten für Marken, Unternehmen und Onlineshops.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="de_DE">
 <!-- TIPP: og:image zeigt aktuell auf das Hero-Bild. Sobald ein eigens gestaltetes
@@ -18,12 +28,12 @@
 <meta property="og:image:width" content="1672">
 <meta property="og:image:height" content="941">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="LLA Agency | Produktvideos, Webseiten & Markenauftritt">
-<meta name="twitter:description" content="LLA Agency entwickelt hochwertige Produktvideos, Produktbilder, moderne Webseiten und optimierte Produktseiten für Marken, Unternehmen und Onlineshops.">
+<meta name="twitter:title" content="Lilla Web & Media | Produktvideos, Webseiten & Markenauftritt">
+<meta name="twitter:description" content="Lilla Web & Media entwickelt hochwertige Produktvideos, Produktbilder, moderne Webseiten und optimierte Produktseiten für Marken, Unternehmen und Onlineshops.">
 <meta name="twitter:image" content="assets/hero-background.jpg">
 <meta name="theme-color" content="#07080a">
-<!-- Favicon: nutzt dasselbe Logo -->
-<link rel="icon" href="logo.png" type="image/png">
+<!-- Favicon -->
+<link rel="icon" href="assets/favicon-lilla.png" type="image/png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,14 +42,14 @@
 
 <style>
   /* ============================================================
-     LLA AGENCY — DESIGN TOKENS
+     LILLA WEB & MEDIA — DESIGN TOKENS
      Farbwelt: Anthrazit/Schwarz + gebürstetes Silber + Petrol-/Teal-Akzent
      Typografie: Space Grotesk (Headlines) + Inter (Fließtext)
      Signatur-Element: "Viewfinder"-Ecken (Kamera-Fokusrahmen),
      die an Kamera-Sucher erinnern – passend zur Foto-/Videowelt.
      ============================================================ */
   :root{
-    /* Farbwelt abgeleitet vom LLA-Agency-Logo:
+    /* Farbwelt abgeleitet vom Lilla-Logo:
        tiefes Schwarz/Anthrazit, gebürstetes Silber, Petrol-/Teal-Akzent */
     --bg-0: #07080a;
     --bg-1: #0c0d0f;
@@ -66,6 +76,30 @@
     --maxw: 1240px;
     --radius: 16px;
     --radius-sm: 10px;
+  }
+
+  /* ---------- Hell-Modus: gleiche Markensprache, invertierte Basis ---------- */
+  :root[data-theme="light"]{
+    --bg-0: #f7f8f9;
+    --bg-1: #ffffff;
+    --bg-2: #eef0f2;
+    --card: rgba(10,14,18,0.035);
+    --card-hover: rgba(10,14,18,0.06);
+    --border: rgba(10,14,18,0.1);
+    --border-strong: rgba(10,14,18,0.18);
+    --text-0: #12151a;
+    --text-1: #4d525a;
+    --text-2: #6b6f77; /* für WCAG-AA-Kontrast (~4.7:1) auf --bg-0 */
+    --accent: #1a8a97;
+    --accent-bright: #0f7a86;
+    --accent-deep: #0d525c;
+    --silver: #5b6067;
+    --silver-soft: rgba(70,76,84,0.1);
+    --accent-soft: rgba(26,138,151,0.08);
+    --accent-line: rgba(26,138,151,0.35);
+    --shadow-soft: 0 24px 60px -30px rgba(20,22,26,0.16);
+    --shadow-lift: 0 24px 60px -24px rgba(20,22,26,0.14), 0 0 0 1px rgba(20,22,26,0.04);
+    --shadow-glow: 0 16px 40px -18px rgba(26,138,151,0.25);
   }
 
   *,*::before,*::after{ box-sizing:border-box; }
@@ -130,25 +164,15 @@
   .intro-overlay.intro-done{ opacity:0; visibility:hidden; pointer-events:none; }
   .intro-content{ position:relative; display:flex; align-items:center; justify-content:center; }
   .intro-logo{
-    width:84px; height:84px;
-    border-radius:50%;
+    width:240px; height:auto;
     opacity:0;
-    transform:scale(0.85);
-    filter:drop-shadow(0 0 22px rgba(47,180,196,0.4));
+    transform:scale(0.9);
+    filter:drop-shadow(0 0 26px rgba(47,180,196,0.35));
     transition:opacity .8s var(--ease-luxe), transform .8s var(--ease-luxe);
   }
-  .intro-edge{
-    position:absolute; inset:-20px;
-    border-radius:50%;
-    border:1px solid var(--accent-line);
-    opacity:0;
-    transform:scale(0.7);
-    transition:opacity .8s var(--ease-luxe) .12s, transform .8s var(--ease-luxe) .12s;
-  }
   .intro-overlay.intro-reveal .intro-logo{ opacity:1; transform:scale(1); }
-  .intro-overlay.intro-reveal .intro-edge{ opacity:1; transform:scale(1.2); }
   @media (max-width:700px){
-    .intro-logo{ width:64px; height:64px; }
+    .intro-logo{ width:170px; }
   }
 
   ::-webkit-scrollbar{ width:11px; height:11px; }
@@ -261,6 +285,18 @@
     transition:padding .5s var(--ease-luxe), background .5s var(--ease-luxe), border-color .5s var(--ease-luxe), box-shadow .5s var(--ease-luxe);
     border-bottom:1px solid transparent;
   }
+  /* Header bleibt wie der Hero immer dunkel - Tokens lokal fixieren,
+     damit Nav-Text/Icons auf dem dunklen Streifen lesbar bleiben. */
+  :root[data-theme="light"] header{
+    --text-0:#f2f3f4;
+    --text-1:#a9adb3;
+    --text-2:#7d828a;
+    --border:rgba(255,255,255,0.065);
+    --border-strong:rgba(255,255,255,0.14);
+    --accent:#2fb4c4;
+    --accent-bright:#7fe3ec;
+    --accent-line:rgba(47,180,196,0.38);
+  }
   header.scrolled{
     padding:14px 0;
     background:rgba(8,8,10,0.72);
@@ -269,33 +305,23 @@
     box-shadow:0 12px 40px -20px rgba(0,0,0,0.5);
     border-bottom:1px solid var(--border);
   }
+  /* Header bleibt bewusst wie der Hero immer dunkel (konsistentes "Marken-
+     Chrome" oben), unabhängig vom gewählten Theme darunter. */
   nav.wrap{
     display:flex; align-items:center; justify-content:space-between;
   }
   .logo{
-    font-family:'Space Grotesk',sans-serif;
-    font-weight:600;
-    font-size:13px;
-    letter-spacing:0.16em;
-    text-transform:uppercase;
-    display:flex; align-items:center; gap:14px;
+    display:flex; align-items:center;
     color:var(--text-1);
   }
   .logo-img{
-    width:42px; height:42px;
-    border-radius:50%;
-    border:1px solid var(--border);
+    height:34px; width:auto;
     display:block;
     flex-shrink:0;
-    transition:filter .4s var(--ease), transform .4s var(--ease), border-color .4s var(--ease);
+    transition:filter .4s var(--ease), transform .4s var(--ease);
   }
-  a.logo:hover .logo-img{ border-color:var(--accent-line); }
   a.logo:hover .logo-img{ filter:brightness(1.12) drop-shadow(0 0 10px var(--accent-line)); transform:scale(1.04); }
-  .logo-divider{ width:1px; height:16px; background:var(--border-strong); }
-  .logo-word{ color:var(--text-0); }
-  .logo-word b{ color:var(--accent); font-weight:600; }
-  footer .logo{ font-size:12.5px; }
-  footer .logo-img{ width:34px; height:34px; }
+  footer .logo-img{ height:26px; }
   .nav-links{
     display:flex; align-items:center; gap:38px;
   }
@@ -319,6 +345,22 @@
   .nav-links a.is-active{ color:var(--text-0); }
   .nav-links a.is-active::after{ width:100%; }
   .nav-right{ display:flex; align-items:center; gap:22px; }
+  .theme-toggle{
+    display:flex; align-items:center; justify-content:center;
+    width:38px; height:38px;
+    flex-shrink:0;
+    border:1px solid var(--border);
+    border-radius:50%;
+    background:transparent;
+    color:var(--text-1);
+    cursor:pointer;
+    transition:border-color .3s var(--ease), color .3s var(--ease), transform .3s var(--ease);
+  }
+  .theme-toggle:hover{ border-color:var(--accent-line); color:var(--accent); }
+  .theme-toggle:active{ transform:scale(0.9); }
+  .theme-icon-moon{ display:none; }
+  :root[data-theme="light"] .theme-icon-sun{ display:none; }
+  :root[data-theme="light"] .theme-icon-moon{ display:block; }
   .burger{
     display:none;
     width:44px; height:44px;
@@ -356,6 +398,9 @@
     opacity:0; visibility:hidden;
     transition:opacity .45s var(--ease-luxe), visibility .45s var(--ease-luxe);
   }
+  :root[data-theme="light"] .mobile-menu{
+    background:rgba(247,248,249,0.98);
+  }
   .mobile-menu.open{ opacity:1; visibility:visible; }
   .mobile-menu > *{
     opacity:0; transform:translateY(14px);
@@ -377,7 +422,7 @@
   }
   .mobile-menu a:hover, .mobile-menu a:focus-visible, .mobile-menu a.is-active{ color:var(--accent); }
   .mobile-menu .btn{ margin-top:12px; }
-  .mobile-logo{ width:60px; height:60px; border-radius:50%; margin-bottom:8px; border:1px solid var(--border); }
+  .mobile-logo{ width:170px; height:auto; margin-bottom:8px; }
 
   /* ---------- Mobile: feste CTA-Leiste ---------- */
   .mobile-cta-bar{
@@ -391,6 +436,9 @@
     border-top:1px solid var(--border);
     transform:translateY(0);
     transition:transform .45s var(--ease-luxe);
+  }
+  :root[data-theme="light"] .mobile-cta-bar{
+    background:rgba(247,248,249,0.92);
   }
   .mobile-cta-bar .btn{ width:100%; }
   .mobile-cta-bar.cta-hidden{ transform:translateY(110%); }
@@ -421,6 +469,25 @@
     position:relative;
     padding-top:140px; padding-bottom:70px;
     overflow:hidden;
+  }
+  /* Hero bleibt bewusst dunkel/atmosphärisch in beiden Modi (Foto + Verlauf
+     brauchen den dunklen Kontrast) - lokale Token-Überschreibung wirkt auf
+     alle Kind-Elemente, ohne jede Regel einzeln anfassen zu müssen. */
+  :root[data-theme="light"] .hero{
+    background:#07080a;
+    --text-0:#f2f3f4;
+    --text-1:#a9adb3;
+    --text-2:#7d828a;
+    --border:rgba(255,255,255,0.065);
+    --border-strong:rgba(255,255,255,0.14);
+    --card:rgba(255,255,255,0.028);
+    --card-hover:rgba(255,255,255,0.05);
+    --accent:#2fb4c4;
+    --accent-bright:#7fe3ec;
+    --accent-deep:#135561;
+    --accent-soft:rgba(47,180,196,0.10);
+    --accent-line:rgba(47,180,196,0.38);
+    --silver:#c6ccd2;
   }
   .hero-bg-img{
     position:absolute; inset:0;
@@ -1260,7 +1327,7 @@
   .field input, .field select, .field textarea{
     width:100%;
     padding:13px 15px;
-    background:rgba(255,255,255,0.02);
+    background:var(--card);
     border:1px solid var(--border);
     border-radius:10px;
     color:var(--text-0);
@@ -1268,7 +1335,7 @@
     transition:border-color .4s var(--ease-luxe), background .4s var(--ease-luxe), box-shadow .4s var(--ease-luxe);
   }
   .field input:focus, .field select:focus, .field textarea:focus{
-    outline:none; border-color:var(--accent); background:rgba(255,255,255,0.035);
+    outline:none; border-color:var(--accent); background:var(--card-hover);
     box-shadow:0 0 0 3.5px var(--accent-soft);
   }
   .field textarea{ resize:vertical; min-height:110px; }
@@ -1372,7 +1439,7 @@
 {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
-  "name": "LLA Agency",
+  "name": "Lilla Web & Media",
   "description": "Kreativagentur für Produktvideos, Produktbilder, moderne Webseiten, Optimierung von Amazon- und Onlineshop-Seiten, Social-Media-Inhalte und Markenauftritte.",
   "areaServed": "DE",
   "sameAs": ["https://www.instagram.com/lla.agencyde/"],
@@ -1388,8 +1455,7 @@
 
 <div id="introOverlay" class="intro-overlay" aria-hidden="true">
   <div class="intro-content">
-    <span class="intro-edge"></span>
-    <img src="logo.png" alt="" class="intro-logo" width="256" height="256" decoding="async">
+    <img src="assets/logo-dark.png" alt="" class="intro-logo" id="introLogoImg" width="580" height="430" decoding="async">
   </div>
 </div>
 
@@ -1401,11 +1467,8 @@
 <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 <header id="siteHeader">
   <nav class="wrap">
-    <!-- Logo: logo.png liegt im selben Ordner wie diese HTML-Datei -->
     <a href="#top" class="logo nav-link">
-      <img src="logo.png" alt="LLA Agency Logo" class="logo-img" width="256" height="256" decoding="async">
-      <span class="logo-divider"></span>
-      <span class="logo-word">Agency</span>
+      <img src="assets/logo-dark-mark.png" alt="Lilla Web & Media Logo" class="logo-img" id="headerLogoImg" width="574" height="240" decoding="async">
     </a>
 
     <ul class="nav-links">
@@ -1420,13 +1483,17 @@
 
     <div class="nav-right">
       <a href="#kontakt" class="btn btn-primary btn-sm nav-link">Projekt anfragen</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Helles Design aktivieren">
+        <svg class="theme-icon theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.6"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8l1.8-1.8M18 6l1.8-1.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <svg class="theme-icon theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      </button>
       <button class="burger" id="burger" aria-label="Menü öffnen" aria-expanded="false"><span></span></button>
     </div>
   </nav>
 </header>
 
 <div class="mobile-menu" id="mobileMenu">
-  <img src="logo.png" alt="LLA Agency Logo" class="mobile-logo" width="256" height="256" decoding="async">
+  <img src="assets/logo-dark.png" alt="Lilla Web & Media Logo" class="mobile-logo" id="mobileLogoImg" width="580" height="430" decoding="async">
   <a href="#top" class="nav-link">Start</a>
   <a href="#webseiten" class="nav-link">Webseiten</a>
   <a href="#leistungen" class="nav-link">Leistungen</a>
@@ -1472,7 +1539,7 @@
       <span class="h-line"><span class="h-line-inner"><em>Mehr Wirkung.</em></span></span>
     </h1>
 
-    <p class="hero-sub reveal" style="transition-delay:.28s">LLA Agency entwickelt moderne Webseiten, hochwertige Produktvideos, Produktbilder und optimierte Produktseiten für Unternehmen, Marken und Onlineshops, die professionell auftreten und nachhaltig wachsen möchten.</p>
+    <p class="hero-sub reveal" style="transition-delay:.28s">Lilla Web & Media entwickelt moderne Webseiten, hochwertige Produktvideos, Produktbilder und optimierte Produktseiten für Unternehmen, Marken und Onlineshops, die professionell auftreten und nachhaltig wachsen möchten.</p>
 
     <div class="hero-actions reveal" style="transition-delay:.38s">
       <a href="#kontakt" class="btn btn-primary nav-link btn-magnetic">Projekt anfragen</a>
@@ -1637,7 +1704,7 @@
 
     <div class="ba-slider viewfinder reveal" id="baSlider" style="--pos:50%;">
       <div class="ba-slide-after">
-        <img src="assets/nachher-beispiel.jpg" alt="Nachher: professionelle Studio-Produktfotografie von LLA Agency" loading="lazy" decoding="async" width="1448" height="1086">
+        <img src="assets/nachher-beispiel.jpg" alt="Nachher: professionelle Studio-Produktfotografie von Lilla Web & Media" loading="lazy" decoding="async" width="1448" height="1086">
         <span class="ba-tag">Nachher</span>
       </div>
       <div class="ba-slide-before">
@@ -1694,7 +1761,7 @@
       <div class="p-card wide viewfinder" tabindex="0" data-title="Website-Relaunch für Unternehmen" data-cat="Premium Webseiten" data-desc="Individuelle Webseite, die auf jedem Gerät gut aussieht – mit modernem Design, klarer Markenführung, schnellen Ladezeiten und integriertem Kontaktformular.">
         <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#101a1c;--tint2:#0a0c0e;">
-          <div class="p-visual-inner"><img src="assets/portfolio-01-webseite.jpg" alt="Website-Relaunch für Unternehmen – Konzeptprojekt von LLA Agency" loading="lazy" decoding="async" width="2032" height="774"></div>
+          <div class="p-visual-inner"><img src="assets/portfolio-01-webseite.jpg" alt="Website-Relaunch für Unternehmen – Konzeptprojekt von Lilla Web & Media" loading="lazy" decoding="async" width="2032" height="774"></div>
           <div class="p-meta"><span class="cat">Premium Webseiten</span><h4>Website-Relaunch für Unternehmen</h4></div>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
@@ -1704,7 +1771,7 @@
       <div class="p-card viewfinder" tabindex="0" data-title="Werbevideo für Sneaker" data-cat="Produktvideo" data-desc="Dynamisches Werbevideo für einen neuen Sneaker mit starkem visuellem Rhythmus und schwebender Produktinszenierung.">
         <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#15181c;--tint2:#0b0b0d;">
-          <div class="p-visual-inner"><img src="assets/portfolio-02-sneaker.jpg" alt="Werbevideo für Sneaker – Konzeptprojekt von LLA Agency" loading="lazy" decoding="async" width="1122" height="1402"></div>
+          <div class="p-visual-inner"><img src="assets/portfolio-02-sneaker.jpg" alt="Werbevideo für Sneaker – Konzeptprojekt von Lilla Web & Media" loading="lazy" decoding="async" width="1122" height="1402"></div>
           <div class="p-meta"><span class="cat">Produktvideo</span><h4>Werbevideo für Sneaker</h4></div>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
@@ -1714,7 +1781,7 @@
       <div class="p-card viewfinder" tabindex="0" data-title="Produktvideo für Proteingetränk" data-cat="Produktvideo" data-desc="Hochwertiges Produktvideo für ein Getränk mit dynamischem Spritzeffekt – inszeniert für Social Media und Werbeanzeigen.">
         <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#1c1712;--tint2:#0b0b0d;">
-          <div class="p-visual-inner"><video src="videos/portfolio-03-protein-drink.mp4" poster="assets/portfolio-03-protein-drink.jpg" muted loop playsinline preload="metadata" width="1080" height="1920" aria-label="Produktvideo für Proteingetränk – Konzeptprojekt von LLA Agency"></video></div>
+          <div class="p-visual-inner"><video src="videos/portfolio-03-protein-drink.mp4" poster="assets/portfolio-03-protein-drink.jpg" muted loop playsinline preload="metadata" width="1080" height="1920" aria-label="Produktvideo für Proteingetränk – Konzeptprojekt von Lilla Web & Media"></video></div>
           <div class="p-meta"><span class="cat">Produktvideo</span><h4>Produktvideo für Proteingetränk</h4></div>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
@@ -1724,7 +1791,7 @@
       <div class="p-card viewfinder" tabindex="0" data-title="Amazon-Seite für kabellose Kopfhörer" data-cat="Amazon- &amp; Shop-Optimierung" data-desc="Vollständige Überarbeitung einer Amazon-Seite für kabellose Kopfhörer mit neuen Produktbildern und klarer Struktur.">
         <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#1a1a1a;--tint2:#0b0b0d;">
-          <div class="p-visual-inner"><img src="assets/portfolio-04-kopfhoerer.jpg" alt="Amazon-Seite für kabellose Kopfhörer – Konzeptprojekt von LLA Agency" loading="lazy" decoding="async" width="1122" height="1402"></div>
+          <div class="p-visual-inner"><img src="assets/portfolio-04-kopfhoerer.jpg" alt="Amazon-Seite für kabellose Kopfhörer – Konzeptprojekt von Lilla Web & Media" loading="lazy" decoding="async" width="1122" height="1402"></div>
           <div class="p-meta"><span class="cat">Amazon- &amp; Shop-Optimierung</span><h4>Amazon-Seite für kabellose Kopfhörer</h4></div>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
@@ -1734,7 +1801,7 @@
       <div class="p-card viewfinder" tabindex="0" data-title="Produktbilder für Parfüm" data-cat="Produktbilder" data-desc="Elegante Produktbildserie für ein Parfüm mit dramatischer Lichtstimmung und feinen Reflexionen.">
         <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#1c1519;--tint2:#0b0b0d;">
-          <div class="p-visual-inner"><img src="assets/portfolio-05-parfum.jpg" alt="Produktbilder für Parfüm – Konzeptprojekt von LLA Agency" loading="lazy" decoding="async" width="1122" height="1402"></div>
+          <div class="p-visual-inner"><img src="assets/portfolio-05-parfum.jpg" alt="Produktbilder für Parfüm – Konzeptprojekt von Lilla Web & Media" loading="lazy" decoding="async" width="1122" height="1402"></div>
           <div class="p-meta"><span class="cat">Produktbilder</span><h4>Produktbilder für Parfüm</h4></div>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
@@ -1744,7 +1811,7 @@
       <div class="p-card viewfinder" tabindex="0" data-title="Detailaufnahmen einer Smartwatch" data-cat="Produktbilder" data-desc="Reduzierte, technisch anmutende Makro- und Detailaufnahmen für eine Smartwatch.">
         <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#14161c;--tint2:#0b0b0d;">
-          <div class="p-visual-inner"><img src="assets/portfolio-06-smartwatch.jpg" alt="Detailaufnahmen einer Smartwatch – Konzeptprojekt von LLA Agency" loading="lazy" decoding="async" width="1122" height="1402"></div>
+          <div class="p-visual-inner"><img src="assets/portfolio-06-smartwatch.jpg" alt="Detailaufnahmen einer Smartwatch – Konzeptprojekt von Lilla Web & Media" loading="lazy" decoding="async" width="1122" height="1402"></div>
           <div class="p-meta"><span class="cat">Produktbilder</span><h4>Detailaufnahmen einer Smartwatch</h4></div>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
@@ -1754,7 +1821,7 @@
       <div class="p-card viewfinder" tabindex="0" data-title="Kampagne für eine Hautpflege-Marke" data-cat="Produktbilder" data-desc="Kreative Bildserie für eine Hautpflege-Kampagne mit weichem Studiolicht und stimmigem, hochwertigem Stil.">
         <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#151a19;--tint2:#0b0b0d;">
-          <div class="p-visual-inner"><img src="assets/portfolio-07-skincare.jpg" alt="Kampagne für eine Hautpflege-Marke – Konzeptprojekt von LLA Agency" loading="lazy" decoding="async" width="1122" height="1402"></div>
+          <div class="p-visual-inner"><img src="assets/portfolio-07-skincare.jpg" alt="Kampagne für eine Hautpflege-Marke – Konzeptprojekt von Lilla Web & Media" loading="lazy" decoding="async" width="1122" height="1402"></div>
           <div class="p-meta"><span class="cat">Produktbilder</span><h4>Kampagne für eine Hautpflege-Marke</h4></div>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
@@ -1782,7 +1849,7 @@
       <div class="p-step">
         <div class="p-num">02</div>
         <h4>Konzept</h4>
-        <p>LLA Agency erstellt die visuelle Idee und den passenden Stil.</p>
+        <p>Lilla Web & Media erstellt die visuelle Idee und den passenden Stil.</p>
       </div>
       <div class="p-step">
         <div class="p-num">03</div>
@@ -1878,29 +1945,29 @@
 </section>
 
 <!-- =========================================================
-     ÜBER LLA AGENCY
+     ÜBER LILLA WEB & MEDIA
 ========================================================= -->
 <section class="section" id="ueber">
   <div class="wrap">
     <div class="about-grid">
       <div class="about-visual reveal">
-        <img src="assets/about-studio.jpg" alt="LLA Agency Kreativ-Studio bei einer Produktion" loading="lazy" decoding="async" width="1122" height="1402">
+        <img src="assets/about-studio.jpg" alt="Lilla Web & Media Kreativ-Studio bei einer Produktion" loading="lazy" decoding="async" width="1122" height="1402">
       </div>
       <div class="about-text reveal">
-        <span class="eyebrow">Über LLA Agency</span>
+        <span class="eyebrow">Über Lilla Web & Media</span>
         <h2 style="margin-bottom:22px;">Kreative Lösungen für moderne Marken.</h2>
-        <p>LLA Agency unterstützt Marken, Unternehmen und Onlineshops dabei, ihre Produkte und ihren digitalen Auftritt hochwertiger zu präsentieren. Der Fokus liegt auf modernen Produktvideos, starken Produktbildern, verkaufsorientierten Produktseiten, Premium-Webseiten und einem stimmigen Markenauftritt.</p>
+        <p>Lilla Web & Media unterstützt Marken, Unternehmen und Onlineshops dabei, ihre Produkte und ihren digitalen Auftritt hochwertiger zu präsentieren. Der Fokus liegt auf modernen Produktvideos, starken Produktbildern, verkaufsorientierten Produktseiten, Premium-Webseiten und einem stimmigen Markenauftritt.</p>
         <p>Mit modernen Kreativ-Werkzeugen und einem klaren Verständnis für den Online-Handel entstehen Ergebnisse und digitale Auftritte, die professionell wirken und Aufmerksamkeit erzeugen – als verlässlicher Partner für den gesamten Markenauftritt.</p>
       </div>
     </div>
 
     <div class="founder-card reveal">
-      <span class="founder-label">Wer hinter LLA Agency steht</span>
+      <span class="founder-label">Wer hinter Lilla Web & Media steht</span>
       <div class="founder-head">
         <div class="founder-avatar" aria-hidden="true">SL</div>
         <div>
           <div class="founder-name">Simon Lilla</div>
-          <div class="founder-role">Gründer von LLA Agency</div>
+          <div class="founder-role">Gründer von Lilla Web & Media</div>
         </div>
       </div>
       <p class="founder-bio">Hey, ich bin Simon.</p>
@@ -1995,9 +2062,7 @@
     <div class="footer-top">
       <div class="footer-brand">
         <a href="#top" class="logo nav-link">
-          <img src="logo.png" alt="LLA Agency Logo" class="logo-img" width="256" height="256" decoding="async">
-          <span class="logo-divider"></span>
-          <span class="logo-word">Agency</span>
+          <img src="assets/logo-dark-mark.png" alt="Lilla Web & Media Logo" class="logo-img" id="footerLogoImg" width="574" height="240" decoding="async">
         </a>
         <p>Premium Produktvideos, Produktbilder, Webseiten und Markenauftritt.</p>
       </div>
@@ -2022,7 +2087,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2026 LLA Agency. Alle Rechte vorbehalten.</p>
+      <p>© 2026 Lilla Web & Media. Alle Rechte vorbehalten.</p>
     </div>
   </div>
 </footer>
@@ -2037,7 +2102,7 @@
     <span class="cat" id="modalCat"></span>
     <h3 id="modalTitle"></h3>
     <p class="desc" id="modalDesc"></p>
-    <span class="modal-concept-badge"><span class="dot"></span>Konzeptprojekt — Demo-Arbeit von LLA Agency</span>
+    <span class="modal-concept-badge"><span class="dot"></span>Konzeptprojekt — Demo-Arbeit von Lilla Web & Media</span>
   </div>
 </div>
 
@@ -2091,6 +2156,43 @@
   var CONTACT_EMAIL = "kontakt.llaagency@gmail.com";
 
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- Hell/Dunkel-Modus ---------- */
+  var themeToggle = document.getElementById('themeToggle');
+  /* Header-Logo bleibt bewusst immer die dunkle Variante (Header ist wie
+     der Hero immer dunkel), deshalb hier nicht Teil des Theme-Wechsels. */
+  var themeLogos = [
+    { el: document.getElementById('footerLogoImg'), dark: 'assets/logo-dark-mark.png', light: 'assets/logo-light-mark.png' },
+    { el: document.getElementById('mobileLogoImg'), dark: 'assets/logo-dark.png', light: 'assets/logo-light.png' },
+    { el: document.getElementById('introLogoImg'), dark: 'assets/logo-dark.png', light: 'assets/logo-light.png' }
+  ];
+  function applyThemeLogos(theme){
+    themeLogos.forEach(function(item){
+      if(item.el){ item.el.setAttribute('src', theme === 'light' ? item.light : item.dark); }
+    });
+  }
+  function setTheme(theme){
+    if(theme === 'light'){
+      document.documentElement.setAttribute('data-theme', 'light');
+      if(themeToggle){ themeToggle.setAttribute('aria-label', 'Dunkles Design aktivieren'); }
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      if(themeToggle){ themeToggle.setAttribute('aria-label', 'Helles Design aktivieren'); }
+    }
+    applyThemeLogos(theme);
+    try{ localStorage.setItem('lillaTheme', theme); }catch(e){}
+  }
+  (function initTheme(){
+    var current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    applyThemeLogos(current);
+    if(themeToggle){
+      themeToggle.setAttribute('aria-label', current === 'light' ? 'Dunkles Design aktivieren' : 'Helles Design aktivieren');
+      themeToggle.addEventListener('click', function(){
+        var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        setTheme(next);
+      });
+    }
+  })();
 
   /* ---------- Intro-Sequenz ---------- */
   var introOverlay = document.getElementById('introOverlay');
@@ -2479,7 +2581,7 @@
       return;
     }
 
-    var subject = 'Projektanfrage über LLA Agency';
+    var subject = 'Projektanfrage über Lilla Web & Media';
     var bodyLines = [
       'Name: ' + name,
       'Unternehmen: ' + (company || '-'),
