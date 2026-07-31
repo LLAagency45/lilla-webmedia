@@ -285,32 +285,12 @@
     transition:padding .5s var(--ease-luxe), background .5s var(--ease-luxe), border-color .5s var(--ease-luxe), box-shadow .5s var(--ease-luxe);
     border-bottom:1px solid transparent;
   }
-  /* Header bleibt wie der Hero immer dunkel - Tokens lokal fixieren,
-     damit Nav-Text/Icons auf dem dunklen Streifen lesbar bleiben. */
-  :root[data-theme="light"] header{
-    --text-0:#f2f3f4;
-    --text-1:#a9adb3;
-    --text-2:#7d828a;
-    --border:rgba(255,255,255,0.065);
-    --border-strong:rgba(255,255,255,0.14);
-    --accent:#2fb4c4;
-    --accent-bright:#7fe3ec;
-    --accent-line:rgba(47,180,196,0.38);
-  }
-  /* Sobald gescrollt wird, bekommt der Header eine echte Fläche - ab hier
-     darf er im Hell-Modus auch wirklich hell werden (höhere Spezifität
-     als die Grundregel oben, gewinnt also nur wenn .scrolled aktiv ist). */
+  /* Sobald gescrollt wird, bekommt der Header eine echte Fläche/Schatten -
+     Text/Icons folgen jetzt einfach den globalen Theme-Tokens, da auch
+     der Hero-Bereich dahinter das Theme korrekt wechselt. */
   :root[data-theme="light"] header.scrolled{
     background:rgba(247,248,249,0.86);
     box-shadow:0 12px 40px -20px rgba(20,22,26,0.12);
-    --text-0:#12151a;
-    --text-1:#4d525a;
-    --text-2:#6b6f77;
-    --border:rgba(10,14,18,0.1);
-    --border-strong:rgba(10,14,18,0.18);
-    --accent:#1a8a97;
-    --accent-bright:#0f7a86;
-    --accent-line:rgba(26,138,151,0.35);
   }
   header.scrolled{
     padding:14px 0;
@@ -499,25 +479,6 @@
     padding-top:140px; padding-bottom:70px;
     overflow:hidden;
   }
-  /* Hero bleibt bewusst dunkel/atmosphärisch in beiden Modi (Foto + Verlauf
-     brauchen den dunklen Kontrast) - lokale Token-Überschreibung wirkt auf
-     alle Kind-Elemente, ohne jede Regel einzeln anfassen zu müssen. */
-  :root[data-theme="light"] .hero{
-    background:#07080a;
-    --text-0:#f2f3f4;
-    --text-1:#a9adb3;
-    --text-2:#7d828a;
-    --border:rgba(255,255,255,0.065);
-    --border-strong:rgba(255,255,255,0.14);
-    --card:rgba(255,255,255,0.028);
-    --card-hover:rgba(255,255,255,0.05);
-    --accent:#2fb4c4;
-    --accent-bright:#7fe3ec;
-    --accent-deep:#135561;
-    --accent-soft:rgba(47,180,196,0.10);
-    --accent-line:rgba(47,180,196,0.38);
-    --silver:#c6ccd2;
-  }
   .hero-bg-img{
     position:absolute; inset:0;
     width:100%; height:100%;
@@ -535,6 +496,14 @@
     z-index:1;
     pointer-events:none;
   }
+  /* Hell-Modus: eigenes, für Weiß fotografiertes Hintergrundbild (per JS
+     getauscht) statt des dunklen Fotos - Verlauf spiegelt dieselben
+     Proportionen wie im Dunkel-Modus, nur mit hellem statt dunklem Ton. */
+  :root[data-theme="light"] .hero{ background:var(--bg-0); }
+  :root[data-theme="light"] .hero::after{
+    background:linear-gradient(180deg, rgba(247,248,249,0.25) 0%, transparent 30%, transparent 60%, rgba(247,248,249,0.55) 100%);
+  }
+  :root[data-theme="light"] .hero-bg-img{ opacity:.55; }
   .hero-glow{
     position:absolute; inset:-20% -10% auto -10%;
     height:900px;
@@ -1542,7 +1511,7 @@
      HERO
 ========================================================= -->
 <section class="hero" id="top">
-  <img src="assets/hero-background.jpg" alt="" aria-hidden="true" class="hero-bg-img" width="1672" height="941" fetchpriority="high" decoding="async">
+  <img src="assets/hero-background.jpg" alt="" aria-hidden="true" class="hero-bg-img" id="heroBgImg" width="1672" height="941" fetchpriority="high" decoding="async">
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="hero-spotlight" aria-hidden="true"></div>
   <div class="hero-grain" aria-hidden="true"></div>
@@ -2190,30 +2159,20 @@
 
   /* ---------- Hell/Dunkel-Modus ---------- */
   var themeToggle = document.getElementById('themeToggle');
-  var headerLogoImg = document.getElementById('headerLogoImg');
   var themeLogos = [
+    { el: document.getElementById('headerLogoImg'), dark: 'assets/logo-dark-mark.png', light: 'assets/logo-light-mark.png' },
     { el: document.getElementById('footerLogoImg'), dark: 'assets/logo-dark-mark.png', light: 'assets/logo-light-mark.png' },
     { el: document.getElementById('mobileLogoImg'), dark: 'assets/logo-dark.png', light: 'assets/logo-light.png' },
-    { el: document.getElementById('introLogoImg'), dark: 'assets/logo-dark.png', light: 'assets/logo-light.png' }
+    { el: document.getElementById('introLogoImg'), dark: 'assets/logo-dark.png', light: 'assets/logo-light.png' },
+    { el: document.getElementById('heroBgImg'), dark: 'assets/hero-background.jpg', light: 'assets/hero-background-light.jpg' }
   ];
   function currentTheme(){
     return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-  }
-  /* Header-Logo folgt normalerweise dem Theme, bleibt aber dunkel, solange
-     der Header transparent über dem (immer dunklen) Hero schwebt - erst
-     sobald wirklich gescrollt wurde (header.scrolled), darf es im
-     Hell-Modus auf die helle Variante wechseln. */
-  function updateHeaderLogo(){
-    if(!headerLogoImg) return;
-    var siteHeader = document.getElementById('siteHeader');
-    var scrolledLight = currentTheme() === 'light' && siteHeader && siteHeader.classList.contains('scrolled');
-    headerLogoImg.setAttribute('src', scrolledLight ? 'assets/logo-light-mark.png' : 'assets/logo-dark-mark.png');
   }
   function applyThemeLogos(theme){
     themeLogos.forEach(function(item){
       if(item.el){ item.el.setAttribute('src', theme === 'light' ? item.light : item.dark); }
     });
-    updateHeaderLogo();
   }
   function setTheme(theme){
     if(theme === 'light'){
@@ -2272,10 +2231,8 @@
   var scrollCue = document.querySelector('.scroll-cue');
   var scrollProgress = document.getElementById('scrollProgress');
   function onScroll(){
-    var wasScrolled = header.classList.contains('scrolled');
     if(window.scrollY > 40){ header.classList.add('scrolled'); }
     else{ header.classList.remove('scrolled'); }
-    if(header.classList.contains('scrolled') !== wasScrolled){ updateHeaderLogo(); }
     if(scrollCue){ scrollCue.classList.toggle('cue-hidden', window.scrollY > 60); }
     if(scrollProgress){
       var docHeight = document.documentElement.scrollHeight - window.innerHeight;
