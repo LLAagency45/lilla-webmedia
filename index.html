@@ -76,6 +76,10 @@
     --maxw: 1240px;
     --radius: 16px;
     --radius-sm: 10px;
+    /* Atmosphäre: dezente Nebel-/Glow-Akzente und Section-Tiefe */
+    --fog-teal: rgba(47,180,196,0.055);
+    --fog-silver: rgba(198,204,210,0.045);
+    --section-edge: rgba(0,0,0,0.16);
   }
 
   /* ---------- Hell-Modus: gleiche Markensprache, invertierte Basis ---------- */
@@ -100,6 +104,10 @@
     --shadow-soft: 0 24px 60px -30px rgba(20,22,26,0.16);
     --shadow-lift: 0 24px 60px -24px rgba(20,22,26,0.14), 0 0 0 1px rgba(20,22,26,0.04);
     --shadow-glow: 0 16px 40px -18px rgba(26,138,151,0.25);
+    /* Atmosphäre Hell-Modus: luftiger und feiner als im Dunkel-Modus */
+    --fog-teal: rgba(26,138,151,0.05);
+    --fog-silver: rgba(91,96,103,0.04);
+    --section-edge: rgba(15,17,21,0.032);
   }
 
   *,*::before,*::after{ box-sizing:border-box; }
@@ -202,15 +210,31 @@
     background:var(--accent-line);
   }
   .section{ padding:150px 0; position:relative; }
-  #leistungen::before, #preise::before, #kontakt::before{
+
+  /* ---------- Atmosphäre: Section-Tiefe & Nebel-Akzente ----------
+     Jede Section bekommt eine eigene, sehr dezente Kombination aus
+     einem weichen Farb-Glow (Marken-Türkis oder Silber) und einem
+     feinen Verlauf am oberen Rand, der Sections leicht voneinander
+     abhebt statt komplett gleichförmig zu wirken. Blendet sanft ein,
+     sobald die jeweilige Section in den Viewport scrollt. */
+  .section::before{
     content:'';
     position:absolute; inset:0;
     pointer-events:none; z-index:0;
+    opacity:0;
+    transition:opacity 1.6s var(--ease-luxe);
   }
-  #leistungen::before{ background:radial-gradient(1000px 520px at 12% 0%, rgba(47,180,196,0.055), transparent 62%); }
-  #preise::before{ background:radial-gradient(900px 480px at 88% 100%, rgba(47,180,196,0.06), transparent 60%); }
-  #kontakt::before{ background:radial-gradient(1000px 560px at 85% 10%, rgba(198,204,210,0.04), transparent 65%); }
-  #leistungen > .wrap, #preise > .wrap, #kontakt > .wrap{ position:relative; z-index:1; }
+  .section.atmo-in::before{ opacity:1; }
+  .section > .wrap{ position:relative; z-index:1; }
+  #webseiten::before{ background:radial-gradient(1050px 540px at 90% -4%, var(--fog-teal), transparent 63%), linear-gradient(180deg, var(--section-edge), transparent 30%); }
+  #leistungen::before{ background:radial-gradient(1000px 520px at 12% 0%, var(--fog-teal), transparent 62%), linear-gradient(180deg, var(--section-edge), transparent 30%); }
+  #vorher-nachher::before{ background:radial-gradient(950px 500px at 92% 100%, var(--fog-silver), transparent 62%), linear-gradient(180deg, var(--section-edge), transparent 30%); }
+  #projekte::before{ background:radial-gradient(1100px 560px at 10% 2%, var(--fog-silver), transparent 64%), linear-gradient(180deg, var(--section-edge), transparent 30%); }
+  #ablauf::before{ background:radial-gradient(900px 480px at 12% 98%, var(--fog-teal), transparent 60%), linear-gradient(180deg, var(--section-edge), transparent 30%); }
+  #preise::before{ background:radial-gradient(900px 480px at 88% 100%, var(--fog-teal), transparent 60%), linear-gradient(180deg, var(--section-edge), transparent 30%); }
+  #ueber::before{ background:radial-gradient(1000px 520px at 14% 4%, var(--fog-teal), transparent 63%), linear-gradient(180deg, var(--section-edge), transparent 30%); }
+  #kontakt::before{ background:radial-gradient(1000px 560px at 85% 10%, var(--fog-silver), transparent 65%), linear-gradient(180deg, var(--section-edge), transparent 30%); }
+
   .section-head{ max-width:640px; margin-bottom:72px; }
   .section-head h2{ font-size:clamp(28px,3.6vw,40px); }
   .section-head p{ margin-top:16px; font-size:17px; }
@@ -221,6 +245,9 @@
     .section{ padding:92px 0; }
     .section-head{ margin-bottom:52px; }
     .wrap{ padding:0 22px; }
+    /* Kleinere Displays: Atmosphäre-Effekte reduzieren (Fläche wirkt sonst stärker) */
+    :root{ --fog-teal: rgba(47,180,196,0.04); --fog-silver: rgba(198,204,210,0.032); }
+    :root[data-theme="light"]{ --fog-teal: rgba(26,138,151,0.036); --fog-silver: rgba(91,96,103,0.028); }
   }
 
   /* ---------- Buttons ---------- */
@@ -535,6 +562,15 @@
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
     pointer-events:none; z-index:1; mix-blend-mode:overlay;
   }
+  /* ---------- Seitenweites Grain (dezente Tiefe, wie Hero-Grain) ---------- */
+  .page-grain{
+    position:fixed; inset:0;
+    z-index:50;
+    pointer-events:none;
+    mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  }
+  @media (max-width:768px){ .page-grain{ display:none; } }
   .hero-frame-line{
     position:absolute; left:0; right:0;
     height:1px;
@@ -1376,7 +1412,15 @@
   footer{
     border-top:1px solid var(--border);
     padding:70px 0 34px;
+    position:relative;
   }
+  footer::before{
+    content:'';
+    position:absolute; inset:0;
+    pointer-events:none; z-index:0;
+    background:radial-gradient(900px 420px at 50% 0%, var(--fog-teal), transparent 65%);
+  }
+  footer .wrap{ position:relative; z-index:1; }
   .footer-top{
     display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:50px;
     padding-bottom:50px;
@@ -1450,6 +1494,7 @@
 </script>
 </head>
 <body>
+<div class="page-grain" aria-hidden="true"></div>
 
 <div id="introOverlay" class="intro-overlay" aria-hidden="true">
   <div class="intro-content">
@@ -2211,10 +2256,12 @@
     }
     try{ sessionStorage.setItem('llaIntroSeen','1'); }catch(e){}
     initRevealSystem();
+    initAtmoSystem();
   }
   if(!introOverlay || reduceMotion || introSeen){
     if(introOverlay && introOverlay.parentNode){ introOverlay.parentNode.removeChild(introOverlay); }
     initRevealSystem();
+    initAtmoSystem();
   } else {
     document.body.style.overflow = 'hidden';
     requestAnimationFrame(function(){
@@ -2386,6 +2433,24 @@
       revealEls.forEach(function(el){ io.observe(el); });
     } else {
       revealEls.forEach(function(el){ el.classList.add('is-visible'); });
+    }
+  }
+
+  /* ---------- Atmosphäre: Section-Glow beim Erreichen sanft einblenden ---------- */
+  function initAtmoSystem(){
+    var atmoEls = document.querySelectorAll('.section');
+    if('IntersectionObserver' in window){
+      var atmoIo = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){
+            entry.target.classList.add('atmo-in');
+            atmoIo.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+      atmoEls.forEach(function(el){ atmoIo.observe(el); });
+    } else {
+      atmoEls.forEach(function(el){ el.classList.add('atmo-in'); });
     }
   }
 
