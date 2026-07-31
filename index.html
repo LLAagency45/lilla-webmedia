@@ -297,6 +297,21 @@
     --accent-bright:#7fe3ec;
     --accent-line:rgba(47,180,196,0.38);
   }
+  /* Sobald gescrollt wird, bekommt der Header eine echte Fläche - ab hier
+     darf er im Hell-Modus auch wirklich hell werden (höhere Spezifität
+     als die Grundregel oben, gewinnt also nur wenn .scrolled aktiv ist). */
+  :root[data-theme="light"] header.scrolled{
+    background:rgba(247,248,249,0.86);
+    box-shadow:0 12px 40px -20px rgba(20,22,26,0.12);
+    --text-0:#12151a;
+    --text-1:#4d525a;
+    --text-2:#6b6f77;
+    --border:rgba(10,14,18,0.1);
+    --border-strong:rgba(10,14,18,0.18);
+    --accent:#1a8a97;
+    --accent-bright:#0f7a86;
+    --accent-line:rgba(26,138,151,0.35);
+  }
   header.scrolled{
     padding:14px 0;
     background:rgba(8,8,10,0.72);
@@ -322,6 +337,20 @@
   }
   a.logo:hover .logo-img{ filter:brightness(1.12) drop-shadow(0 0 10px var(--accent-line)); transform:scale(1.04); }
   footer .logo-img{ height:26px; }
+  .logo-tagline{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:10.5px;
+    font-weight:600;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--text-2);
+    padding-left:12px;
+    margin-left:12px;
+    border-left:1px solid var(--border-strong);
+    white-space:nowrap;
+  }
+  footer .logo-tagline{ font-size:9.5px; padding-left:10px; margin-left:10px; }
+  @media (max-width:380px){ .logo-tagline{ display:none; } }
   .nav-links{
     display:flex; align-items:center; gap:38px;
   }
@@ -1468,7 +1497,8 @@
 <header id="siteHeader">
   <nav class="wrap">
     <a href="#top" class="logo nav-link">
-      <img src="assets/logo-dark-mark.png" alt="Lilla Web & Media Logo" class="logo-img" id="headerLogoImg" width="574" height="240" decoding="async">
+      <img src="assets/logo-dark-mark.png" alt="Lilla" class="logo-img" id="headerLogoImg" width="574" height="240" decoding="async">
+      <span class="logo-tagline">Web &amp; Media</span>
     </a>
 
     <ul class="nav-links">
@@ -2062,7 +2092,8 @@
     <div class="footer-top">
       <div class="footer-brand">
         <a href="#top" class="logo nav-link">
-          <img src="assets/logo-dark-mark.png" alt="Lilla Web & Media Logo" class="logo-img" id="footerLogoImg" width="574" height="240" decoding="async">
+          <img src="assets/logo-dark-mark.png" alt="Lilla" class="logo-img" id="footerLogoImg" width="574" height="240" decoding="async">
+          <span class="logo-tagline">Web &amp; Media</span>
         </a>
         <p>Premium Produktvideos, Produktbilder, Webseiten und Markenauftritt.</p>
       </div>
@@ -2159,17 +2190,30 @@
 
   /* ---------- Hell/Dunkel-Modus ---------- */
   var themeToggle = document.getElementById('themeToggle');
-  /* Header-Logo bleibt bewusst immer die dunkle Variante (Header ist wie
-     der Hero immer dunkel), deshalb hier nicht Teil des Theme-Wechsels. */
+  var headerLogoImg = document.getElementById('headerLogoImg');
   var themeLogos = [
     { el: document.getElementById('footerLogoImg'), dark: 'assets/logo-dark-mark.png', light: 'assets/logo-light-mark.png' },
     { el: document.getElementById('mobileLogoImg'), dark: 'assets/logo-dark.png', light: 'assets/logo-light.png' },
     { el: document.getElementById('introLogoImg'), dark: 'assets/logo-dark.png', light: 'assets/logo-light.png' }
   ];
+  function currentTheme(){
+    return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+  }
+  /* Header-Logo folgt normalerweise dem Theme, bleibt aber dunkel, solange
+     der Header transparent über dem (immer dunklen) Hero schwebt - erst
+     sobald wirklich gescrollt wurde (header.scrolled), darf es im
+     Hell-Modus auf die helle Variante wechseln. */
+  function updateHeaderLogo(){
+    if(!headerLogoImg) return;
+    var siteHeader = document.getElementById('siteHeader');
+    var scrolledLight = currentTheme() === 'light' && siteHeader && siteHeader.classList.contains('scrolled');
+    headerLogoImg.setAttribute('src', scrolledLight ? 'assets/logo-light-mark.png' : 'assets/logo-dark-mark.png');
+  }
   function applyThemeLogos(theme){
     themeLogos.forEach(function(item){
       if(item.el){ item.el.setAttribute('src', theme === 'light' ? item.light : item.dark); }
     });
+    updateHeaderLogo();
   }
   function setTheme(theme){
     if(theme === 'light'){
@@ -2228,8 +2272,10 @@
   var scrollCue = document.querySelector('.scroll-cue');
   var scrollProgress = document.getElementById('scrollProgress');
   function onScroll(){
+    var wasScrolled = header.classList.contains('scrolled');
     if(window.scrollY > 40){ header.classList.add('scrolled'); }
     else{ header.classList.remove('scrolled'); }
+    if(header.classList.contains('scrolled') !== wasScrolled){ updateHeaderLogo(); }
     if(scrollCue){ scrollCue.classList.toggle('cue-hidden', window.scrollY > 60); }
     if(scrollProgress){
       var docHeight = document.documentElement.scrollHeight - window.innerHeight;
