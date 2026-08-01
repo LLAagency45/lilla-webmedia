@@ -1387,6 +1387,49 @@
   .gd-real-text h3{ font-size:22px; margin-bottom:14px; }
   .gd-real-text p{ font-size:15px; margin-bottom:14px; }
 
+  /* Zwischenüberschrift innerhalb des Grafikdesign-Bereichs */
+  .gd-sub-head{
+    display:flex; align-items:center; flex-wrap:wrap; gap:8px 14px;
+    max-width:760px;
+    margin-bottom:26px;
+  }
+  .gd-sub-head h3{ font-size:22px; }
+  .gd-sub-head p{ flex-basis:100%; margin:0; font-size:15px; }
+
+  /* Logo-Raster: die Zuschnitte bringen ihren eigenen hellen Hintergrund
+     aus der Entwurfsvorlage mit. Die Kachel bekommt exakt denselben Ton,
+     damit bei abweichenden Seitenverhältnissen keine Kante sichtbar wird. */
+  .gd-logo-grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:18px;
+    margin-bottom:84px;
+  }
+  .gd-logo-tile{
+    aspect-ratio:4/3;
+    background:#E9E9EA;
+    border:1px solid var(--border);
+    border-radius:var(--radius-sm);
+    overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+    transition:transform .4s var(--ease-luxe), border-color .4s var(--ease-luxe), box-shadow .4s var(--ease-luxe);
+  }
+  .gd-logo-tile.warm{ background:#E9E8E3; }
+  .gd-logo-tile:hover{
+    transform:translateY(-4px);
+    border-color:var(--accent-line);
+    box-shadow:var(--shadow-soft);
+  }
+  .gd-logo-tile img{
+    width:100%; height:100%;
+    object-fit:contain;
+    display:block;
+    padding:11% 13%;
+  }
+  @media (max-width:860px){
+    .gd-logo-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin-bottom:60px; }
+  }
+
   .gd-cases{ display:flex; flex-direction:column; gap:64px; }
   .gd-case{
     display:grid;
@@ -1974,12 +2017,34 @@
       </div>
     </div>
 
+    <div class="gd-sub-head reveal">
+      <h3>Logo-Entwürfe</h3>
+      <span class="gd-badge">Konzeptarbeiten</span>
+      <p>Von der klassischen Wortmarke über geometrische Monogramme bis zum handgemachten Siegel – je nach Branche und Charakter der Marke.</p>
+    </div>
+
+    <div class="gd-logo-grid reveal reveal-stagger">
+      <div class="gd-logo-tile"><img src="assets/logo-konzept-aequitas.jpg" alt="Logo-Entwurf Aequitas: elegante Wortmarke in Serifenschrift" loading="lazy" decoding="async" width="405" height="110"></div>
+      <div class="gd-logo-tile"><img src="assets/logo-konzept-kordeck.jpg" alt="Logo-Entwurf Kordeck: geometrisches K-Monogramm in Dunkelblau" loading="lazy" decoding="async" width="350" height="240"></div>
+      <div class="gd-logo-tile"><img src="assets/logo-konzept-nordeck.jpg" alt="Logo-Entwurf Nordeck: geometrisches Monogramm in Gold und Anthrazit" loading="lazy" decoding="async" width="320" height="250"></div>
+      <div class="gd-logo-tile"><img src="assets/logo-konzept-oakolive.jpg" alt="Logo-Entwurf The Oak &amp; Olive: rundes Siegel mit Olivenzweig in Grün" loading="lazy" decoding="async" width="275" height="285"></div>
+      <div class="gd-logo-tile warm"><img src="assets/logo-konzept-kreda.jpg" alt="Logo-Entwurf Kreda: Wappen-Monogramm in Schwarz" loading="lazy" decoding="async" width="335" height="275"></div>
+      <div class="gd-logo-tile warm"><img src="assets/logo-konzept-cypher.jpg" alt="Logo-Entwurf Cypher: technische Bildmarke im Sechseck in Cyan" loading="lazy" decoding="async" width="580" height="190"></div>
+      <div class="gd-logo-tile warm"><img src="assets/logo-konzept-hearth.jpg" alt="Logo-Entwurf Hearth &amp; Stone: rundes Siegel mit Flamme in Terrakotta" loading="lazy" decoding="async" width="315" height="245"></div>
+      <div class="gd-logo-tile warm"><img src="assets/logo-konzept-vauche.jpg" alt="Logo-Entwurf Vauche: verschlungenes VA-Monogramm mit Wortmarke" loading="lazy" decoding="async" width="405" height="320"></div>
+    </div>
+
+    <div class="gd-sub-head reveal">
+      <h3>Komplette Markenauftritte</h3>
+      <span class="gd-badge">Konzeptarbeiten</span>
+      <p>Wenn aus einem Logo ein ganzer Auftritt wird: Wortmarke, Farbvarianten und passender Flyer als stimmiges Gesamtbild.</p>
+    </div>
+
     <div class="gd-cases">
       <!-- Konzept 1: Café Lindenhof -->
       <div class="gd-case reveal">
         <div class="gd-case-head">
           <h3>Café Lindenhof</h3>
-          <span class="gd-badge">Konzeptarbeit</span>
           <span class="gd-case-colors">Waldgrün · Terrakotta · Creme</span>
         </div>
         <div class="gd-logo-col">
@@ -2017,7 +2082,6 @@
       <div class="gd-case reveal">
         <div class="gd-case-head">
           <h3>Kraftwerk Fitness</h3>
-          <span class="gd-badge">Konzeptarbeit</span>
           <span class="gd-case-colors">Anthrazit · Neon-Orange</span>
         </div>
         <div class="gd-logo-col">
@@ -2055,7 +2119,6 @@
       <div class="gd-case reveal">
         <div class="gd-case-head">
           <h3>Holzwerk Fischer</h3>
-          <span class="gd-badge">Konzeptarbeit</span>
           <span class="gd-case-colors">Holzbraun · Anthrazit · Creme</span>
         </div>
         <div class="gd-logo-col">
