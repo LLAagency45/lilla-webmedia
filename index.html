@@ -612,6 +612,74 @@
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
   }
   @media (max-width:768px){ .page-grain{ display:none; } }
+  /* ---------- Willkommens-Film im Hero ----------
+     Der Film ist der Empfang der Seite: er läuft von allein, stumm und
+     endlos. Statt eines harten Auftauchens öffnet sich der Rahmen beim
+     Hereinscrollen wie eine Blende von der Mitte nach aussen. */
+  .welcome-reel{ position:relative; }
+  .welcome-reel::before{
+    content:'';
+    position:absolute; inset:-9% -5%;
+    background:radial-gradient(58% 58% at 50% 55%, rgba(47,180,196,0.20), transparent 72%);
+    filter:blur(42px);
+    opacity:0;
+    z-index:0;
+    pointer-events:none;
+    transition:opacity 1.8s var(--ease-luxe);
+  }
+  .welcome-reel.is-visible::before{ opacity:1; }
+  :root[data-theme="light"] .welcome-reel::before{
+    background:radial-gradient(58% 58% at 50% 55%, rgba(26,138,151,0.16), transparent 72%);
+  }
+  .welcome-frame{
+    position:relative;
+    z-index:1;
+    /* 16:9 statt des sonst üblichen 16:8-Ausschnitts: der Film endet auf dem
+       Logo, da darf nichts weggeschnitten werden. */
+    aspect-ratio:16/9;
+    clip-path:inset(0 14% 0 14% round var(--radius));
+    transform:scale(0.975);
+    transition:clip-path 1.4s var(--ease-luxe), transform 1.4s var(--ease-luxe), box-shadow 1.4s var(--ease-luxe);
+  }
+  .welcome-reel.is-visible .welcome-frame{
+    clip-path:inset(0 0 0 0 round var(--radius));
+    transform:scale(1);
+    box-shadow:var(--shadow-soft), 0 0 60px -26px var(--accent-line);
+  }
+  /* Kein Hover-Zoom: der Film läuft ohnehin, ein Zoom wäre nur Unruhe. */
+  .welcome-frame:hover .showreel-video{ transform:none; filter:none; }
+  .welcome-vignette{
+    position:absolute; inset:0;
+    z-index:2;
+    pointer-events:none;
+    background:radial-gradient(120% 90% at 50% 50%, transparent 55%, rgba(4,6,8,0.34) 100%);
+  }
+  :root[data-theme="light"] .welcome-vignette{
+    background:radial-gradient(120% 90% at 50% 50%, transparent 58%, rgba(20,24,28,0.16) 100%);
+  }
+  /* Feiner Laufzeit-Strich am unteren Rand - zeigt, dass der Film lebt. */
+  .welcome-progress{
+    position:absolute; left:0; right:0; bottom:0;
+    height:2px;
+    z-index:3;
+    background:rgba(255,255,255,0.09);
+    overflow:hidden;
+  }
+  :root[data-theme="light"] .welcome-progress{ background:rgba(10,14,18,0.09); }
+  .welcome-progress i{
+    display:block; height:100%; width:0%;
+    background:linear-gradient(90deg, var(--accent-deep), var(--accent) 55%, var(--accent-bright));
+    transition:width .3s linear;
+  }
+  .welcome-progress i.no-anim{ transition:none; }
+  @media (prefers-reduced-motion: reduce){
+    .welcome-frame{ clip-path:none; transform:none; }
+    .welcome-progress{ display:none; }
+  }
+
+  /* Showcase-Video im Webseiten-Bereich */
+  .webs-showcase{ margin:34px 0 36px; }
+
   .hero-frame-line{
     position:absolute; left:0; right:0;
     height:1px;
@@ -2111,17 +2179,14 @@
       <a href="#projekte" class="btn btn-ghost nav-link">Projekte ansehen</a>
     </div>
 
-    <!-- SHOWREEL: videos/webseiten-showcase.mp4, Poster: assets/webseiten-showcase-poster.jpg -->
-    <div class="showreel reveal" style="transition-delay:.5s">
-      <div class="showreel-frame viewfinder" id="showreelFrame">
-        <video id="showreelVideo" class="showreel-video" src="videos/webseiten-showcase.mp4" poster="assets/webseiten-showcase-poster.jpg" muted loop playsinline preload="metadata" width="1920" height="1080" aria-hidden="true"></video>
-        <span class="showreel-scrim" aria-hidden="true"></span>
-        <div class="showreel-play">
-          <div class="play-circle">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 5v14l12-7L8 5z" fill="var(--text-0)"/></svg>
-          </div>
-          <span class="showreel-note">Showreel</span>
-        </div>
+    <!-- WILLKOMMENS-FILM: videos/willkommen.mp4, Poster: assets/willkommen-poster.jpg
+         Läuft stumm und in Endlosschleife, sobald er im Bild ist. Kein
+         Abspiel-Knopf: der Film ist der Empfang, keine Mediathek. -->
+    <div class="showreel welcome-reel reveal" style="transition-delay:.5s">
+      <div class="showreel-frame viewfinder welcome-frame" id="welcomeFrame">
+        <video id="welcomeVideo" class="showreel-video" src="videos/willkommen.mp4" poster="assets/willkommen-poster.jpg" muted loop playsinline preload="metadata" width="1920" height="1080" aria-hidden="true"></video>
+        <span class="welcome-vignette" aria-hidden="true"></span>
+        <span class="welcome-progress" aria-hidden="true"><i id="welcomeBar"></i></span>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
       </div>
     </div>
@@ -2139,6 +2204,23 @@
         <h2>Webseiten, die wirklich gut sind.</h2>
         <p><strong style="color:var(--text-0);">Diese Website, die du gerade siehst,</strong> ist selbst ein gutes Beispiel für unsere Arbeit.</p>
         <p>Individuelle, moderne Webseiten, die auf jedem Gerät gut aussehen – mit hochwertigem Design, schnellen Ladezeiten und klarer Markenwirkung. Ideal für Unternehmen, Onlineshops, Start-ups und Selbstständige.</p>
+
+        <!-- SHOWCASE: videos/webseiten-showcase.mp4 - der Zeitraffer vom Aufbau
+             einer Seite. Steht hier statt im Hero, weil er thematisch genau
+             hierher gehört. -->
+        <div class="webs-showcase">
+          <div class="showreel-frame viewfinder" id="showreelFrame">
+            <video id="showreelVideo" class="showreel-video" src="videos/webseiten-showcase.mp4" poster="assets/webseiten-showcase-poster.jpg" muted loop playsinline preload="metadata" width="1920" height="1080" aria-hidden="true"></video>
+            <span class="showreel-scrim" aria-hidden="true"></span>
+            <div class="showreel-play">
+              <div class="play-circle">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 5v14l12-7L8 5z" fill="var(--text-0)"/></svg>
+              </div>
+              <span class="showreel-note">So entsteht eine Seite</span>
+            </div>
+            <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
+          </div>
+        </div>
 
         <div class="feature-list">
           <div class="feature-item">
@@ -3386,6 +3468,43 @@
   }
   initShowreel(document.getElementById('showreelFrame'), document.getElementById('showreelVideo'));
   initShowreel(document.getElementById('leistungenShowreelFrame'), document.getElementById('leistungenShowreelVideo'));
+
+  /* ---------- Willkommens-Film: Endlosschleife + Laufzeit-Strich ---------- */
+  (function initWelcome(){
+    var frame = document.getElementById('welcomeFrame');
+    var video = document.getElementById('welcomeVideo');
+    var bar   = document.getElementById('welcomeBar');
+    if(!frame || !video) return;
+
+    /* Play/Pause je nach Sichtbarkeit - spart Akku und Rechenzeit, wenn der
+       Film ausserhalb des Bildes liegt. */
+    initShowreel(frame, video);
+
+    /* Sicherheitsnetz: manche Browser brechen die Wiedergabe beim Zurück-
+       Navigieren ab. 'ended' sollte bei loop=true nie feuern, aber falls
+       doch, wird hier wieder von vorn gestartet. */
+    video.addEventListener('ended', function(){
+      video.currentTime = 0;
+      video.play().catch(function(){});
+    });
+
+    if(!bar || reduceMotion) return;
+    var lastPct = 0;
+    video.addEventListener('timeupdate', function(){
+      if(!video.duration) return;
+      var pct = (video.currentTime / video.duration) * 100;
+      /* Beim Schleifenwechsel ohne Animation zurücksetzen, sonst würde der
+         Strich sichtbar rückwärts laufen. */
+      if(pct < lastPct){
+        bar.classList.add('no-anim');
+        bar.style.width = '0%';
+        void bar.offsetWidth;
+        bar.classList.remove('no-anim');
+      }
+      bar.style.width = pct.toFixed(1) + '%';
+      lastPct = pct;
+    });
+  })();
 
   /* ---------- Karten: Zeiger-Glow ----------
      Setzt nur zwei CSS-Variablen; das Zeichnen übernimmt der Compositor.
