@@ -1434,18 +1434,34 @@
     display:flex; align-items:center; gap:18px;
     margin-bottom:22px;
   }
+  /* Porträt statt Initialen: deutlich grösser als die alten 60px, sonst ist
+     ein Gesicht nicht zu erkennen. Leichte Entsättigung und ein Hauch mehr
+     Kontrast nehmen dem Bild die glatte Studio-Anmutung und binden es an
+     die Bildsprache der Seite an. */
   .founder-avatar{
-    width:60px; height:60px;
+    width:92px; height:92px;
     border-radius:50%;
     flex-shrink:0;
+    overflow:hidden;
     display:flex; align-items:center; justify-content:center;
-    font-family:'Space Grotesk',sans-serif;
-    font-weight:600;
-    font-size:19px;
-    letter-spacing:0.02em;
-    color:var(--accent-bright);
     background:linear-gradient(155deg, rgba(47,180,196,0.18), rgba(47,180,196,0.03));
     border:1px solid var(--accent-line);
+    box-shadow:0 10px 28px -14px rgba(0,0,0,0.45);
+  }
+  .founder-avatar img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+    filter:saturate(0.9) contrast(1.04);
+  }
+  /* Feines Korn direkt über dem Porträt - dieselbe Textur wie im Hero */
+  .founder-avatar{ position:relative; }
+  .founder-avatar::after{
+    content:'';
+    position:absolute; inset:0;
+    pointer-events:none;
+    mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
   }
   .founder-name{
     font-family:'Space Grotesk',sans-serif;
@@ -1463,7 +1479,7 @@
   @media (max-width:560px){
     .founder-card{ padding:30px 26px; }
     .founder-head{ gap:14px; }
-    .founder-avatar{ width:52px; height:52px; font-size:16px; }
+    .founder-avatar{ width:74px; height:74px; }
   }
 
   /* ---------- Grafikdesign & Print ----------
@@ -2852,7 +2868,9 @@
     <div class="founder-card reveal">
       <span class="founder-label">Wer hinter Lilla Web & Media steht</span>
       <div class="founder-head">
-        <div class="founder-avatar" aria-hidden="true">SL</div>
+        <div class="founder-avatar">
+          <img src="assets/simon-portrait.jpg" alt="Simon Lilla, Gründer von Lilla Web &amp; Media" loading="lazy" decoding="async" width="400" height="400">
+        </div>
         <div>
           <div class="founder-name">Simon Lilla</div>
           <div class="founder-role">Gründer von Lilla Web & Media</div>
