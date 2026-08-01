@@ -396,7 +396,17 @@
     white-space:nowrap;
   }
   footer .logo-tagline{ font-size:9.5px; padding-left:10px; margin-left:10px; }
-  @media (max-width:380px){ .logo-tagline{ display:none; } }
+  /* "Web & Media" bleibt auch auf sehr schmalen Geräten stehen - der Zusatz
+     gehört zum Markennamen. Auf kleinen Displays wird stattdessen die
+     Wortmarke etwas kleiner, damit beides nebeneinander Platz hat. */
+  @media (max-width:420px){
+    .logo-img{ height:28px; }
+    .logo-tagline{ font-size:9px; letter-spacing:0.1em; padding-left:9px; margin-left:9px; }
+  }
+  @media (max-width:340px){
+    .logo-img{ height:25px; }
+    .logo-tagline{ font-size:8.5px; letter-spacing:0.07em; padding-left:7px; margin-left:7px; }
+  }
   .nav-links{
     display:flex; align-items:center; gap:38px;
   }
@@ -733,6 +743,22 @@
     transform:translateY(-1px);
   }
   .hero-badge .dot{ width:5px; height:5px; border-radius:50%; background:var(--accent); }
+  /* Auf schmalen Displays stapeln sich die sechs Pillen zu einem ~240px
+     hohen Block und schieben die eigentliche Botschaft weit nach unten.
+     Dort kommt deshalb zuerst die Überschrift, die Leistungen folgen
+     darunter als Beleg - inhaltlich identisch, nur klarer gewichtet. */
+  @media (max-width:768px){
+    .hero .wrap{ display:flex; flex-direction:column; }
+    .hero-heading{ order:1; }
+    .hero-sub{ order:2; }
+    .hero-actions{ order:3; }
+    .hero-badges{ order:4; margin-bottom:0; margin-top:38px; gap:9px; }
+    .showreel{ order:5; }
+    .hero-badge{ font-size:12px; padding:7px 14px; }
+    /* Reveal-Verzögerung an die neue Position anpassen (überschreibt das
+       inline gesetzte transition-delay, daher !important). */
+    .hero-badges{ transition-delay:.44s !important; }
+  }
 
   .hero h1{
     font-size:clamp(38px, 9.5vw, 98px);
@@ -1440,12 +1466,17 @@
      Alle Innenmaße skalieren über Container-Queries (cqw) proportional mit,
      damit die Druck-Proportionen auf jeder Bildschirmbreite stimmen. */
   .gd-intro{ max-width:760px; margin-bottom:16px; }
+  /* Der Osterfeuer-Flyer ist die einzige echte Kundenarbeit auf der Seite und
+     bekommt deshalb mehr Fläche als die Konzepte darunter. Die Textspalte ist
+     begrenzt, damit keine überlangen Zeilen entstehen und rechts kein toter
+     Raum bleibt. */
   .gd-real-grid{
     display:grid;
-    grid-template-columns:minmax(0,300px) minmax(0,1fr);
-    gap:36px; align-items:center;
+    grid-template-columns:minmax(0,380px) minmax(0,1fr);
+    gap:52px; align-items:center;
     margin-bottom:80px;
   }
+  .gd-real-text{ max-width:520px; }
   .gd-real-flyer{
     border-radius:var(--radius-sm);
     overflow:hidden;
@@ -1636,8 +1667,9 @@
 
   @media (max-width:860px){
     .gd-case{ grid-template-columns:1fr; gap:24px; }
-    .gd-real-grid{ grid-template-columns:1fr; gap:24px; margin-bottom:56px; }
-    .gd-real-flyer{ max-width:300px; }
+    .gd-real-grid{ grid-template-columns:1fr; gap:26px; margin-bottom:56px; }
+    .gd-real-flyer{ max-width:340px; }
+    .gd-real-text{ max-width:none; }
     .gd-cases{ gap:52px; }
   }
 
@@ -1970,6 +2002,33 @@
     padding-bottom:50px;
   }
   .footer-brand p{ margin-top:14px; font-size:14px; max-width:280px; }
+  /* Verfügbarkeits-Hinweis füllt die Markenspalte, die sonst unter dem Logo
+     leer blieb - und ist für Anfragende die relevanteste Information. */
+  .footer-status{
+    display:inline-flex; align-items:center; gap:9px;
+    margin-top:20px;
+    font-size:12.5px;
+    color:var(--text-1);
+    padding:8px 15px;
+    border:1px solid var(--border);
+    border-radius:100px;
+    background:var(--card);
+  }
+  .footer-status-dot{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--accent);
+    flex-shrink:0;
+    box-shadow:0 0 0 3px var(--accent-soft);
+  }
+  .footer-nav-cols{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0,1fr));
+    column-gap:24px;
+  }
+  .footer-cta{ margin-top:22px; }
+  .footer-legal{ display:flex; gap:22px; }
+  .footer-legal a{ font-size:13px; color:var(--text-2); transition:color .3s var(--ease); }
+  .footer-legal a:hover{ color:var(--accent); }
   .footer-col h5{
     font-size:13px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-2);
     margin-bottom:18px; font-weight:600;
@@ -1983,8 +2042,14 @@
     display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;
   }
   .footer-bottom p{ font-size:13px; color:var(--text-2); }
-  @media (max-width:768px){
-    .footer-top{ grid-template-columns:1fr; gap:32px; }
+  @media (max-width:900px){
+    .footer-top{ grid-template-columns:1fr 1fr; gap:40px 32px; }
+    .footer-brand{ grid-column:1/-1; }
+  }
+  @media (max-width:560px){
+    .footer-top{ grid-template-columns:1fr; gap:30px; }
+    .footer-nav-cols{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+    .footer-bottom{ flex-direction:column; align-items:flex-start; gap:16px; }
   }
 
   /* ---------- Reveal on scroll ---------- */
@@ -2972,10 +3037,13 @@
           <span class="logo-tagline">Web &amp; Media</span>
         </a>
         <p>Premium Produktvideos, Produktbilder, Webseiten und Markenauftritt.</p>
+        <span class="footer-status"><span class="footer-status-dot" aria-hidden="true"></span>Aktuell offen für neue Projekte</span>
       </div>
       <div class="footer-col">
         <h5>Navigation</h5>
-        <ul>
+        <!-- Zweispaltig: sieben Punkte in einer Reihe machten den Footer
+             unnötig hoch und die Markenspalte daneben leer. -->
+        <ul class="footer-nav-cols">
           <li><a href="#top" class="nav-link">Start</a></li>
           <li><a href="#webseiten" class="nav-link">Webseiten</a></li>
           <li><a href="#grafikdesign" class="nav-link">Grafikdesign</a></li>
@@ -2983,8 +3051,6 @@
           <li><a href="#projekte" class="nav-link">Projekte</a></li>
           <li><a href="#faq" class="nav-link">Häufige Fragen</a></li>
           <li><a href="#kontakt" class="nav-link">Kontakt</a></li>
-          <li><a href="#" data-modal="impressum">Impressum</a></li>
-          <li><a href="#" data-modal="datenschutz">Datenschutz</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -2993,10 +3059,17 @@
           <li><a href="https://www.instagram.com/lla.agencyde/" target="_blank" rel="noopener">Instagram</a></li>
           <li><a href="mailto:kontakt.llaagency@gmail.com">E-Mail</a></li>
         </ul>
+        <a href="#kontakt" class="btn btn-ghost btn-sm nav-link footer-cta">Projekt anfragen</a>
       </div>
     </div>
+    <!-- Rechtliches steht hier statt in der Navigationsliste: es balanciert
+         die Fusszeile aus und trennt Pflichtangaben von Seiteninhalten. -->
     <div class="footer-bottom">
-      <p>© 2026 Lilla Web & Media. Alle Rechte vorbehalten.</p>
+      <p>© 2026 Lilla Web &amp; Media. Alle Rechte vorbehalten.</p>
+      <div class="footer-legal">
+        <a href="#" data-modal="impressum">Impressum</a>
+        <a href="#" data-modal="datenschutz">Datenschutz</a>
+      </div>
     </div>
   </div>
 </footer>
