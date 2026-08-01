@@ -70,6 +70,19 @@
     font-display:swap;
     src:url('assets/fonts/space-grotesk-latin-variable.woff2') format('woff2');
   }
+  /* Schriften der Marken-Konzepte im Grafikdesign-Bereich. Jede Konzeptmarke
+     hat bewusst eine eigene Typografie - das ist der Kern der gezeigten
+     Arbeit. Bewusst ohne Preload: werden erst geladen, wenn der Bereich
+     tatsächlich gerendert wird, damit die Startseite schnell bleibt. */
+  @font-face{ font-family:'Cormorant Garamond'; font-style:normal; font-weight:500; font-display:swap; src:url('assets/fonts/cormorant-garamond-500.woff2') format('woff2'); }
+  @font-face{ font-family:'Karla'; font-style:normal; font-weight:400 700; font-display:swap; src:url('assets/fonts/karla-variable.woff2') format('woff2'); }
+  @font-face{ font-family:'Archivo Black'; font-style:normal; font-weight:400; font-display:swap; src:url('assets/fonts/archivo-black-400.woff2') format('woff2'); }
+  @font-face{ font-family:'Barlow Condensed'; font-style:normal; font-weight:500; font-display:swap; src:url('assets/fonts/barlow-condensed-500.woff2') format('woff2'); }
+  @font-face{ font-family:'Barlow Condensed'; font-style:normal; font-weight:600; font-display:swap; src:url('assets/fonts/barlow-condensed-600.woff2') format('woff2'); }
+  @font-face{ font-family:'Bitter'; font-style:normal; font-weight:700; font-display:swap; src:url('assets/fonts/bitter-700.woff2') format('woff2'); }
+  @font-face{ font-family:'Archivo'; font-style:normal; font-weight:500; font-display:swap; src:url('assets/fonts/archivo-500.woff2') format('woff2'); }
+  @font-face{ font-family:'IBM Plex Mono'; font-style:normal; font-weight:400; font-display:swap; src:url('assets/fonts/ibm-plex-mono-400.woff2') format('woff2'); }
+  @font-face{ font-family:'IBM Plex Mono'; font-style:normal; font-weight:500; font-display:swap; src:url('assets/fonts/ibm-plex-mono-500.woff2') format('woff2'); }
   :root{
     /* Farbwelt abgeleitet vom Lilla-Logo:
        tiefes Schwarz/Anthrazit, gebürstetes Silber, Petrol-/Teal-Akzent */
@@ -249,6 +262,7 @@
   .section.atmo-in::before{ opacity:1; }
   .section > .wrap{ position:relative; z-index:1; }
   #webseiten::before{ background:radial-gradient(1050px 540px at 90% -4%, var(--fog-teal), transparent 63%), linear-gradient(180deg, var(--section-edge), transparent 30%); }
+  #grafikdesign::before{ background:radial-gradient(1000px 520px at 8% 2%, var(--fog-silver), transparent 63%), linear-gradient(180deg, var(--section-edge), transparent 30%); }
   #leistungen::before{ background:radial-gradient(1000px 520px at 12% 0%, var(--fog-teal), transparent 62%), linear-gradient(180deg, var(--section-edge), transparent 30%); }
   #vorher-nachher::before{ background:radial-gradient(950px 500px at 92% 100%, var(--fog-silver), transparent 62%), linear-gradient(180deg, var(--section-edge), transparent 30%); }
   #projekte::before{ background:radial-gradient(1100px 560px at 10% 2%, var(--fog-silver), transparent 64%), linear-gradient(180deg, var(--section-edge), transparent 30%); }
@@ -1349,6 +1363,172 @@
     .founder-avatar{ width:52px; height:52px; font-size:16px; }
   }
 
+  /* ---------- Grafikdesign & Print ----------
+     Die Konzept-Cases zeigen fremde Markenwelten (eigene Farben/Schriften).
+     Deshalb sind hier bewusst feste Hex-Werte statt der Lilla-Theme-Tokens
+     im Einsatz - die Arbeiten sollen in beiden Modi identisch aussehen,
+     genau wie ein gedruckter Flyer. Nur der Rahmen drumherum ist Theme-fähig.
+     Alle Innenmaße skalieren über Container-Queries (cqw) proportional mit,
+     damit die Druck-Proportionen auf jeder Bildschirmbreite stimmen. */
+  .gd-intro{ max-width:760px; margin-bottom:16px; }
+  .gd-real-grid{
+    display:grid;
+    grid-template-columns:minmax(0,300px) minmax(0,1fr);
+    gap:36px; align-items:center;
+    margin-bottom:80px;
+  }
+  .gd-real-flyer{
+    border-radius:var(--radius-sm);
+    overflow:hidden;
+    border:1px solid var(--border);
+    box-shadow:var(--shadow-soft);
+  }
+  .gd-real-flyer img{ width:100%; height:auto; display:block; }
+  .gd-real-text h3{ font-size:22px; margin-bottom:14px; }
+  .gd-real-text p{ font-size:15px; margin-bottom:14px; }
+
+  .gd-cases{ display:flex; flex-direction:column; gap:64px; }
+  .gd-case{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,0.62fr);
+    gap:30px; align-items:start;
+  }
+  .gd-case-head{ grid-column:1/-1; display:flex; align-items:baseline; flex-wrap:wrap; gap:12px; }
+  .gd-case-head h3{ font-size:20px; }
+  .gd-case-colors{ font-size:12.5px; color:var(--text-2); letter-spacing:0.02em; }
+  .gd-badge{
+    font-size:10.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--accent);
+    border:1px solid var(--accent-line);
+    border-radius:100px;
+    padding:4px 11px;
+  }
+  .gd-logo-col{ display:flex; flex-direction:column; gap:18px; }
+  .gd-logo-card{
+    container-type:inline-size;
+    aspect-ratio:460/300;
+    background:#FFFFFF;
+    border:1px solid #DAD6CE;
+    border-radius:var(--radius-sm);
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+  .gd-variants{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .gd-variant{
+    container-type:inline-size;
+    aspect-ratio:220/138;
+    border-radius:var(--radius-sm);
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+  .gd-flyer{
+    container-type:inline-size;
+    aspect-ratio:559/794;
+    display:flex; flex-direction:column;
+    border-radius:var(--radius-sm);
+    overflow:hidden;
+    box-shadow:var(--shadow-soft);
+  }
+  .gd-flyer img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .gd-flyer h4, .gd-flyer p{ margin:0; }
+
+  /* Café Lindenhof */
+  .gd-leaf{ background:#23402F; border-radius:100% 0 100% 0; transform:rotate(-8deg); }
+  .gd-lh-logo{ flex-direction:column; gap:7.2cqw; }
+  .gd-lh-logo .gd-leaf{ width:11.7cqw; height:11.7cqw; }
+  .gd-lh-name{ font-family:'Cormorant Garamond',serif; font-weight:500; font-size:9.1cqw; letter-spacing:0.02em; color:#23402F; line-height:1; }
+  .gd-lh-sub{ display:flex; align-items:center; gap:2.2cqw; margin-top:1.3cqw; }
+  .gd-lh-sub span{ font-family:'Karla',sans-serif; font-weight:500; font-size:2.2cqw; letter-spacing:0.3em; text-transform:uppercase; color:#C2643C; }
+  .gd-lh-sub i{ width:5.6cqw; height:1px; background:#C2643C; display:block; }
+  .gd-var-lh-1{ background:#23402F; }
+  .gd-var-lh-1 span{ font-family:'Cormorant Garamond',serif; font-size:11.8cqw; color:#F5EFE4; letter-spacing:0.02em; }
+  .gd-var-lh-2{ background:#C2643C; }
+  .gd-var-lh-2 .gd-leaf{ width:20.9cqw; height:20.9cqw; background:#F5EFE4; }
+  .gd-flyer-lh{ background:#F5EFE4; }
+  .gd-flyer-lh .gd-flyer-img{ height:54.2%; margin:4.3cqw 4.3cqw 0; overflow:hidden; }
+  .gd-flyer-lh .gd-flyer-img img{ object-position:50% 62%; }
+  .gd-flyer-lh .gd-flyer-body{ flex:1; display:flex; flex-direction:column; justify-content:space-between; padding:6.1cqw 7.9cqw 7.2cqw; }
+  .gd-flyer-lh .gd-flyer-top{ display:flex; flex-direction:column; gap:2.9cqw; }
+  .gd-flyer-lh .gd-leaf{ width:7.2cqw; height:7.2cqw; }
+  .gd-flyer-lh h4{ font-family:'Cormorant Garamond',serif; font-weight:500; font-size:10.4cqw; line-height:1; color:#23402F; letter-spacing:0.01em; }
+  .gd-flyer-lh .gd-claim{ font-family:'Karla',sans-serif; font-weight:500; font-size:3.6cqw; line-height:1.4; color:#C2643C; }
+  .gd-flyer-lh .gd-flyer-foot{ display:flex; justify-content:space-between; align-items:flex-end; gap:2cqw; border-top:1px solid #DCCFBB; padding-top:2.9cqw; }
+  .gd-flyer-lh .gd-flyer-foot p{ font-family:'Karla',sans-serif; font-size:2.3cqw; line-height:1.6; color:#4A4437; }
+  .gd-flyer-lh .gd-flyer-foot .gd-url{ font-family:'IBM Plex Mono',monospace; font-size:2cqw; color:#8C8271; }
+
+  /* Kraftwerk Fitness */
+  .gd-bolt{ background:#FF6A00; clip-path:polygon(58% 0, 0 58%, 40% 58%, 26% 100%, 100% 38%, 52% 38%); }
+  .gd-kw-logo{ gap:4.3cqw; }
+  .gd-kw-tile{ width:13.5cqw; height:13.5cqw; background:#16181A; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .gd-kw-tile .gd-bolt{ width:4.8cqw; height:8.7cqw; }
+  .gd-kw-text{ display:flex; flex-direction:column; gap:0.9cqw; }
+  .gd-kw-name{ font-family:'Archivo Black',sans-serif; font-size:7.4cqw; line-height:0.9; letter-spacing:-0.02em; color:#16181A; }
+  .gd-kw-sub{ font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:3.7cqw; letter-spacing:0.42em; text-transform:uppercase; color:#FF6A00; }
+  .gd-var-kw-1{ background:#16181A; }
+  .gd-var-kw-1 span{ font-family:'Archivo Black',sans-serif; font-size:10cqw; letter-spacing:-0.02em; color:#F2F2F0; }
+  .gd-var-kw-2{ background:#FF6A00; }
+  .gd-var-kw-2 .gd-bolt{ width:15.5cqw; height:27.3cqw; background:#16181A; }
+  .gd-flyer-kw{ background:#16181A; }
+  .gd-flyer-kw .gd-flyer-img{ height:46.9%; clip-path:polygon(0 0, 100% 0, 100% 78%, 0 100%); position:relative; overflow:hidden; }
+  .gd-flyer-kw .gd-flyer-img img{ object-position:50% 42%; }
+  .gd-flyer-kw .gd-flyer-img::after{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(22,24,26,0.15) 0%, rgba(22,24,26,0) 45%, rgba(22,24,26,0.85) 100%);
+  }
+  .gd-flyer-kw .gd-flyer-body{ flex:1; display:flex; flex-direction:column; justify-content:space-between; padding:5.4cqw 7.2cqw 6.4cqw; }
+  .gd-flyer-kw .gd-flyer-top{ display:flex; flex-direction:column; gap:3.2cqw; }
+  .gd-flyer-kw .gd-bar{ width:13.2cqw; height:0.9cqw; background:#FF6A00; }
+  .gd-flyer-kw h4{ font-family:'Archivo Black',sans-serif; font-size:13.6cqw; line-height:0.86; letter-spacing:-0.03em; color:#FF6A00; }
+  .gd-flyer-kw .gd-claim{ font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:4.7cqw; letter-spacing:0.05em; text-transform:uppercase; color:#F2F2F0; }
+  .gd-flyer-kw .gd-flyer-foot{ display:flex; justify-content:space-between; align-items:flex-end; gap:2cqw; border-top:2px solid #FF6A00; padding-top:2.5cqw; }
+  .gd-flyer-kw .gd-flyer-foot p{ font-family:'Barlow Condensed',sans-serif; font-weight:500; font-size:3cqw; letter-spacing:0.06em; line-height:1.5; color:#C9CCCE; text-transform:uppercase; }
+  .gd-flyer-kw .gd-flyer-foot .gd-url{ font-family:'Archivo Black',sans-serif; font-size:2.7cqw; color:#F2F2F0; }
+
+  /* Holzwerk Fischer */
+  .gd-grain-icon{ background:#8A5A34; display:flex; flex-direction:column; align-items:center; justify-content:center; flex-shrink:0; }
+  .gd-grain-icon i{ background:#EFE9DF; display:block; }
+  .gd-hw-logo{ gap:3.9cqw; }
+  .gd-hw-logo .gd-grain-icon{ width:12.6cqw; height:12.6cqw; gap:1.1cqw; }
+  .gd-hw-logo .gd-grain-icon i{ height:0.87cqw; }
+  .gd-hw-logo .gd-grain-icon i:nth-child(1),
+  .gd-hw-logo .gd-grain-icon i:nth-child(3){ width:6.5cqw; }
+  .gd-hw-logo .gd-grain-icon i:nth-child(2){ width:4.3cqw; }
+  .gd-hw-text{ display:flex; flex-direction:column; gap:0.7cqw; }
+  .gd-hw-name{ font-family:'Bitter',serif; font-weight:700; font-size:6.5cqw; letter-spacing:-0.01em; color:#262523; line-height:1; }
+  .gd-hw-sub{ font-family:'Archivo',sans-serif; font-weight:500; font-size:3.5cqw; letter-spacing:0.3em; text-transform:uppercase; color:#8A5A34; }
+  .gd-var-hw-1{ background:#262523; }
+  .gd-var-hw-1 span{ font-family:'Bitter',serif; font-weight:700; font-size:10cqw; color:#EFE9DF; }
+  .gd-var-hw-2{ background:#EFE9DF; }
+  .gd-var-hw-2 .gd-grain-icon{ width:22.7cqw; height:22.7cqw; background:#262523; gap:2.3cqw; }
+  .gd-var-hw-2 .gd-grain-icon i{ height:1.8cqw; }
+  .gd-var-hw-2 .gd-grain-icon i:nth-child(1),
+  .gd-var-hw-2 .gd-grain-icon i:nth-child(3){ width:11.8cqw; }
+  .gd-var-hw-2 .gd-grain-icon i:nth-child(2){ width:7.7cqw; }
+  .gd-flyer-hw{ background:#EFE9DF; }
+  .gd-flyer-hw .gd-flyer-img{ height:50.4%; overflow:hidden; }
+  .gd-flyer-hw .gd-flyer-img img{ object-position:50% 58%; }
+  .gd-flyer-hw .gd-flyer-body{ flex:1; display:flex; flex-direction:column; justify-content:space-between; padding:6.1cqw 6.8cqw 6.4cqw; }
+  .gd-flyer-hw .gd-flyer-top{ display:flex; flex-direction:column; gap:3.9cqw; }
+  .gd-flyer-hw h4{ font-family:'Bitter',serif; font-weight:700; font-size:8.9cqw; line-height:1.02; letter-spacing:-0.02em; color:#262523; }
+  .gd-hw-list{ display:flex; flex-direction:column; gap:1.8cqw; }
+  .gd-hw-list div{ display:flex; align-items:center; gap:2.1cqw; }
+  .gd-hw-list i{ width:3.9cqw; height:0.54cqw; background:#8A5A34; display:block; flex-shrink:0; }
+  .gd-hw-list span{ font-family:'Archivo',sans-serif; font-weight:500; font-size:3.2cqw; color:#3A3733; }
+  .gd-flyer-hw .gd-flyer-foot{ display:flex; justify-content:space-between; align-items:flex-end; gap:2cqw; border-top:1px solid #D2C6B4; padding-top:2.9cqw; }
+  .gd-flyer-hw .gd-flyer-foot p{ font-family:'Archivo',sans-serif; font-size:2.3cqw; line-height:1.6; color:#4A4640; }
+  .gd-flyer-hw .gd-flyer-foot .gd-grain-icon{ width:6.1cqw; height:6.1cqw; gap:0.54cqw; }
+  .gd-flyer-hw .gd-flyer-foot .gd-grain-icon i{ height:0.54cqw; }
+  .gd-flyer-hw .gd-flyer-foot .gd-grain-icon i:nth-child(1),
+  .gd-flyer-hw .gd-flyer-foot .gd-grain-icon i:nth-child(3){ width:3.2cqw; }
+  .gd-flyer-hw .gd-flyer-foot .gd-grain-icon i:nth-child(2){ width:2.1cqw; }
+
+  @media (max-width:860px){
+    .gd-case{ grid-template-columns:1fr; gap:24px; }
+    .gd-real-grid{ grid-template-columns:1fr; gap:24px; margin-bottom:56px; }
+    .gd-real-flyer{ max-width:300px; }
+    .gd-cases{ gap:52px; }
+  }
+
   /* ---------- FAQ-Akkordeon ---------- */
   .faq-list{ display:flex; flex-direction:column; gap:14px; max-width:760px; }
   .faq-item{
@@ -1631,6 +1811,7 @@
     <ul class="nav-links">
       <li><a href="#top" class="nav-link">Start</a></li>
       <li><a href="#webseiten" class="nav-link">Webseiten</a></li>
+      <li><a href="#grafikdesign" class="nav-link">Grafikdesign</a></li>
       <li><a href="#leistungen" class="nav-link">Leistungen</a></li>
       <li><a href="#projekte" class="nav-link">Projekte</a></li>
       <li><a href="#ablauf" class="nav-link">Ablauf</a></li>
@@ -1653,6 +1834,7 @@
   <img src="assets/logo-dark.png" alt="Lilla Web & Media Logo" class="mobile-logo" id="mobileLogoImg" width="580" height="430" decoding="async">
   <a href="#top" class="nav-link">Start</a>
   <a href="#webseiten" class="nav-link">Webseiten</a>
+  <a href="#grafikdesign" class="nav-link">Grafikdesign</a>
   <a href="#leistungen" class="nav-link">Leistungen</a>
   <a href="#projekte" class="nav-link">Projekte</a>
   <a href="#ablauf" class="nav-link">Ablauf</a>
@@ -1764,6 +1946,150 @@
         </div>
 
         <a href="#kontakt" class="btn btn-primary nav-link" style="margin-top:34px;">Webseiten-Projekt anfragen</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     GRAFIKDESIGN & PRINT
+========================================================= -->
+<section class="section" id="grafikdesign">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Grafikdesign &amp; Print</span>
+      <h2>Logos, Flyer und Plakate, die im Gedächtnis bleiben.</h2>
+      <p class="gd-intro">Ob Vereinsfest, Ladeneröffnung oder ein kompletter Markenauftritt: Ich gestalte Logos, Flyer, Plakate und Visitenkarten – auf Wunsch als stimmiges Gesamtpaket, das gedruckt genauso gut aussieht wie online.</p>
+    </div>
+
+    <div class="gd-real-grid reveal">
+      <div class="gd-real-flyer">
+        <img src="assets/grafikdesign-osterfeuer.jpg" alt="Einladungsflyer zum Osterfeuer des Burschenvereins Oberschweinbach" loading="lazy" decoding="async" width="708" height="996">
+      </div>
+      <div class="gd-real-text">
+        <h3>Einladungsflyer Osterfeuer</h3>
+        <p>Einladungsflyer für das jährliche Osterfeuer des Burschenvereins Oberschweinbach. Das Motiv des Feuers trägt den ganzen Flyer, die gebrochene Schrift greift den traditionellen Charakter der Veranstaltung auf – alle wichtigen Infos bleiben auf einen Blick lesbar.</p>
+        <p><strong style="color:var(--text-0);">Genau so etwas brauchst du auch?</strong> Ob Vereinsfest, Aktion im Laden oder Veranstaltung im Ort – melde dich einfach.</p>
+        <a href="#kontakt" class="btn btn-secondary nav-link" style="margin-top:8px;">Flyer anfragen</a>
+      </div>
+    </div>
+
+    <div class="gd-cases">
+      <!-- Konzept 1: Café Lindenhof -->
+      <div class="gd-case reveal">
+        <div class="gd-case-head">
+          <h3>Café Lindenhof</h3>
+          <span class="gd-badge">Konzeptarbeit</span>
+          <span class="gd-case-colors">Waldgrün · Terrakotta · Creme</span>
+        </div>
+        <div class="gd-logo-col">
+          <div class="gd-logo-card gd-lh-logo">
+            <span class="gd-leaf"></span>
+            <div style="display:flex; flex-direction:column; align-items:center;">
+              <div class="gd-lh-name">Café Lindenhof</div>
+              <div class="gd-lh-sub"><i></i><span>Dorfcafé</span><i></i></div>
+            </div>
+          </div>
+          <div class="gd-variants">
+            <div class="gd-variant gd-var-lh-1"><span>Café Lindenhof</span></div>
+            <div class="gd-variant gd-var-lh-2"><span class="gd-leaf"></span></div>
+          </div>
+        </div>
+        <div class="gd-flyer gd-flyer-lh">
+          <div class="gd-flyer-img">
+            <img src="assets/grafikdesign-cafe-lindenhof.jpg" alt="Kaffee und Gebäck am Fenster" loading="lazy" decoding="async" width="896" height="1200">
+          </div>
+          <div class="gd-flyer-body">
+            <div class="gd-flyer-top">
+              <span class="gd-leaf"></span>
+              <h4>Café Lindenhof</h4>
+              <p class="gd-claim">Frisch. Gemütlich. Bei uns im Dorf.</p>
+            </div>
+            <div class="gd-flyer-foot">
+              <p>Lindenplatz 1 · 00000 Musterdorf<br>Mi–So 8–18 Uhr</p>
+              <span class="gd-url">cafe-lindenhof.de</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Konzept 2: Kraftwerk Fitness -->
+      <div class="gd-case reveal">
+        <div class="gd-case-head">
+          <h3>Kraftwerk Fitness</h3>
+          <span class="gd-badge">Konzeptarbeit</span>
+          <span class="gd-case-colors">Anthrazit · Neon-Orange</span>
+        </div>
+        <div class="gd-logo-col">
+          <div class="gd-logo-card gd-kw-logo">
+            <div class="gd-kw-tile"><span class="gd-bolt"></span></div>
+            <div class="gd-kw-text">
+              <div class="gd-kw-name">KRAFTWERK</div>
+              <div class="gd-kw-sub">Fitness</div>
+            </div>
+          </div>
+          <div class="gd-variants">
+            <div class="gd-variant gd-var-kw-1"><span>KRAFTWERK</span></div>
+            <div class="gd-variant gd-var-kw-2"><span class="gd-bolt"></span></div>
+          </div>
+        </div>
+        <div class="gd-flyer gd-flyer-kw">
+          <div class="gd-flyer-img">
+            <img src="assets/grafikdesign-kraftwerk-fitness.jpg" alt="Silhouette beim Kreuzheben" loading="lazy" decoding="async" width="896" height="1200">
+          </div>
+          <div class="gd-flyer-body">
+            <div class="gd-flyer-top">
+              <span class="gd-bar"></span>
+              <h4>JETZT<br>STARTEN.</h4>
+              <p class="gd-claim">Dein Studio im Dorf. 24/7 offen.</p>
+            </div>
+            <div class="gd-flyer-foot">
+              <p>Industriestr. 4 · 00000 Musterdorf<br>Probetraining kostenlos</p>
+              <span class="gd-url">KRAFTWERK</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Konzept 3: Holzwerk Fischer -->
+      <div class="gd-case reveal">
+        <div class="gd-case-head">
+          <h3>Holzwerk Fischer</h3>
+          <span class="gd-badge">Konzeptarbeit</span>
+          <span class="gd-case-colors">Holzbraun · Anthrazit · Creme</span>
+        </div>
+        <div class="gd-logo-col">
+          <div class="gd-logo-card gd-hw-logo">
+            <span class="gd-grain-icon"><i></i><i></i><i></i></span>
+            <div class="gd-hw-text">
+              <div class="gd-hw-name">Holzwerk</div>
+              <div class="gd-hw-sub">Fischer</div>
+            </div>
+          </div>
+          <div class="gd-variants">
+            <div class="gd-variant gd-var-hw-1"><span>Holzwerk Fischer</span></div>
+            <div class="gd-variant gd-var-hw-2"><span class="gd-grain-icon"><i></i><i></i><i></i></span></div>
+          </div>
+        </div>
+        <div class="gd-flyer gd-flyer-hw">
+          <div class="gd-flyer-img">
+            <img src="assets/grafikdesign-holzwerk-fischer.jpg" alt="Massivholz-Maserung in der Werkstatt" loading="lazy" decoding="async" width="896" height="1200">
+          </div>
+          <div class="gd-flyer-body">
+            <div class="gd-flyer-top">
+              <h4>Handwerk mit<br>Charakter.</h4>
+              <div class="gd-hw-list">
+                <div><i></i><span>Möbel nach Maß</span></div>
+                <div><i></i><span>Innenausbau</span></div>
+                <div><i></i><span>Reparaturen</span></div>
+              </div>
+            </div>
+            <div class="gd-flyer-foot">
+              <p>Werkstattweg 7 · 00000 Musterdorf<br>Termine nach Absprache</p>
+              <span class="gd-grain-icon"><i></i><i></i><i></i></span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -2321,6 +2647,7 @@
         <ul>
           <li><a href="#top" class="nav-link">Start</a></li>
           <li><a href="#webseiten" class="nav-link">Webseiten</a></li>
+          <li><a href="#grafikdesign" class="nav-link">Grafikdesign</a></li>
           <li><a href="#leistungen" class="nav-link">Leistungen</a></li>
           <li><a href="#projekte" class="nav-link">Projekte</a></li>
           <li><a href="#faq" class="nav-link">Häufige Fragen</a></li>
