@@ -864,7 +864,7 @@
     transition:opacity .6s var(--ease-luxe), transform .6s var(--ease-luxe);
   }
   .service-card:hover{
-    background:var(--card-hover);
+    background-color:var(--card-hover);
     border-color:var(--accent-line);
     transform:translateY(-7px);
     box-shadow:var(--shadow-lift), inset 0 1px 0 rgba(255,255,255,0.07);
@@ -1227,7 +1227,8 @@
   }
   .price-card:hover{ transform:translateY(-7px); border-color:var(--border-strong); box-shadow:var(--shadow-lift), inset 0 1px 0 rgba(255,255,255,0.05); }
   .price-card.featured{
-    background:linear-gradient(165deg, rgba(47,180,196,0.08), var(--bg-1) 55%);
+    background-color:var(--bg-1);
+    background-image:linear-gradient(165deg, rgba(47,180,196,0.08), var(--bg-1) 55%);
     border-color:var(--accent-line);
     box-shadow:0 20px 60px -26px rgba(47,180,196,0.3), inset 0 1px 0 rgba(255,255,255,0.06);
   }
@@ -1570,6 +1571,188 @@
     .gd-real-grid{ grid-template-columns:1fr; gap:24px; margin-bottom:56px; }
     .gd-real-flyer{ max-width:300px; }
     .gd-cases{ gap:52px; }
+  }
+
+  /* ---------- Karten: Zeiger-Glow ----------
+     Ein sehr dezenter Lichtfleck folgt der Maus über der Karte. Bewusst als
+     background-image umgesetzt (nicht als Overlay-Pseudoelement), damit er
+     hinter dem Text liegt und den Kontrast nicht antastet. Nur auf Geräten
+     mit echtem Zeiger - auf Touch gibt es kein Hover, das wäre nutzlos. */
+  @media (hover:hover) and (pointer:fine){
+    .service-card, .price-card{
+      background-repeat:no-repeat;
+      transition:background-image .5s var(--ease-luxe), background-color .6s var(--ease-luxe),
+                 border-color .6s var(--ease-luxe), transform .6s var(--ease-luxe), box-shadow .6s var(--ease-luxe);
+    }
+    .service-card.is-pointed{
+      background-image:radial-gradient(340px circle at var(--mx,50%) var(--my,50%), var(--accent-soft), transparent 62%);
+    }
+    .price-card.is-pointed{
+      background-image:radial-gradient(360px circle at var(--mx,50%) var(--my,50%), var(--accent-soft), transparent 64%);
+    }
+    .price-card.featured.is-pointed{
+      background-image:radial-gradient(360px circle at var(--mx,50%) var(--my,50%), var(--accent-soft), transparent 64%),
+                       linear-gradient(165deg, rgba(47,180,196,0.08), var(--bg-1) 55%);
+    }
+  }
+
+  /* ---------- Lightbox / Arbeiten-Viewer ----------
+     Öffnet Flyer und Logos gross. Der Übergang ist eine "shared element
+     transition": das angeklickte Element wird per FLIP von seiner Position
+     im Raster an die Zielposition animiert, statt hart aufzupoppen. */
+  .lb{
+    position:fixed; inset:0; z-index:1200;
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; visibility:hidden;
+    transition:opacity .45s var(--ease-luxe), visibility .45s var(--ease-luxe);
+  }
+  .lb.open{ opacity:1; visibility:visible; }
+  .lb-backdrop{
+    position:absolute; inset:0;
+    background:rgba(5,6,7,0.86);
+    backdrop-filter:blur(10px) saturate(120%);
+    -webkit-backdrop-filter:blur(10px) saturate(120%);
+  }
+  :root[data-theme="light"] .lb-backdrop{ background:rgba(232,234,236,0.9); }
+  .lb-stage{
+    position:relative;
+    display:flex; align-items:center; justify-content:center;
+    width:100%; height:100%;
+    padding:76px 84px 92px;
+    pointer-events:none;
+  }
+  .lb-media{
+    position:relative;
+    max-width:100%; max-height:100%;
+    display:flex; align-items:center; justify-content:center;
+    transform-origin:center center;
+    will-change:transform;
+    pointer-events:auto;
+  }
+  /* Bilder. Masse bewusst in Viewport-Einheiten statt Prozent: die Bühne
+     hat keine feste Höhe, ein prozentualer Wert liefe dort ins Leere. */
+  .lb-media > img{
+    display:block;
+    max-width:86vw;
+    max-height:calc(100svh - 200px);
+    width:auto; height:auto;
+    object-fit:contain;
+    border-radius:var(--radius-sm);
+    box-shadow:0 40px 90px -30px rgba(0,0,0,0.7);
+  }
+  /* Geklonter CSS-Flyer: über die Breite gesteuert, die Höhe ergibt sich
+     aus dem A5-Verhältnis (559/794 = 0.704). Die Container-Query im Flyer
+     skaliert dadurch alle Innenmasse automatisch mit. */
+  .lb-media > .gd-flyer{
+    width:min(86vw, calc((100svh - 200px) * 0.704));
+    height:auto;
+    box-shadow:0 40px 90px -30px rgba(0,0,0,0.7);
+  }
+  .lb-chrome{
+    position:absolute;
+    z-index:2;
+    opacity:0;
+    transition:opacity .3s var(--ease-luxe) .18s;
+  }
+  .lb.open .lb-chrome{ opacity:1; }
+  .lb-close{
+    top:24px; right:26px;
+    width:44px; height:44px;
+    border-radius:50%;
+    border:1px solid var(--border-strong);
+    background:var(--card);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    color:var(--text-0);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    transition:border-color .3s var(--ease), color .3s var(--ease), transform .3s var(--ease), background .3s var(--ease);
+  }
+  .lb-close:hover{ border-color:var(--accent-line); color:var(--accent); background:var(--accent-soft); }
+  .lb-close:active{ transform:scale(0.92); }
+  .lb-nav{
+    top:50%;
+    width:48px; height:48px;
+    margin-top:-24px;
+    border-radius:50%;
+    border:1px solid var(--border-strong);
+    background:var(--card);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    color:var(--text-0);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    transition:border-color .3s var(--ease), color .3s var(--ease), transform .3s var(--ease), background .3s var(--ease);
+  }
+  .lb-nav:hover{ border-color:var(--accent-line); color:var(--accent); background:var(--accent-soft); }
+  .lb-nav:active{ transform:scale(0.92); }
+  .lb-prev{ left:22px; }
+  .lb-next{ right:22px; }
+  .lb-prev:hover{ transform:translateX(-2px); }
+  .lb-next:hover{ transform:translateX(2px); }
+  .lb-caption{
+    left:0; right:0; bottom:26px;
+    display:flex; align-items:center; justify-content:center; gap:14px;
+    flex-wrap:wrap;
+    padding:0 26px;
+    text-align:center;
+  }
+  .lb-title{ font-size:14.5px; color:var(--text-0); font-weight:500; }
+  .lb-counter{
+    font-size:12px; letter-spacing:0.1em;
+    color:var(--text-2);
+    padding-left:14px;
+    border-left:1px solid var(--border-strong);
+  }
+  @media (max-width:760px){
+    .lb-stage{ padding:64px 16px 84px; }
+    .lb-close{ top:14px; right:14px; width:40px; height:40px; }
+    .lb-nav{ top:auto; bottom:20px; margin-top:0; width:42px; height:42px; }
+    .lb-prev{ left:calc(50% - 62px); }
+    .lb-next{ right:calc(50% - 62px); }
+    .lb-caption{ bottom:74px; }
+    .lb-media > .gd-flyer{ width:min(92vw, calc((100svh - 170px) * 0.704)); }
+    .lb-media > img{ max-width:92vw; max-height:calc(100svh - 170px); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .lb-media{ transition:none !important; }
+  }
+
+  /* Klick-Affordanz auf den Arbeiten */
+  .lb-trigger{
+    position:relative;
+    cursor:pointer;
+    transition:transform .5s var(--ease-luxe), box-shadow .5s var(--ease-luxe), border-color .5s var(--ease-luxe);
+  }
+  .lb-trigger::after{
+    content:'Ansehen';
+    position:absolute; left:50%; bottom:14px;
+    transform:translate(-50%, 8px);
+    font-family:'Inter',sans-serif;
+    font-size:10.5px; font-weight:600;
+    letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--text-0);
+    padding:7px 15px;
+    border-radius:100px;
+    border:1px solid var(--border-strong);
+    background:rgba(8,8,10,0.72);
+    backdrop-filter:blur(10px) saturate(140%);
+    -webkit-backdrop-filter:blur(10px) saturate(140%);
+    opacity:0;
+    pointer-events:none;
+    z-index:5;
+    transition:opacity .4s var(--ease-luxe), transform .4s var(--ease-luxe);
+  }
+  :root[data-theme="light"] .lb-trigger::after{
+    background:rgba(247,248,249,0.86);
+  }
+  .lb-trigger:hover{ transform:translateY(-4px); }
+  .lb-trigger:hover::after,
+  .lb-trigger:focus-visible::after{ opacity:1; transform:translate(-50%, 0); }
+  /* Auf Touchgeräten gibt es kein Hover - Hinweis dauerhaft dezent zeigen */
+  @media (hover:none), (pointer:coarse){
+    .lb-trigger::after{ opacity:.82; transform:translate(-50%, 0); }
+    .lb-trigger:hover{ transform:none; }
   }
 
   /* ---------- FAQ-Akkordeon ---------- */
@@ -2006,7 +2189,7 @@
     </div>
 
     <div class="gd-real-grid reveal">
-      <div class="gd-real-flyer">
+      <div class="gd-real-flyer lb-trigger" role="button" tabindex="0" data-lb data-lb-kind="img" data-lb-title="Einladungsflyer Osterfeuer">
         <img src="assets/grafikdesign-osterfeuer.jpg" alt="Einladungsflyer zum Osterfeuer des Burschenvereins Oberschweinbach" loading="lazy" decoding="async" width="708" height="996">
       </div>
       <div class="gd-real-text">
@@ -2027,14 +2210,14 @@
     </div>
 
     <div class="gd-logo-grid reveal reveal-stagger">
-      <div class="gd-logo-tile"><img src="assets/logo-konzept-aequitas.jpg" alt="Logo-Entwurf Aequitas: elegante Wortmarke in Serifenschrift" loading="lazy" decoding="async" width="405" height="110"></div>
-      <div class="gd-logo-tile"><img src="assets/logo-konzept-kordeck.jpg" alt="Logo-Entwurf Kordeck: geometrisches K-Monogramm in Dunkelblau" loading="lazy" decoding="async" width="350" height="240"></div>
-      <div class="gd-logo-tile"><img src="assets/logo-konzept-nordeck.jpg" alt="Logo-Entwurf Nordeck: geometrisches Monogramm in Gold und Anthrazit" loading="lazy" decoding="async" width="320" height="250"></div>
-      <div class="gd-logo-tile"><img src="assets/logo-konzept-oakolive.jpg" alt="Logo-Entwurf The Oak &amp; Olive: rundes Siegel mit Olivenzweig in Grün" loading="lazy" decoding="async" width="275" height="285"></div>
-      <div class="gd-logo-tile warm"><img src="assets/logo-konzept-kreda.jpg" alt="Logo-Entwurf Kreda: Wappen-Monogramm in Schwarz" loading="lazy" decoding="async" width="335" height="275"></div>
-      <div class="gd-logo-tile warm"><img src="assets/logo-konzept-cypher.jpg" alt="Logo-Entwurf Cypher: technische Bildmarke im Sechseck in Cyan" loading="lazy" decoding="async" width="580" height="190"></div>
-      <div class="gd-logo-tile warm"><img src="assets/logo-konzept-hearth.jpg" alt="Logo-Entwurf Hearth &amp; Stone: rundes Siegel mit Flamme in Terrakotta" loading="lazy" decoding="async" width="315" height="245"></div>
-      <div class="gd-logo-tile warm"><img src="assets/logo-konzept-vauche.jpg" alt="Logo-Entwurf Vauche: verschlungenes VA-Monogramm mit Wortmarke" loading="lazy" decoding="async" width="405" height="320"></div>
+      <div class="gd-logo-tile" role="button" tabindex="0" data-lb data-lb-kind="img" data-lb-title="Aequitas — Wortmarke"><img src="assets/logo-konzept-aequitas.jpg" alt="Logo-Entwurf Aequitas: elegante Wortmarke in Serifenschrift" loading="lazy" decoding="async" width="405" height="110"></div>
+      <div class="gd-logo-tile" role="button" tabindex="0" data-lb data-lb-kind="img" data-lb-title="Kordeck — Monogramm"><img src="assets/logo-konzept-kordeck.jpg" alt="Logo-Entwurf Kordeck: geometrisches K-Monogramm in Dunkelblau" loading="lazy" decoding="async" width="350" height="240"></div>
+      <div class="gd-logo-tile" role="button" tabindex="0" data-lb data-lb-kind="img" data-lb-title="Nordeck — Monogramm"><img src="assets/logo-konzept-nordeck.jpg" alt="Logo-Entwurf Nordeck: geometrisches Monogramm in Gold und Anthrazit" loading="lazy" decoding="async" width="320" height="250"></div>
+      <div class="gd-logo-tile" role="button" tabindex="0" data-lb data-lb-kind="img" data-lb-title="The Oak &amp; Olive — Siegel"><img src="assets/logo-konzept-oakolive.jpg" alt="Logo-Entwurf The Oak &amp; Olive: rundes Siegel mit Olivenzweig in Grün" loading="lazy" decoding="async" width="275" height="285"></div>
+      <div class="gd-logo-tile warm" role="button" tabindex="0" data-lb data-lb-kind="img" data-lb-title="Kreda — Wappen-Monogramm"><img src="assets/logo-konzept-kreda.jpg" alt="Logo-Entwurf Kreda: Wappen-Monogramm in Schwarz" loading="lazy" decoding="async" width="335" height="275"></div>
+      <div class="gd-logo-tile warm" role="button" tabindex="0" data-lb data-lb-kind="img" data-lb-title="Cypher — Bildmarke"><img src="assets/logo-konzept-cypher.jpg" alt="Logo-Entwurf Cypher: technische Bildmarke im Sechseck in Cyan" loading="lazy" decoding="async" width="580" height="190"></div>
+      <div class="gd-logo-tile warm" role="button" tabindex="0" data-lb data-lb-kind="img" data-lb-title="Hearth &amp; Stone — Siegel"><img src="assets/logo-konzept-hearth.jpg" alt="Logo-Entwurf Hearth &amp; Stone: rundes Siegel mit Flamme in Terrakotta" loading="lazy" decoding="async" width="315" height="245"></div>
+      <div class="gd-logo-tile warm" role="button" tabindex="0" data-lb data-lb-kind="img" data-lb-title="Vauche — Monogramm"><img src="assets/logo-konzept-vauche.jpg" alt="Logo-Entwurf Vauche: verschlungenes VA-Monogramm mit Wortmarke" loading="lazy" decoding="async" width="405" height="320"></div>
     </div>
 
     <div class="gd-sub-head reveal">
@@ -2063,7 +2246,7 @@
             <div class="gd-variant gd-var-lh-2"><span class="gd-leaf"></span></div>
           </div>
         </div>
-        <div class="gd-flyer gd-flyer-lh">
+        <div class="gd-flyer gd-flyer-lh lb-trigger" role="button" tabindex="0" data-lb data-lb-kind="node" data-lb-title="Café Lindenhof — A5-Flyer">
           <div class="gd-flyer-img">
             <img src="assets/grafikdesign-cafe-lindenhof.jpg" alt="Kaffee und Gebäck am Fenster" loading="lazy" decoding="async" width="896" height="1200">
           </div>
@@ -2100,7 +2283,7 @@
             <div class="gd-variant gd-var-kw-2"><span class="gd-bolt"></span></div>
           </div>
         </div>
-        <div class="gd-flyer gd-flyer-kw">
+        <div class="gd-flyer gd-flyer-kw lb-trigger" role="button" tabindex="0" data-lb data-lb-kind="node" data-lb-title="Kraftwerk Fitness — A5-Flyer">
           <div class="gd-flyer-img">
             <img src="assets/grafikdesign-kraftwerk-fitness.jpg" alt="Silhouette beim Kreuzheben" loading="lazy" decoding="async" width="896" height="1200">
           </div>
@@ -2137,7 +2320,7 @@
             <div class="gd-variant gd-var-hw-2"><span class="gd-grain-icon"><i></i><i></i><i></i></span></div>
           </div>
         </div>
-        <div class="gd-flyer gd-flyer-hw">
+        <div class="gd-flyer gd-flyer-hw lb-trigger" role="button" tabindex="0" data-lb data-lb-kind="node" data-lb-title="Holzwerk Fischer — A5-Flyer">
           <div class="gd-flyer-img">
             <img src="assets/grafikdesign-holzwerk-fischer.jpg" alt="Massivholz-Maserung in der Werkstatt" loading="lazy" decoding="async" width="896" height="1200">
           </div>
@@ -2737,6 +2920,29 @@
 </footer>
 
 <!-- =========================================================
+     LIGHTBOX: Grossansicht für Flyer und Logo-Entwürfe
+========================================================= -->
+<div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Arbeit in Grossansicht" aria-hidden="true">
+  <div class="lb-backdrop" data-lb-dismiss></div>
+  <div class="lb-stage" data-lb-dismiss>
+    <div class="lb-media" id="lbMedia"></div>
+  </div>
+  <button class="lb-chrome lb-close" id="lbClose" type="button" aria-label="Grossansicht schließen">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+  </button>
+  <button class="lb-chrome lb-nav lb-prev" id="lbPrev" type="button" aria-label="Vorherige Arbeit">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <button class="lb-chrome lb-nav lb-next" id="lbNext" type="button" aria-label="Nächste Arbeit">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <div class="lb-chrome lb-caption">
+    <span class="lb-title" id="lbTitle"></span>
+    <span class="lb-counter" id="lbCounter"></span>
+  </div>
+</div>
+
+<!-- =========================================================
      MODALS: Portfolio-Detail, Impressum, Datenschutz
 ========================================================= -->
 <div class="modal-overlay" id="portfolioModal">
@@ -3180,6 +3386,206 @@
   }
   initShowreel(document.getElementById('showreelFrame'), document.getElementById('showreelVideo'));
   initShowreel(document.getElementById('leistungenShowreelFrame'), document.getElementById('leistungenShowreelVideo'));
+
+  /* ---------- Karten: Zeiger-Glow ----------
+     Setzt nur zwei CSS-Variablen; das Zeichnen übernimmt der Compositor.
+     Über rAF gedrosselt, damit schnelle Mausbewegungen keine Layout-Last
+     erzeugen. Nur auf Geräten mit echtem Zeiger aktiv. */
+  if(window.matchMedia('(hover:hover) and (pointer:fine)').matches && !reduceMotion){
+    var glowCards = document.querySelectorAll('.service-card, .price-card');
+    glowCards.forEach(function(card){
+      var pending = false, lastX = 0, lastY = 0;
+      card.addEventListener('pointerenter', function(){ card.classList.add('is-pointed'); });
+      card.addEventListener('pointerleave', function(){ card.classList.remove('is-pointed'); });
+      card.addEventListener('pointermove', function(e){
+        lastX = e.clientX; lastY = e.clientY;
+        if(pending) return;
+        pending = true;
+        requestAnimationFrame(function(){
+          var r = card.getBoundingClientRect();
+          card.style.setProperty('--mx', ((lastX - r.left) / r.width * 100).toFixed(1) + '%');
+          card.style.setProperty('--my', ((lastY - r.top) / r.height * 100).toFixed(1) + '%');
+          pending = false;
+        });
+      }, { passive:true });
+    });
+  }
+
+  /* ---------- Lightbox: Grossansicht für Flyer & Logo-Entwürfe ----------
+     Der Übergang nutzt FLIP: erst die Endposition rendern lassen, dann per
+     Transform zurück auf die Ausgangsposition setzen und zur Identität
+     animieren. Das ergibt eine echte "shared element"-Bewegung statt eines
+     harten Popups - und läuft rein über transform, also GPU-freundlich. */
+  (function initLightbox(){
+    var lb = document.getElementById('lightbox');
+    if(!lb) return;
+    var lbMedia   = document.getElementById('lbMedia');
+    var lbTitle   = document.getElementById('lbTitle');
+    var lbCounter = document.getElementById('lbCounter');
+    var triggers  = Array.prototype.slice.call(document.querySelectorAll('[data-lb]'));
+    if(!triggers.length) return;
+
+    var current = -1;
+    var lastFocused = null;
+    var isAnimating = false;
+
+    function buildContent(trigger){
+      lbMedia.innerHTML = '';
+      if(trigger.getAttribute('data-lb-kind') === 'node'){
+        /* CSS-gebaute Flyer werden geklont; die Container-Query im Flyer
+           skaliert dabei alle Innenmasse automatisch auf die neue Breite. */
+        var clone = trigger.cloneNode(true);
+        clone.classList.remove('lb-trigger');
+        ['role','tabindex','data-lb','data-lb-kind','data-lb-title'].forEach(function(a){
+          clone.removeAttribute(a);
+        });
+        Array.prototype.forEach.call(clone.querySelectorAll('img[loading]'), function(im){
+          im.removeAttribute('loading');
+        });
+        lbMedia.appendChild(clone);
+      } else {
+        var srcImg = trigger.querySelector('img');
+        if(!srcImg) return;
+        var img = document.createElement('img');
+        img.src = srcImg.currentSrc || srcImg.src;
+        img.alt = srcImg.alt || '';
+        lbMedia.appendChild(img);
+      }
+    }
+
+    /* Element im Raster, das als Ausgangspunkt der Bewegung dient */
+    function sourceRect(trigger){
+      return (trigger.querySelector('img') || trigger).getBoundingClientRect();
+    }
+
+    function flip(from){
+      var to = lbMedia.getBoundingClientRect();
+      if(!to.width || !to.height || !from.width) return null;
+      var scale = Math.max(from.width / to.width, 0.02);
+      var dx = (from.left + from.width / 2) - (to.left + to.width / 2);
+      var dy = (from.top + from.height / 2) - (to.top + to.height / 2);
+      return 'translate(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px) scale(' + scale.toFixed(4) + ')';
+    }
+
+    function show(index, animateFrom){
+      var trigger = triggers[index];
+      if(!trigger) return;
+      current = index;
+      buildContent(trigger);
+      lbTitle.textContent = trigger.getAttribute('data-lb-title') || '';
+      lbCounter.textContent = (index + 1) + ' / ' + triggers.length;
+
+      if(reduceMotion || !animateFrom){
+        lbMedia.style.transition = 'none';
+        lbMedia.style.transform = '';
+        lbMedia.style.opacity = '1';
+        return;
+      }
+      var t = flip(animateFrom);
+      if(!t){ lbMedia.style.transform = ''; return; }
+      lbMedia.style.transition = 'none';
+      lbMedia.style.transform = t;
+      lbMedia.style.opacity = '0.55';
+      void lbMedia.offsetWidth; /* Reflow: Startzustand wirklich rendern lassen */
+      lbMedia.style.transition = 'transform .58s var(--ease-luxe), opacity .35s var(--ease-luxe)';
+      lbMedia.style.transform = '';
+      lbMedia.style.opacity = '1';
+    }
+
+    function open(index){
+      if(isAnimating) return;
+      lastFocused = document.activeElement;
+      lb.classList.add('open');
+      lb.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      show(index, sourceRect(triggers[index]));
+      setTimeout(function(){
+        var c = document.getElementById('lbClose');
+        if(c) c.focus();
+      }, 60);
+    }
+
+    function close(){
+      if(isAnimating) return;
+      var trigger = triggers[current];
+      var back = trigger ? sourceRect(trigger) : null;
+      var visible = back && back.bottom > 0 && back.top < window.innerHeight;
+
+      function finish(){
+        lb.classList.remove('open');
+        lb.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        lbMedia.style.transition = 'none';
+        lbMedia.style.transform = '';
+        lbMedia.style.opacity = '';
+        lbMedia.innerHTML = '';
+        isAnimating = false;
+        if(lastFocused && lastFocused.focus){ lastFocused.focus(); }
+      }
+
+      if(reduceMotion || !visible){ finish(); return; }
+      var t = flip(back);
+      if(!t){ finish(); return; }
+      isAnimating = true;
+      lbMedia.style.transition = 'transform .46s var(--ease-luxe), opacity .3s var(--ease-luxe) .16s';
+      lbMedia.style.transform = t;
+      lbMedia.style.opacity = '0';
+      lb.classList.remove('open');
+      lb.setAttribute('aria-hidden', 'true');
+      setTimeout(finish, 470);
+    }
+
+    function step(dir){
+      var next = (current + dir + triggers.length) % triggers.length;
+      /* Beim Blättern von der aktuellen Position aus einblenden, damit die
+         Bewegung zusammenhängend bleibt statt aus dem Nichts zu erscheinen. */
+      var r = lbMedia.getBoundingClientRect();
+      show(next, {
+        left: r.left + (dir * 46), top: r.top,
+        width: r.width * 0.94, height: r.height * 0.94,
+        bottom: r.bottom, right: r.right
+      });
+    }
+
+    triggers.forEach(function(trigger, i){
+      trigger.addEventListener('click', function(){ open(i); });
+      trigger.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); open(i); }
+      });
+    });
+
+    document.getElementById('lbClose').addEventListener('click', close);
+    document.getElementById('lbPrev').addEventListener('click', function(){ step(-1); });
+    document.getElementById('lbNext').addEventListener('click', function(){ step(1); });
+    Array.prototype.forEach.call(lb.querySelectorAll('[data-lb-dismiss]'), function(el){
+      el.addEventListener('click', function(e){ if(e.target === el){ close(); } });
+    });
+
+    document.addEventListener('keydown', function(e){
+      if(!lb.classList.contains('open')) return;
+      if(e.key === 'Escape'){ e.stopPropagation(); close(); }
+      else if(e.key === 'ArrowLeft'){ step(-1); }
+      else if(e.key === 'ArrowRight'){ step(1); }
+      else if(e.key === 'Tab'){
+        /* Fokus in der Grossansicht halten */
+        var f = lb.querySelectorAll('button');
+        if(!f.length) return;
+        var first = f[0], last = f[f.length - 1];
+        if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+        else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+      }
+    }, true);
+
+    /* Wischen auf Touchgeräten */
+    var touchX = null;
+    lb.addEventListener('touchstart', function(e){ touchX = e.changedTouches[0].clientX; }, { passive:true });
+    lb.addEventListener('touchend', function(e){
+      if(touchX === null) return;
+      var dx = e.changedTouches[0].clientX - touchX;
+      if(Math.abs(dx) > 55){ step(dx > 0 ? -1 : 1); }
+      touchX = null;
+    }, { passive:true });
+  })();
 
   /* ---------- Portfolio-Modal ---------- */
   var portfolioModal = document.getElementById('portfolioModal');
