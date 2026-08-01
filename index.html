@@ -885,7 +885,8 @@
     opacity:1; transform:scale(1);
   }
   .showreel-note{
-    font-size:13px; color:var(--text-2); letter-spacing:0.02em;
+    /* Fest hell: liegt über dem abgedunkelten Video, nicht über der Seite */
+    font-size:13px; color:rgba(255,255,255,0.66); letter-spacing:0.02em;
   }
 
   /* ---------- Viewfinder corners (signature element) ---------- */
@@ -1056,17 +1057,22 @@
   .ba-slide-before img{ filter:saturate(0.85) brightness(0.92); }
   .ba-slide-before{ clip-path:inset(0 calc(100% - var(--pos, 50%)) 0 0); }
   .ba-slider:not(.is-dragging) .ba-slide-before{ transition:clip-path .5s var(--ease-luxe); }
+  /* Beschriftungen auf dem Foto: Farben bewusst fest und NICHT über Theme-
+     Tokens. Das Bild darunter sieht in beiden Modi gleich aus - würde die
+     Schrift dem Theme folgen, stünde im Hell-Modus dunkler Text auf der
+     dunklen Pille. Gleiches Prinzip bei allen Overlays über Fotos/Videos. */
   .ba-tag{
     position:absolute; top:16px; z-index:2;
     font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
     padding:6px 12px; border-radius:100px;
-    border:1px solid var(--border-strong);
-    background:rgba(8,8,10,0.6);
+    border:1px solid rgba(255,255,255,0.22);
+    background:rgba(8,8,10,0.66);
+    color:#f2f3f4;
     backdrop-filter:blur(8px) saturate(140%);
     -webkit-backdrop-filter:blur(8px) saturate(140%);
   }
   .ba-slide-before .ba-tag{ left:16px; }
-  .ba-slide-after .ba-tag{ right:16px; border-color:var(--accent-line); color:var(--accent-bright); }
+  .ba-slide-after .ba-tag{ right:16px; border-color:rgba(127,227,236,0.45); color:#7fe3ec; }
   .ba-handle{
     position:absolute; top:0; bottom:0;
     left:var(--pos, 50%);
@@ -1155,11 +1161,12 @@
     position:absolute; top:16px; left:16px; z-index:3;
     display:flex; align-items:center; gap:6px;
     font-size:10.5px; letter-spacing:0.06em; text-transform:uppercase;
-    color:var(--text-1);
+    /* Feste Farben: liegt auf dem Projektbild, das in beiden Modi gleich ist */
+    color:rgba(255,255,255,0.84);
     padding:6px 12px;
     border-radius:100px;
-    border:1px solid var(--border-strong);
-    background:rgba(8,8,10,0.55);
+    border:1px solid rgba(255,255,255,0.2);
+    background:rgba(8,8,10,0.6);
     backdrop-filter:blur(10px) saturate(140%);
     -webkit-backdrop-filter:blur(10px) saturate(140%);
   }
@@ -1181,7 +1188,8 @@
   }
   .p-card:hover .p-meta{ transform:translateY(-4px); }
   .p-meta .cat{
-    font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent-bright);
+    /* Fest hell: steht über dem Projektbild, nicht über der Seitenfläche */
+    font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:#7fe3ec;
     margin-bottom:5px; display:block;
     opacity:.8;
     transition:opacity .45s var(--ease-luxe), letter-spacing .45s var(--ease-luxe);
@@ -2280,7 +2288,7 @@
             <span class="showreel-scrim" aria-hidden="true"></span>
             <div class="showreel-play">
               <div class="play-circle">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 5v14l12-7L8 5z" fill="var(--text-0)"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 5v14l12-7L8 5z" fill="#f2f3f4"/></svg>
               </div>
               <span class="showreel-note">So entsteht eine Seite</span>
             </div>
@@ -2352,7 +2360,7 @@
         <span class="showreel-scrim" aria-hidden="true"></span>
         <div class="showreel-play">
           <div class="play-circle">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 5v14l12-7L8 5z" fill="var(--text-0)"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 5v14l12-7L8 5z" fill="#f2f3f4"/></svg>
           </div>
           <span class="showreel-note">Showreel</span>
         </div>
