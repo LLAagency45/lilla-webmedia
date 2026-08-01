@@ -16,9 +16,12 @@
 <title>Lilla Web & Media | Produktvideos, Webseiten & Markenauftritt</title>
 <meta name="description" content="Lilla Web & Media ist eine Kreativagentur für Produktvideos, Produktbilder, moderne Webseiten, die Optimierung von Amazon- und Onlineshop-Seiten, Social-Media-Inhalte und Markenauftritte – für Unternehmen, Marken und Onlineshops.">
 <meta name="robots" content="index, follow">
+<!-- TODO vor Veröffentlichung: Platzhalter-Domain durch die echte Domain ersetzen. -->
+<link rel="canonical" href="https://DEINE-DOMAIN.de/">
 
 <!-- Open Graph -->
 <meta property="og:title" content="Lilla Web & Media | Produktvideos, Webseiten & Markenauftritt">
+<meta property="og:url" content="https://DEINE-DOMAIN.de/">
 <meta property="og:description" content="Lilla Web & Media entwickelt hochwertige Produktvideos, Produktbilder, moderne Webseiten und optimierte Produktseiten für Marken, Unternehmen und Onlineshops.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="de_DE">
@@ -34,11 +37,13 @@
 <meta name="theme-color" content="#07080a">
 <!-- Favicon -->
 <link rel="icon" href="assets/favicon-lilla.png" type="image/png">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="assets/hero-background.jpg" fetchpriority="high">
+<link rel="preload" as="font" href="assets/fonts/inter-latin-variable.woff2" type="font/woff2" crossorigin>
+<link rel="preload" as="font" href="assets/fonts/space-grotesk-latin-variable.woff2" type="font/woff2" crossorigin>
 
 <style>
   /* ============================================================
@@ -48,6 +53,23 @@
      Signatur-Element: "Viewfinder"-Ecken (Kamera-Fokusrahmen),
      die an Kamera-Sucher erinnern – passend zur Foto-/Videowelt.
      ============================================================ */
+  /* Lokal gehostete Variable Fonts statt Google Fonts CDN:
+     spart einen externen Verbindungsaufbau + Anfrage beim Laden und
+     überträgt keine Besucher-IP mehr an Google (DSGVO). */
+  @font-face{
+    font-family:'Inter';
+    font-style:normal;
+    font-weight:400 700;
+    font-display:swap;
+    src:url('assets/fonts/inter-latin-variable.woff2') format('woff2');
+  }
+  @font-face{
+    font-family:'Space Grotesk';
+    font-style:normal;
+    font-weight:400 700;
+    font-display:swap;
+    src:url('assets/fonts/space-grotesk-latin-variable.woff2') format('woff2');
+  }
   :root{
     /* Farbwelt abgeleitet vom Lilla-Logo:
        tiefes Schwarz/Anthrazit, gebürstetes Silber, Petrol-/Teal-Akzent */
@@ -233,6 +255,7 @@
   #ablauf::before{ background:radial-gradient(900px 480px at 12% 98%, var(--fog-teal), transparent 60%), linear-gradient(180deg, var(--section-edge), transparent 30%); }
   #preise::before{ background:radial-gradient(900px 480px at 88% 100%, var(--fog-teal), transparent 60%), linear-gradient(180deg, var(--section-edge), transparent 30%); }
   #ueber::before{ background:radial-gradient(1000px 520px at 14% 4%, var(--fog-teal), transparent 63%), linear-gradient(180deg, var(--section-edge), transparent 30%); }
+  #faq::before{ background:radial-gradient(950px 500px at 10% 96%, var(--fog-silver), transparent 62%), linear-gradient(180deg, var(--section-edge), transparent 30%); }
   #kontakt::before{ background:radial-gradient(1000px 560px at 85% 10%, var(--fog-silver), transparent 65%), linear-gradient(180deg, var(--section-edge), transparent 30%); }
 
   .section-head{ max-width:640px; margin-bottom:72px; }
@@ -316,19 +339,21 @@
      Text/Icons folgen jetzt einfach den globalen Theme-Tokens, da auch
      der Hero-Bereich dahinter das Theme korrekt wechselt. */
   :root[data-theme="light"] header.scrolled{
-    background:rgba(247,248,249,0.86);
+    background:rgba(247,248,249,0.9);
     box-shadow:0 12px 40px -20px rgba(20,22,26,0.12);
   }
+  /* Blur bewusst moderat gehalten (12px statt z.B. 20px+): header ist fixiert
+     und der Browser muss den Weichzeichner bei jedem Scroll-Frame neu
+     berechnen - ein kleinerer Radius spart spürbar Leistung beim Scrollen,
+     v.a. auf älteren/mobilen Geräten, bei kaum sichtbarem Unterschied. */
   header.scrolled{
     padding:14px 0;
-    background:rgba(8,8,10,0.72);
-    backdrop-filter:blur(18px) saturate(140%);
-    -webkit-backdrop-filter:blur(18px) saturate(140%);
+    background:rgba(8,8,10,0.78);
+    backdrop-filter:blur(12px) saturate(140%);
+    -webkit-backdrop-filter:blur(12px) saturate(140%);
     box-shadow:0 12px 40px -20px rgba(0,0,0,0.5);
     border-bottom:1px solid var(--border);
   }
-  /* Header bleibt bewusst wie der Hero immer dunkel (konsistentes "Marken-
-     Chrome" oben), unabhängig vom gewählten Theme darunter. */
   nav.wrap{
     display:flex; align-items:center; justify-content:space-between;
   }
@@ -425,8 +450,8 @@
   .mobile-menu{
     position:fixed; inset:0;
     background:rgba(8,8,9,0.98);
-    backdrop-filter:blur(20px) saturate(140%);
-    -webkit-backdrop-filter:blur(20px) saturate(140%);
+    backdrop-filter:blur(12px) saturate(140%);
+    -webkit-backdrop-filter:blur(12px) saturate(140%);
     z-index:490;
     display:flex; flex-direction:column;
     align-items:center; justify-content:center;
@@ -467,8 +492,8 @@
     z-index:480;
     padding:12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
     background:rgba(8,8,10,0.9);
-    backdrop-filter:blur(18px) saturate(140%);
-    -webkit-backdrop-filter:blur(18px) saturate(140%);
+    backdrop-filter:blur(8px) saturate(140%);
+    -webkit-backdrop-filter:blur(8px) saturate(140%);
     border-top:1px solid var(--border);
     transform:translateY(0);
     transition:transform .45s var(--ease-luxe);
@@ -542,7 +567,9 @@
     filter:blur(10px);
     z-index:0;
     animation:driftGlow 26s ease-in-out infinite alternate;
+    animation-play-state:paused;
   }
+  .hero.is-in-view .hero-glow{ animation-play-state:running; }
   @keyframes driftGlow{
     from{ transform:translate3d(0,0,0) scale(1); }
     to{ transform:translate3d(1.5%,2.5%,0) scale(1.05); }
@@ -1322,6 +1349,49 @@
     .founder-avatar{ width:52px; height:52px; font-size:16px; }
   }
 
+  /* ---------- FAQ-Akkordeon ---------- */
+  .faq-list{ display:flex; flex-direction:column; gap:14px; max-width:760px; }
+  .faq-item{
+    border:1px solid var(--border);
+    border-radius:var(--radius-sm);
+    background:var(--card);
+    overflow:hidden;
+    transition:border-color .4s var(--ease-luxe), background .4s var(--ease-luxe);
+  }
+  .faq-item:hover{ border-color:var(--accent-line); }
+  .faq-question{
+    width:100%;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    padding:20px 24px;
+    background:none; border:none;
+    text-align:left;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:16px; font-weight:600;
+    color:var(--text-0);
+  }
+  .faq-icon{
+    flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    width:26px; height:26px;
+    border-radius:50%;
+    border:1px solid var(--border);
+    color:var(--accent);
+    transition:transform .4s var(--ease-luxe), border-color .4s var(--ease-luxe);
+  }
+  .faq-item.open .faq-icon{ transform:rotate(45deg); border-color:var(--accent-line); }
+  .faq-answer{
+    display:grid;
+    grid-template-rows:0fr;
+    transition:grid-template-rows .45s var(--ease-luxe);
+  }
+  .faq-answer-inner{ overflow:hidden; }
+  .faq-answer p{ padding:0 24px 22px; font-size:14.5px; }
+  .faq-item.open .faq-answer{ grid-template-rows:1fr; }
+  @media (max-width:560px){
+    .faq-question{ padding:17px 18px; font-size:15px; }
+    .faq-answer p{ padding:0 18px 18px; }
+  }
+
   /* ---------- Contact ---------- */
   .contact-grid{
     display:grid; grid-template-columns:0.85fr 1.15fr; gap:60px;
@@ -1490,6 +1560,49 @@
     "@type": "Person",
     "name": "Simon Lilla"
   }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Wie läuft eine Zusammenarbeit ab?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Nach deiner Anfrage besprechen wir kurz dein Projekt und dein Ziel. Daraus entsteht ein passendes Konzept, das anschließend umgesetzt wird. Am Ende bekommst du die fertigen Inhalte direkt zur Nutzung." }
+    },
+    {
+      "@type": "Question",
+      "name": "Wie lange dauert die Umsetzung?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Das hängt vom Umfang ab: Ein einzelnes Produktvideo ist meist innerhalb weniger Tage fertig, größere Projekte wie eine komplette Webseite oder mehrteilige Content-Serien brauchen entsprechend mehr Zeit." }
+    },
+    {
+      "@type": "Question",
+      "name": "Was kostet mein Projekt?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Die Pakete zeigen Einstiegspreise. Der genaue Preis richtet sich nach Umfang, Produkt und gewünschter Umsetzung und wird nach der Anfrage individuell angeboten." }
+    },
+    {
+      "@type": "Question",
+      "name": "Muss ich eigenes Bild- oder Videomaterial bereitstellen?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Nein, das ist nicht nötig. Produktbilder und -videos entstehen komplett neu - du stellst lediglich dein Produkt zur Verfügung bzw. lieferst die nötigen Infos dazu." }
+    },
+    {
+      "@type": "Question",
+      "name": "Wie viele Korrekturrunden sind enthalten?",
+      "acceptedAnswer": { "@type": "Answer", "text": "In den Paketen ist jeweils eine Korrekturrunde enthalten. Weitere Anpassungen sind auf Anfrage möglich." }
+    },
+    {
+      "@type": "Question",
+      "name": "In welchem Format erhalte ich die fertigen Inhalte?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Videos und Bilder werden in den passenden Formaten und Auflösungen geliefert - abgestimmt auf Social Media, Webseite, Amazon oder Werbeanzeigen." }
+    },
+    {
+      "@type": "Question",
+      "name": "Wie schnell bekomme ich eine Antwort auf meine Anfrage?",
+      "acceptedAnswer": { "@type": "Answer", "text": "In der Regel innerhalb weniger Tage - am schnellsten per Instagram-Nachricht oder E-Mail." }
+    }
+  ]
 }
 </script>
 </head>
@@ -2023,6 +2136,98 @@
 </section>
 
 <!-- =========================================================
+     HÄUFIGE FRAGEN
+========================================================= -->
+<section class="section" id="faq">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Häufige Fragen</span>
+      <h2>Antworten auf die wichtigsten Fragen.</h2>
+    </div>
+
+    <div class="faq-list reveal reveal-stagger">
+      <div class="faq-item">
+        <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a1" id="faq-q1">
+          <span>Wie läuft eine Zusammenarbeit ab?</span>
+          <span class="faq-icon" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        </button>
+        <div class="faq-answer" id="faq-a1" role="region" aria-labelledby="faq-q1">
+          <div class="faq-answer-inner">
+            <p>Nach deiner Anfrage besprechen wir kurz dein Projekt und dein Ziel. Daraus entsteht ein passendes Konzept, das anschließend umgesetzt wird. Am Ende bekommst du die fertigen Inhalte direkt zur Nutzung – die einzelnen Schritte stehen weiter oben unter „Ablauf".</p>
+          </div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a2" id="faq-q2">
+          <span>Wie lange dauert die Umsetzung?</span>
+          <span class="faq-icon" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        </button>
+        <div class="faq-answer" id="faq-a2" role="region" aria-labelledby="faq-q2">
+          <div class="faq-answer-inner">
+            <p>Das hängt vom Umfang ab: Ein einzelnes Produktvideo ist meist innerhalb weniger Tage fertig, größere Projekte wie eine komplette Webseite oder mehrteilige Content-Serien brauchen entsprechend mehr Zeit. Einen konkreten Zeitrahmen bekommst du nach der ersten Absprache.</p>
+          </div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a3" id="faq-q3">
+          <span>Was kostet mein Projekt?</span>
+          <span class="faq-icon" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        </button>
+        <div class="faq-answer" id="faq-a3" role="region" aria-labelledby="faq-q3">
+          <div class="faq-answer-inner">
+            <p>Die Pakete weiter oben zeigen Einstiegspreise. Der genaue Preis richtet sich nach Umfang, Produkt und gewünschter Umsetzung – dafür bekommst du nach deiner Anfrage ein individuelles Angebot.</p>
+          </div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a4" id="faq-q4">
+          <span>Muss ich eigenes Bild- oder Videomaterial bereitstellen?</span>
+          <span class="faq-icon" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        </button>
+        <div class="faq-answer" id="faq-a4" role="region" aria-labelledby="faq-q4">
+          <div class="faq-answer-inner">
+            <p>Nein, das ist nicht nötig. Produktbilder und -videos entstehen komplett neu – du stellst lediglich dein Produkt zur Verfügung bzw. lieferst die nötigen Infos dazu.</p>
+          </div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a5" id="faq-q5">
+          <span>Wie viele Korrekturrunden sind enthalten?</span>
+          <span class="faq-icon" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        </button>
+        <div class="faq-answer" id="faq-a5" role="region" aria-labelledby="faq-q5">
+          <div class="faq-answer-inner">
+            <p>In den Paketen ist jeweils eine Korrekturrunde enthalten. Weitere Anpassungen sind auf Anfrage möglich.</p>
+          </div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a6" id="faq-q6">
+          <span>In welchem Format erhalte ich die fertigen Inhalte?</span>
+          <span class="faq-icon" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        </button>
+        <div class="faq-answer" id="faq-a6" role="region" aria-labelledby="faq-q6">
+          <div class="faq-answer-inner">
+            <p>Videos und Bilder werden in den passenden Formaten und Auflösungen geliefert – abgestimmt auf Social Media, Webseite, Amazon oder Werbeanzeigen, je nach Verwendungszweck.</p>
+          </div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a7" id="faq-q7">
+          <span>Wie schnell bekomme ich eine Antwort auf meine Anfrage?</span>
+          <span class="faq-icon" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        </button>
+        <div class="faq-answer" id="faq-a7" role="region" aria-labelledby="faq-q7">
+          <div class="faq-answer-inner">
+            <p>Ich melde mich schnellstmöglich zurück, in der Regel innerhalb weniger Tage – am schnellsten per Instagram-Nachricht oder E-Mail.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
      KONTAKT
 ========================================================= -->
 <section class="section" id="kontakt">
@@ -2118,6 +2323,7 @@
           <li><a href="#webseiten" class="nav-link">Webseiten</a></li>
           <li><a href="#leistungen" class="nav-link">Leistungen</a></li>
           <li><a href="#projekte" class="nav-link">Projekte</a></li>
+          <li><a href="#faq" class="nav-link">Häufige Fragen</a></li>
           <li><a href="#kontakt" class="nav-link">Kontakt</a></li>
           <li><a href="#" data-modal="impressum">Impressum</a></li>
           <li><a href="#" data-modal="datenschutz">Datenschutz</a></li>
@@ -2384,6 +2590,14 @@
       });
     }, { passive:true });
   }
+  if(heroEl && 'IntersectionObserver' in window){
+    var heroGlowIO = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        heroEl.classList.toggle('is-in-view', entry.isIntersecting);
+      });
+    }, { threshold: 0 });
+    heroGlowIO.observe(heroEl);
+  }
 
   /* ---------- Mobiles Menü ---------- */
   var burger = document.getElementById('burger');
@@ -2453,6 +2667,22 @@
       atmoEls.forEach(function(el){ el.classList.add('atmo-in'); });
     }
   }
+
+  /* ---------- FAQ-Akkordeon ---------- */
+  document.querySelectorAll('.faq-item').forEach(function(item){
+    var btn = item.querySelector('.faq-question');
+    btn.addEventListener('click', function(){
+      var isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function(openItem){
+        if(openItem !== item){
+          openItem.classList.remove('open');
+          openItem.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+        }
+      });
+      item.classList.toggle('open', !isOpen);
+      btn.setAttribute('aria-expanded', String(!isOpen));
+    });
+  });
 
   /* ---------- Vorher/Nachher: interaktiver Regler ---------- */
   var baSlider = document.getElementById('baSlider');
