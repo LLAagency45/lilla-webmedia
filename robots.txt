@@ -1,5 +1,4 @@
-# TODO vor Veröffentlichung: Platzhalter-Domain unten durch die echte Domain ersetzen.
 User-agent: *
 Allow: /
 
-Sitemap: https://DEINE-DOMAIN.de/sitemap.xml
+Sitemap: https://lilla-webmedia.de/sitemap.xml
