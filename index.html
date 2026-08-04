@@ -38,7 +38,7 @@
 <!-- Kleine Datei zuerst und mit Grössenangabe: der Browser soll für den
      16px-Tab nicht die 240px-Variante herunterskalieren müssen. -->
 <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
-<link rel="icon" href="assets/favicon-lilla.png" sizes="240x240" type="image/png">
+<link rel="icon" href="assets/favicon-lilla.png" sizes="512x512" type="image/png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 
@@ -1198,7 +1198,10 @@
   .p-card:hover .p-meta .cat{ opacity:1; letter-spacing:0.15em; }
   .p-meta h4{ font-size:17px; color:#fff; transition:transform .5s var(--ease-luxe); }
   .p-card.wide{ grid-column:1/-1; }
-  .p-card.wide .p-visual{ aspect-ratio:21/8; }
+  /* 16:9 statt des sonst breiteren 21:8-Ausschnitts: in dieser Karte läuft
+     ein Video, bei 21:8 würde ein Drittel der Bildhöhe wegfallen und der
+     Laptop mit der Website - also der eigentliche Inhalt - angeschnitten. */
+  .p-card.wide .p-visual{ aspect-ratio:16/9; }
   .p-card.wide .p-meta h4{ font-size:20px; }
   @media (max-width:700px){ .p-card.wide .p-visual{ aspect-ratio:4/5; } }
   @media (max-width:980px){ .portfolio-grid{ grid-template-columns:repeat(2,1fr); } }
@@ -2296,14 +2299,18 @@
         <p><strong style="color:var(--text-0);">Diese Website, die du gerade siehst,</strong> ist selbst ein gutes Beispiel für unsere Arbeit.</p>
         <p>Individuelle, moderne Webseiten, die auf jedem Gerät gut aussehen – mit hochwertigem Design, schnellen Ladezeiten und klarer Markenwirkung. Ideal für Unternehmen, Onlineshops, Start-ups und Selbstständige.</p>
 
-        <!-- SHOWCASE: videos/webseiten.mp4 - Kamerafahrt über eine Seite auf
-             dem Laptop. Läuft stumm in Endlosschleife, sobald sichtbar.
-             Kein Abspiel-Knopf: der Film illustriert den Abschnitt, er ist
-             keine Mediathek. -->
+        <!-- SHOWCASE: videos/webseiten-showcase.mp4 - Überblick verschiedener
+             Seiten. Läuft stumm in Endlosschleife, sobald sichtbar. -->
         <div class="webs-showcase">
           <div class="showreel-frame viewfinder" id="showreelFrame">
-            <video id="showreelVideo" class="showreel-video" src="videos/webseiten.mp4" poster="assets/webseiten-poster.jpg" muted autoplay loop playsinline preload="metadata" width="1280" height="720" aria-hidden="true"></video>
-            <span class="welcome-vignette" aria-hidden="true"></span>
+            <video id="showreelVideo" class="showreel-video" src="videos/webseiten-showcase.mp4" poster="assets/webseiten-showcase-poster.jpg" muted autoplay loop playsinline preload="metadata" width="1920" height="1080" aria-hidden="true"></video>
+            <span class="showreel-scrim" aria-hidden="true"></span>
+            <div class="showreel-play">
+              <div class="play-circle">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 5v14l12-7L8 5z" fill="#f2f3f4"/></svg>
+              </div>
+              <span class="showreel-note">So entsteht eine Seite</span>
+            </div>
             <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
           </div>
         </div>
@@ -2440,11 +2447,11 @@
          Bilddateien in assets/ austauschen und das "Konzeptprojekt"-Badge entfernen. -->
     <div class="portfolio-grid reveal reveal-stagger">
 
-      <!-- BILD: portfolio-01-webseite.jpg (Format 21:8, quer) -->
+      <!-- VIDEO: webseiten.mp4 - Kamerafahrt über eine Seite auf dem Laptop -->
       <div class="p-card wide viewfinder" tabindex="0" data-title="Website-Relaunch für Unternehmen" data-cat="Premium Webseiten" data-desc="Individuelle Webseite, die auf jedem Gerät gut aussieht – mit modernem Design, klarer Markenführung, schnellen Ladezeiten und integriertem Kontaktformular.">
         <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#101a1c;--tint2:#0a0c0e;">
-          <div class="p-visual-inner"><img src="assets/portfolio-01-webseite.jpg" alt="Website-Relaunch für Unternehmen – Konzeptprojekt von Lilla Web & Media" loading="lazy" decoding="async" width="2032" height="774"></div>
+          <div class="p-visual-inner"><video src="videos/webseiten.mp4" poster="assets/webseiten-poster.jpg" muted autoplay loop playsinline preload="metadata" width="1280" height="720" aria-label="Website-Relaunch für Unternehmen – Konzeptprojekt von Lilla Web &amp; Media"></video></div>
           <div class="p-meta"><span class="cat">Premium Webseiten</span><h4>Website-Relaunch für Unternehmen</h4></div>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
