@@ -1490,6 +1490,10 @@
     transform:translateY(-50%) scale(1.07);
   }
   .cg-arrow:active{ transform:translateY(-50%) scale(0.94); }
+  /* Am Anfang bzw. Ende der Bahn: sichtbar abgeschaltet statt wirkungslos */
+  .cg-arrow:disabled{
+    opacity:0.25; cursor:default; pointer-events:none;
+  }
 
   /* Projektinformationen */
   .cg-info{
@@ -4419,6 +4423,8 @@
     var toggle   = document.getElementById('cgToggle');
     var atmoA    = document.getElementById('cgAtmoA');
     var atmoB    = document.getElementById('cgAtmoB');
+    var btnPrev  = document.getElementById('cgPrev');
+    var btnNext  = document.getElementById('cgNext');
 
     var n = KONZEPTE.length;
     var PFAD = 'assets/webkonzepte/';
@@ -4486,17 +4492,21 @@
     var STEIFE = 0.062, DAEMPFUNG = 0.78;  /* Federkurve des Übergangs */
     var ABSTAND = 54;                      /* seitlicher Versatz in % der Karte */
 
-    function indexAus(p){ return ((Math.round(p) % n) + n) % n; }
+    /* Die Bahn ist begrenzt, nicht ringfoermig: pos laeuft von 0 bis n-1
+       und niemals darueber hinaus. Damit gibt es kein Weiterwischen ins
+       Leere und keine doppelt gezeigten Karten. */
+    function klemme(p){ return p < 0 ? 0 : (p > n - 1 ? n - 1 : p); }
+    function indexAus(p){ return Math.round(klemme(p)); }
     var aktuell = 0;
 
     /* ----- Zeichnen ----- */
     function zeichne(){
       for(var i = 0; i < n; i++){
         var s = slides[i];
+        /* Kein Ringversatz mehr: der Abstand ist der echte Abstand. Karte 0
+           liegt links vom Anfang, Karte n-1 rechts vom Ende - nichts wird
+           von der anderen Seite hereingeschoben. */
         var d = i - pos;
-        /* kürzester Weg im Ring: dadurch springt beim Überlauf nichts */
-        if(d >  n / 2) d -= n;
-        if(d < -n / 2) d += n;
         var ad = Math.abs(d);
 
         if(ad > 2.15){
@@ -4569,6 +4579,7 @@
 
       stage.setAttribute('aria-label',
         'Website-Konzepte, ' + (idx + 1) + ' von ' + n + ': ' + k.titel);
+      randzustand();
 
       atmoWechsel(k.bild);
       ladeNachbarn();
@@ -4591,25 +4602,33 @@
     /* Direkte Nachbarn rechtzeitig laden, alles Weitere bleibt lazy */
     function ladeNachbarn(){
       for(var k = -1; k <= 1; k++){
-        var i = ((aktuell + k) % n + n) % n;
+        var i = aktuell + k;
+        if(i < 0 || i > n - 1) continue;
         if(slides[i].img.loading === 'lazy'){ slides[i].img.loading = 'eager'; }
       }
     }
 
     /* ----- Navigation ----- */
+    /* Pfeile am jeweiligen Ende abschalten - die Grenze soll sichtbar
+       sein und nicht erst beim Klick auffallen. */
+    function randzustand(){
+      btnPrev.disabled = (aktuell === 0);
+      btnNext.disabled = (aktuell === n - 1);
+    }
+
     function geheZu(idx, manuell){
-      /* auf dem kürzesten Weg zum Zielindex, damit die Schleife nahtlos bleibt */
-      var akt = indexAus(pos);
-      var d = idx - akt;
-      if(d >  n / 2) d -= n;
-      if(d < -n / 2) d += n;
-      ziel = Math.round(pos) + d;
+      idx = Math.max(0, Math.min(n - 1, idx));
+      ziel = idx;
       starte();
       setzeAktiv(idx);
       if(manuell) merkeBedienung();
     }
+    /* Am Anfang und am Ende ist Schluss - kein Umlauf. */
     function schritt(dir, manuell){
-      geheZu(((aktuell + dir) % n + n) % n, manuell);
+      var neu = aktuell + dir;
+      if(neu < 0 || neu > n - 1) return false;
+      geheZu(neu, manuell);
+      return true;
     }
 
     /* ----- Autoplay -------------------------------------------------
@@ -4640,9 +4659,14 @@
         if(Date.now() >= wartetBis){ starteFortschritt(); pruefePause(); }
       }, 10050);
     }
+    /* Am Ende der Bahn kehrt der automatische Ablauf die Richtung um.
+       So laeuft er weiter, ohne je ueber den letzten Inhalt hinauszugehen
+       und ohne den sichtbaren Sprung einer Endlosschleife. */
+    var richtung = 1;
     dotsBox.addEventListener('animationend', function(e){
       if(e.animationName !== 'cgFill' || !autoErlaubt || pausiert()) return;
-      schritt(1, false);
+      if(aktuell + richtung > n - 1 || aktuell + richtung < 0){ richtung = -richtung; }
+      schritt(richtung, false);
     });
 
     toggle.addEventListener('click', function(){
@@ -4710,7 +4734,13 @@
         }
         if(aktivGezogen){
           var breite = viewport.offsetWidth * (ABSTAND / 100);
-          pos = startPos - dx / breite;
+          var roh = startPos - dx / breite;
+          /* Ueber die Enden hinaus nur mit deutlichem Widerstand und
+             hoechstens eine halbe Kartenbreite - so ist die Grenze
+             spuerbar, ohne dass es hart anschlaegt. */
+          if(roh < 0)          pos = Math.max(-0.5, roh * 0.3);
+          else if(roh > n - 1) pos = Math.min(n - 1 + 0.5, (n - 1) + (roh - (n - 1)) * 0.3);
+          else                 pos = roh;
           var dt = e.timeStamp - letzteZeit;
           if(dt > 0){ schwung = (e.clientX - letzteX) / breite / dt * 16; }
           letzteX = e.clientX; letzteZeit = e.timeStamp;
@@ -4744,14 +4774,15 @@
       pointerId = null;
 
       if(warGezogen){
-        /* Schwung einrechnen, dann sauber auf ein Konzept einrasten -
-           höchstens ein Schritt über die aktuelle Position hinaus. */
+        /* Schwung einrechnen, dann einrasten: hoechstens ein Schritt ueber
+           den Ausgangspunkt hinaus und immer innerhalb der Bahn. */
         var mitSchwung = pos - schwung * 3.2;
         var z = Math.round(mitSchwung);
-        var maxZ = Math.round(startPos) + 1, minZ = Math.round(startPos) - 1;
-        ziel = Math.max(minZ, Math.min(maxZ, z));
+        var start = Math.round(klemme(startPos));
+        z = Math.max(start - 1, Math.min(start + 1, z));
+        ziel = Math.max(0, Math.min(n - 1, z));
         starte();
-        setzeAktiv(indexAus(ziel));
+        setzeAktiv(ziel);
         merkeBedienung();
       }
       pruefePause();
@@ -4777,8 +4808,8 @@
       else if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); oeffneGross(); }
     });
 
-    document.getElementById('cgPrev').addEventListener('click', function(){ schritt(-1, true); });
-    document.getElementById('cgNext').addEventListener('click', function(){ schritt(1, true); });
+    btnPrev.addEventListener('click', function(){ schritt(-1, true); });
+    btnNext.addEventListener('click', function(){ schritt(1, true); });
     document.getElementById('cgAnsehen').addEventListener('click', oeffneGross);
 
     function oeffneGross(){
@@ -4790,6 +4821,7 @@
     /* ----- Start ----- */
     slides[0].el.classList.add('is-active');
     dots[0].classList.add('is-current');
+    randzustand();
     info.classList.add('is-in');
     if(!autoErlaubt) dotsBox.classList.add('no-auto');
     atmoWechsel(KONZEPTE[0].bild);
