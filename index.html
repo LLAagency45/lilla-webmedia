@@ -35,16 +35,19 @@
 <meta name="twitter:image" content="assets/hero-background.jpg">
 <meta name="theme-color" content="#07080a">
 <!-- Favicon
-     Kleine Datei zuerst und mit Grössenangabe: der Browser soll für den
-     16px-Tab nicht die grosse Variante herunterskalieren müssen.
-     Der Versionsparameter ?v=2 zwingt Browser, das Icon neu zu laden -
-     Favicons werden besonders hartnäckig zwischengespeichert und blieben
-     sonst auf der alten Fassung stehen. Bei künftigen Icon-Änderungen
-     einfach hochzählen. -->
-<link rel="icon" href="assets/favicon-32.png?v=2" sizes="32x32" type="image/png">
-<link rel="icon" href="assets/favicon-lilla.png?v=2" sizes="512x512" type="image/png">
-<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=2">
-<link rel="manifest" href="site.webmanifest?v=2">
+     favicon.ico gehoert an die Wurzel: Browser fragen genau diesen Pfad
+     von sich aus ab - fuer Lesezeichen, Verlauf und Kacheln - und zwar
+     unabhaengig von diesen link-Zeilen. Fehlt sie, greifen sie dort auf
+     ein frueher gemerktes Icon zurueck.
+     Kleine Datei zuerst und mit Groessenangabe: der Browser soll fuer den
+     16px-Tab nicht die grosse Variante herunterskalieren muessen.
+     Der Versionsparameter zwingt zum Neuladen - Favicons werden besonders
+     hartnaeckig zwischengespeichert. Bei Icon-Aenderungen hochzaehlen. -->
+<link rel="icon" href="/favicon.ico?v=3" sizes="16x16 32x32 48x48">
+<link rel="icon" href="assets/favicon-32.png?v=3" sizes="32x32" type="image/png">
+<link rel="icon" href="assets/favicon-lilla.png?v=3" sizes="512x512" type="image/png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=3">
+<link rel="manifest" href="site.webmanifest?v=3">
 
 <link rel="preload" as="image" href="assets/hero-background.jpg" fetchpriority="high">
 <link rel="preload" as="font" href="assets/fonts/inter-latin-variable.woff2" type="font/woff2" crossorigin>
@@ -3076,11 +3079,11 @@
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
       </div>
 
-      <!-- BILD: portfolio-03-protein-drink.jpg (Hochformat 9:16) -->
+      <!-- VIDEO: portfolio-03-protein-drink.mp4 (Hochformat 9:16), Poster: portfolio-03-protein-drink.jpg -->
       <div class="p-card viewfinder" tabindex="0" data-title="Produktvideo für Proteingetränk" data-cat="Produktvideo" data-desc="Hochwertiges Produktvideo für ein Getränk mit dynamischem Spritzeffekt – inszeniert für Social Media und Werbeanzeigen.">
         <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#1c1712;--tint2:#0b0b0d;">
-          <div class="p-visual-inner"><img src="assets/portfolio-03-protein-drink.jpg" alt="Produktvideo für Proteingetränk – Konzeptprojekt von Lilla Web &amp; Media" loading="lazy" decoding="async" width="1080" height="1920"></div>
+          <div class="p-visual-inner"><video src="videos/portfolio-03-protein-drink.mp4" poster="assets/portfolio-03-protein-drink.jpg" muted autoplay loop playsinline preload="metadata" width="1080" height="1920" aria-label="Produktvideo für Proteingetränk – Konzeptprojekt von Lilla Web &amp; Media"></video></div>
           <div class="p-meta"><span class="cat">Produktvideo</span><h4>Produktvideo für Proteingetränk</h4></div>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
