@@ -114,6 +114,10 @@
     /* Akzentfarbe für kleine, fette Schrift (Badges, Labels). Im Hell-Modus
        ist --accent dafür zu hell und reißt den WCAG-AA-Kontrast. */
     --accent-ink: #2fb4c4;
+    /* Kartentiefe: im Dunkeln traegt eine feine Lichtkante, im Hellen
+       braucht es einen echten Schlagschatten - eine weisse Innenkante
+       waere auf weissen Karten wirkungslos. */
+    --card-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
     --shadow-soft: 0 24px 70px -24px rgba(0,0,0,0.7);
     --shadow-lift: 0 30px 80px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03);
     --shadow-glow: 0 20px 54px -18px rgba(47,180,196,0.4);
@@ -148,6 +152,7 @@
     --accent-soft: rgba(26,138,151,0.08);
     --accent-line: rgba(26,138,151,0.35);
     --accent-ink: #0d6d78; /* dunkler als --accent: 5.3:1 auf hellem Grund */
+    --card-shadow: 0 1px 2px rgba(20,22,26,0.04), 0 8px 22px -12px rgba(20,22,26,0.1);
     --shadow-soft: 0 24px 60px -30px rgba(20,22,26,0.16);
     --shadow-lift: 0 24px 60px -24px rgba(20,22,26,0.14), 0 0 0 1px rgba(20,22,26,0.04);
     --shadow-glow: 0 16px 40px -18px rgba(26,138,151,0.25);
@@ -338,7 +343,7 @@
   }
   .btn-primary:active{ transform:translateY(0) scale(0.972); transition-duration:.15s; }
   .btn-ghost{
-    background:rgba(255,255,255,0.015);
+    background:var(--card);
     border-color:var(--border-strong);
     color:var(--text-0);
     box-shadow:0 1px 2px rgba(0,0,0,0.2);
@@ -751,7 +756,7 @@
     font-size:12.5px;
     letter-spacing:0.01em;
     color:var(--text-1);
-    background:rgba(255,255,255,0.035);
+    background:var(--card);
     backdrop-filter:blur(14px) saturate(140%);
     -webkit-backdrop-filter:blur(14px) saturate(140%);
     box-shadow:inset 0 1px 0 rgba(255,255,255,0.05);
@@ -759,7 +764,7 @@
   }
   .hero-badge:hover{
     border-color:var(--accent-line);
-    background:rgba(255,255,255,0.055);
+    background:var(--card-hover);
     transform:translateY(-1px);
   }
   .hero-badge .dot{ width:5px; height:5px; border-radius:50%; background:var(--accent); }
@@ -1032,7 +1037,9 @@
     padding:15px 17px;
     border:1px solid var(--border);
     border-radius:12px;
-    background:rgba(255,255,255,0.03);
+    /* var(--card) statt festem Weiss: auf hellem Grund waere eine weisse
+       Flaeche mit 3% Deckkraft unsichtbar. */
+    background:var(--card);
     backdrop-filter:blur(14px) saturate(140%);
     -webkit-backdrop-filter:blur(14px) saturate(140%);
     box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
@@ -1670,7 +1677,7 @@
     border-radius:var(--radius);
     padding:36px 28px;
     background:var(--bg-1);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,0.03);
+    box-shadow:var(--card-shadow);
     display:flex; flex-direction:column;
     position:relative;
     transition:transform .6s var(--ease-luxe), border-color .6s var(--ease-luxe), box-shadow .6s var(--ease-luxe);
@@ -1811,7 +1818,7 @@
     border:1px solid var(--border);
     border-radius:14px;
     background:var(--bg-1);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,0.03);
+    box-shadow:var(--card-shadow);
     transition:border-color .5s var(--ease-luxe), transform .5s var(--ease-luxe), box-shadow .5s var(--ease-luxe);
   }
   .extra-card:hover{
@@ -2426,7 +2433,7 @@
     padding:18px 22px;
     border:1px solid var(--border);
     border-radius:14px;
-    background:rgba(255,255,255,0.03);
+    background:var(--card);
     backdrop-filter:blur(14px) saturate(140%);
     -webkit-backdrop-filter:blur(14px) saturate(140%);
     box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
@@ -2435,7 +2442,7 @@
   .contact-btn:hover{ border-color:var(--accent-line); background:var(--accent-soft); transform:translateX(5px); box-shadow:0 12px 30px -18px rgba(47,180,196,0.4), inset 0 1px 0 rgba(255,255,255,0.06); }
   .contact-btn .icon{
     width:42px; height:42px; border-radius:11px;
-    background:rgba(255,255,255,0.04);
+    background:var(--card-hover);
     display:flex; align-items:center; justify-content:center;
     color:var(--accent); flex-shrink:0;
   }
@@ -2473,6 +2480,9 @@
   }
   .form-alt{ font-size:13.5px; margin-top:10px; }
   .form-alt a{ color:var(--accent-ink); border-bottom:1px solid var(--accent-line); }
+  /* Platzhalter lagen bisher bei der Browser-Vorgabe und waren in beiden
+     Modi unterschiedlich kraeftig. */
+  input::placeholder, textarea::placeholder{ color:var(--text-2); opacity:1; }
   .confirm-box{
     display:flex;
     margin-top:18px;
