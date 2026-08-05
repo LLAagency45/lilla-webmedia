@@ -34,13 +34,17 @@
 <meta name="twitter:description" content="Lilla Web & Media entwickelt hochwertige Produktvideos, Produktbilder, moderne Webseiten und optimierte Produktseiten für Marken, Unternehmen und Onlineshops.">
 <meta name="twitter:image" content="assets/hero-background.jpg">
 <meta name="theme-color" content="#07080a">
-<!-- Favicon -->
-<!-- Kleine Datei zuerst und mit Grössenangabe: der Browser soll für den
-     16px-Tab nicht die 240px-Variante herunterskalieren müssen. -->
-<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
-<link rel="icon" href="assets/favicon-lilla.png" sizes="512x512" type="image/png">
-<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<link rel="manifest" href="site.webmanifest">
+<!-- Favicon
+     Kleine Datei zuerst und mit Grössenangabe: der Browser soll für den
+     16px-Tab nicht die grosse Variante herunterskalieren müssen.
+     Der Versionsparameter ?v=2 zwingt Browser, das Icon neu zu laden -
+     Favicons werden besonders hartnäckig zwischengespeichert und blieben
+     sonst auf der alten Fassung stehen. Bei künftigen Icon-Änderungen
+     einfach hochzählen. -->
+<link rel="icon" href="assets/favicon-32.png?v=2" sizes="32x32" type="image/png">
+<link rel="icon" href="assets/favicon-lilla.png?v=2" sizes="512x512" type="image/png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=2">
+<link rel="manifest" href="site.webmanifest?v=2">
 
 <link rel="preload" as="image" href="assets/hero-background.jpg" fetchpriority="high">
 <link rel="preload" as="font" href="assets/fonts/inter-latin-variable.woff2" type="font/woff2" crossorigin>
@@ -104,6 +108,9 @@
     --silver-soft: rgba(198,204,210,0.14);
     --accent-soft: rgba(47,180,196,0.10);
     --accent-line: rgba(47,180,196,0.38);
+    /* Akzentfarbe für kleine, fette Schrift (Badges, Labels). Im Hell-Modus
+       ist --accent dafür zu hell und reißt den WCAG-AA-Kontrast. */
+    --accent-ink: #2fb4c4;
     --shadow-soft: 0 24px 70px -24px rgba(0,0,0,0.7);
     --shadow-lift: 0 30px 80px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03);
     --shadow-glow: 0 20px 54px -18px rgba(47,180,196,0.4);
@@ -137,6 +144,7 @@
     --silver-soft: rgba(70,76,84,0.1);
     --accent-soft: rgba(26,138,151,0.08);
     --accent-line: rgba(26,138,151,0.35);
+    --accent-ink: #0d6d78; /* dunkler als --accent: 5.3:1 auf hellem Grund */
     --shadow-soft: 0 24px 60px -30px rgba(20,22,26,0.16);
     --shadow-lift: 0 24px 60px -24px rgba(20,22,26,0.14), 0 0 0 1px rgba(20,22,26,0.04);
     --shadow-glow: 0 16px 40px -18px rgba(26,138,151,0.25);
@@ -1041,15 +1049,20 @@
 
   /* ---------- Before / After ---------- */
   /* ---------- Vorher/Nachher: interaktiver Regler ---------- */
+  /* Seitenverhältnis exakt wie die Quellbilder (1418x1036). Vorher stand hier
+     16:9, wodurch oben und unten je 11% weggeschnitten wurden - der
+     Flaschendeckel fiel weg. Die Breite ist begrenzt, sonst würde der Block
+     bei diesem Format zu hoch. */
   .ba-slider{
     position:relative;
-    aspect-ratio:16/9;
+    aspect-ratio:1418/1036;
+    max-width:900px;
+    margin:0 auto 44px;
     border-radius:var(--radius);
     overflow:hidden;
     border:1px solid var(--border);
     background:var(--bg-1);
     box-shadow:var(--shadow-soft);
-    margin-bottom:44px;
     touch-action:pan-y;
     -webkit-user-select:none; user-select:none;
   }
@@ -1122,7 +1135,6 @@
   .ba-detail-col.after ul li{ color:var(--text-0); }
   @media (max-width:800px){ .ba-details{ grid-template-columns:1fr; } }
   @media (max-width:560px){
-    .ba-slider{ aspect-ratio:4/3; }
     .ba-handle{ width:40px; }
     .ba-handle-grip{ width:36px; height:36px; }
   }
@@ -1197,13 +1209,21 @@
   }
   .p-card:hover .p-meta .cat{ opacity:1; letter-spacing:0.15em; }
   .p-meta h4{ font-size:17px; color:#fff; transition:transform .5s var(--ease-luxe); }
-  .p-card.wide{ grid-column:1/-1; }
-  /* 16:9 statt des sonst breiteren 21:8-Ausschnitts: in dieser Karte läuft
-     ein Video, bei 21:8 würde ein Drittel der Bildhöhe wegfallen und der
-     Laptop mit der Website - also der eigentliche Inhalt - angeschnitten. */
+  /* Diese Karte enthält ein Querformat-Video. Über die volle Rasterbreite
+     wurde sie rund 660px hoch und dominierte den Seitenfluss - deshalb
+     begrenzt und zentriert. */
+  .p-card.wide{
+    grid-column:1/-1;
+    width:100%;
+    max-width:960px;
+    margin-inline:auto;
+  }
+  /* 16:9 entspricht exakt dem Video (1280x720): nichts wird beschnitten,
+     nichts verzerrt. Gilt auch auf Mobile - das frühere 4:5-Hochformat
+     stammte noch aus der Zeit, als hier ein Standbild lag, und hätte den
+     Laptop an beiden Seiten abgeschnitten. */
   .p-card.wide .p-visual{ aspect-ratio:16/9; }
   .p-card.wide .p-meta h4{ font-size:20px; }
-  @media (max-width:700px){ .p-card.wide .p-visual{ aspect-ratio:4/5; } }
   @media (max-width:980px){ .portfolio-grid{ grid-template-columns:repeat(2,1fr); } }
   @media (max-width:600px){ .portfolio-grid{ grid-template-columns:1fr; } }
 
@@ -1314,10 +1334,17 @@
   }
   @media (max-width:560px){ .process-grid{ grid-template-columns:1fr; } }
 
-  /* ---------- Pricing ---------- */
+  /* ---------- Pricing ----------
+     Zwei Bereiche teilen sich diese Komponenten: die Website-Pakete stehen
+     direkt im Webseiten-Bereich, die Produktvideo-Pakete unter "Preise".
+     Beide Raster sind dreispaltig, damit die Preise unmittelbar
+     vergleichbar nebeneinander stehen. */
   .price-grid{
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+    /* minmax(0,1fr) statt 1fr: sonst zieht ein langes, nicht umbrechbares
+       Wort (z. B. ein CTA-Label) seine Spalte breiter als die anderen und
+       die Karten sind nicht mehr gleich breit. */
+    grid-template-columns:repeat(3,minmax(0,1fr));
     gap:20px;
     align-items:stretch;
   }
@@ -1339,15 +1366,28 @@
     box-shadow:0 20px 60px -26px rgba(47,180,196,0.3), inset 0 1px 0 rgba(255,255,255,0.06);
   }
   .price-card.featured:hover{ box-shadow:var(--shadow-glow), inset 0 1px 0 rgba(255,255,255,0.08); }
+  /* Hervorhebung bewusst als feine Glas-Pille statt als voll gefüllter
+     Farbblock - fällt auf, ohne die Karte optisch zu überschreien. */
   .price-tag{
     position:absolute; top:-13px; left:26px;
-    background:var(--accent);
-    color:#04191d;
-    font-size:11.5px; font-weight:700; letter-spacing:0.04em;
-    padding:6px 14px; border-radius:100px;
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--bg-2);
+    border:1px solid var(--accent-line);
+    color:var(--accent-ink);
+    font-size:10.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase;
+    padding:7px 15px; border-radius:100px;
+    box-shadow:0 12px 30px -20px rgba(47,180,196,0.75);
   }
-  .price-card h3{ font-size:18px; margin-bottom:6px; }
+  .price-tag::before{
+    content:''; width:5px; height:5px; border-radius:50%;
+    background:var(--accent); flex-shrink:0;
+  }
+  .price-card h3, .price-card h4{ font-size:18px; margin-bottom:6px; }
   .price-from{ font-size:12.5px; color:var(--text-2); margin-bottom:22px; }
+  /* Zielgruppenzeile bricht je nach Paket unterschiedlich um. Zwei Zeilen
+     fest zu reservieren hält die Preise über alle Karten auf einer Höhe -
+     erst dadurch sind sie wirklich auf einen Blick vergleichbar. */
+  .price-grid .price-from{ min-height:3.2em; }
   .price-amount{
     font-family:'Space Grotesk',sans-serif;
     font-size:clamp(26px,2.6vw,36px); font-weight:600; color:var(--text-0);
@@ -1367,11 +1407,136 @@
     font-size:12.5px; line-height:1.5; color:var(--text-2);
     margin:-16px 0 20px;
   }
+  /* Karten-CTAs füllen die Kartenbreite und dürfen deshalb umbrechen,
+     statt aus der Karte herauszuragen. */
+  .price-card .btn{
+    white-space:normal; text-align:center; line-height:1.3;
+    padding-left:20px; padding-right:20px;
+  }
   .price-note{
     text-align:center; margin-top:44px; font-size:13.5px; color:var(--text-2); max-width:520px; margin-left:auto; margin-right:auto;
   }
-  @media (max-width:1180px){ .price-grid{ grid-template-columns:repeat(2,1fr); } }
-  @media (max-width:640px){ .price-grid{ grid-template-columns:1fr; } }
+  .price-note p{ color:var(--text-2); }
+  .price-note .btn{ margin-top:18px; }
+
+  /* Zwischenüberschrift für einen Paket- oder Kategorieblock innerhalb
+     einer Section (die Section selbst hat bereits ihre h2). */
+  /* Der Paketblock verlässt die schmale Textspalte des Webseiten-Bereichs
+     und nutzt die volle Breite - er braucht deshalb einen klaren Abstand
+     nach oben, sonst klebt er an der Feature-Liste. */
+  .pkg-block{ margin-top:96px; }
+  .price-sub-head{ max-width:640px; margin:0 0 40px; }
+  .price-sub-head h3{ font-size:clamp(22px,2.4vw,29px); }
+  .price-sub-head p{ margin-top:14px; font-size:15.5px; }
+
+  /* Kategorie-Navigation über der Preisübersicht: reine Ankerlinks,
+     funktioniert damit auch ohne JavaScript. */
+  .price-head{ margin-bottom:34px; }
+  .price-cat-nav{
+    display:flex; flex-wrap:wrap; gap:10px;
+    margin:0 0 68px;
+  }
+  .price-cat-nav a{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:12px 21px;
+    border:1px solid var(--border);
+    border-radius:100px;
+    background:var(--bg-1);
+    font-size:13.5px; font-weight:500; color:var(--text-1);
+    transition:color .45s var(--ease-luxe), border-color .45s var(--ease-luxe),
+               background .45s var(--ease-luxe), transform .45s var(--ease-luxe);
+  }
+  .price-cat-nav a:hover{
+    color:var(--text-0); border-color:var(--accent-line);
+    background:var(--card-hover); transform:translateY(-2px);
+  }
+  .price-cat-nav a .num{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:11.5px; font-weight:600; color:var(--accent);
+  }
+  /* Gleicher Rhythmus zwischen den Kategorien und vor der Schlussnotiz -
+     deren margin-top fällt durch Margin-Collapsing mit diesem zusammen. */
+  .price-cat{ margin-bottom:104px; }
+  /* Damit der feste Header die angesprungene Überschrift nicht verdeckt */
+  #website-pakete, .price-cat[id]{ scroll-margin-top:108px; }
+
+  /* Bestätigt sichtbar, dass ein Paket ins Formular übernommen wurde */
+  .field-flash{ animation:fieldFlash 1.5s var(--ease-luxe); }
+  @keyframes fieldFlash{
+    0%,100%{ box-shadow:0 0 0 0 rgba(47,180,196,0); }
+    18%    { box-shadow:0 0 0 3px var(--accent-soft); border-color:var(--accent-line); }
+  }
+
+  /* Verweis auf die Website-Pakete: die stehen bewusst nur im
+     Webseiten-Bereich, damit dieselben Preise nicht doppelt auftauchen. */
+  .price-pointer{
+    display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:22px;
+    padding:28px 32px;
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    background:var(--bg-1);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.03);
+    transition:border-color .5s var(--ease-luxe);
+  }
+  .price-pointer:hover{ border-color:var(--border-strong); }
+  .price-pointer p{ font-size:14.5px; line-height:1.6; max-width:600px; }
+  .price-pointer strong{ color:var(--text-0); font-weight:600; }
+
+  /* Leistungen, für die es keinen festen Startpreis gibt */
+  .extra-grid{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; }
+  .extra-card{
+    display:flex; flex-direction:column; gap:9px;
+    padding:26px 24px;
+    border:1px solid var(--border);
+    border-radius:14px;
+    background:var(--bg-1);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.03);
+    transition:border-color .5s var(--ease-luxe), transform .5s var(--ease-luxe), box-shadow .5s var(--ease-luxe);
+  }
+  .extra-card:hover{
+    border-color:var(--accent-line); transform:translateY(-4px);
+    box-shadow:0 14px 34px -22px rgba(47,180,196,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+  .extra-card h4{ font-size:15.5px; }
+  .extra-card p{ font-size:13.5px; line-height:1.55; }
+  .extra-card .extra-price{
+    margin-top:auto; padding-top:14px;
+    font-size:12.5px; font-weight:600; letter-spacing:0.06em;
+    text-transform:uppercase; color:var(--accent-ink);
+  }
+
+  @media (max-width:1180px){
+    .price-card{ padding:32px 22px; }
+    .price-tag{ left:20px; }
+  }
+  @media (max-width:1000px){
+    /* Drei Karten nebeneinander werden hier zu schmal - lieber sauber
+       untereinander und mittig, statt gequetscht in einer Reihe. */
+    .price-grid{
+      grid-template-columns:minmax(0,1fr);
+      gap:26px;
+      max-width:540px; margin-left:auto; margin-right:auto;
+    }
+    .price-card{ padding:34px 26px; }
+    /* Untereinander passt die Zielgruppenzeile in eine Zeile - der
+       reservierte Platz von oben wäre hier nur totes Loch. */
+    .price-grid .price-from{ min-height:0; }
+    .extra-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .price-cat{ margin-bottom:80px; }
+  }
+  @media (max-width:768px){
+    .pkg-block{ margin-top:64px; }
+    .price-cat-nav{ margin-bottom:48px; }
+    .price-sub-head{ margin-bottom:32px; }
+  }
+  @media (max-width:560px){
+    .extra-grid{ grid-template-columns:minmax(0,1fr); }
+    .price-card{ padding:30px 22px; }
+    .price-pointer{ padding:24px 22px; }
+    .price-pointer .btn{ width:100%; }
+    .price-cat-nav a{ padding:11px 17px; font-size:13px; }
+  }
 
   /* ---------- About ---------- */
   .about-grid{
@@ -1928,7 +2093,11 @@
 
   /* ---------- Contact ---------- */
   .contact-grid{
-    display:grid; grid-template-columns:0.85fr 1.15fr; gap:60px;
+    display:grid;
+    /* minmax(0,...): sonst hält die nicht umbrechbare E-Mail-Adresse die
+       Spalte auf ihrer Mindestbreite und die Seite scrollt auf sehr
+       schmalen Displays waagerecht. */
+    grid-template-columns:minmax(0,0.85fr) minmax(0,1.15fr); gap:60px;
   }
   .contact-buttons{ display:flex; flex-direction:column; gap:14px; margin-top:34px; }
   .contact-btn{
@@ -1950,7 +2119,7 @@
     color:var(--accent); flex-shrink:0;
   }
   .contact-btn .label-l{ font-size:11.5px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-2); display:block; margin-bottom:2px; }
-  .contact-btn .label-m{ font-size:15.5px; font-weight:600; color:var(--text-0); }
+  .contact-btn .label-m{ font-size:15.5px; font-weight:600; color:var(--text-0); overflow-wrap:anywhere; }
 
   .form-card{
     border:1px solid var(--border);
@@ -2006,7 +2175,7 @@
   }
   .confirm-box.show svg{ transform:scale(1); opacity:1; }
   @media (max-width:900px){
-    .contact-grid{ grid-template-columns:1fr; gap:40px; }
+    .contact-grid{ grid-template-columns:minmax(0,1fr); gap:40px; }
   }
   @media (max-width:560px){
     .form-row{ grid-template-columns:1fr; }
@@ -2157,7 +2326,7 @@
     {
       "@type": "Question",
       "name": "Wie viele Korrekturrunden sind enthalten?",
-      "acceptedAnswer": { "@type": "Answer", "text": "In den Paketen ist jeweils eine Korrekturrunde enthalten. Weitere Anpassungen sind auf Anfrage möglich." }
+      "acceptedAnswer": { "@type": "Answer", "text": "In jedem Paket ist mindestens eine Korrekturrunde enthalten – beim Website-Business-Paket sind es zwei, beim Website-Premium-Paket drei. Weitere Anpassungen sind auf Anfrage möglich." }
     },
     {
       "@type": "Question",
@@ -2346,7 +2515,88 @@
           </div>
         </div>
 
-        <a href="#kontakt" class="btn btn-primary nav-link" style="margin-top:34px;">Webseiten-Projekt anfragen</a>
+      </div>
+    </div>
+
+    <!-- WEBSITE-PAKETE ------------------------------------------------
+         Stehen bewusst hier und nicht im Preise-Bereich: wer sich für
+         eine Website interessiert, sieht Leistung und Preis an einer
+         Stelle. Reihenfolge immer günstig -> teuer. -->
+    <div class="pkg-block" id="website-pakete">
+      <div class="price-sub-head reveal">
+        <h3>Die passenden Pakete.</h3>
+        <p>Drei aufeinander aufbauende Pakete – vom kompakten Onepager bis zum umfangreichen Markenauftritt. Alle Preise sind Startpreise.</p>
+      </div>
+
+      <div class="price-grid reveal reveal-stagger">
+        <div class="price-card">
+          <h4>Website Starter</h4>
+          <div class="price-from">Für deinen digitalen Auftritt</div>
+          <div class="price-amount">Ab 599&nbsp;€</div>
+          <ul>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Individueller Onepager</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Optimiert für Smartphone und Desktop</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Leistungs-, Über-uns- und Kontaktbereich</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Kontaktformular und Social-Media-Verlinkung</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Grundlegende Suchmaschinenoptimierung</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Einbindung von Bildern und Videos</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Domain-Verknüpfung</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Eine Korrekturrunde</li>
+          </ul>
+          <p class="price-card-note">Domain, Hosting und die rechtlichen Texte für Impressum und Datenschutz werden separat benötigt. Die technische Einbindung übernehmen wir, die Inhalte stellst du bereit.</p>
+          <a href="#kontakt" class="btn btn-ghost nav-link" style="width:100%;" data-service="Website Starter" data-msg="Ich interessiere mich für das Website-Starter-Paket.">Starter anfragen</a>
+        </div>
+
+        <div class="price-card featured">
+          <span class="price-tag">Beliebteste Wahl</span>
+          <h4>Website Business</h4>
+          <div class="price-from">Für Unternehmen, die professionell überzeugen wollen</div>
+          <div class="price-amount">Ab 999&nbsp;€</div>
+          <ul>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Individuelle Website mit bis zu 5 Unterseiten</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Optimiert für Smartphone, Tablet und Desktop</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Strategischer Aufbau für eine klare Nutzerführung</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Individuelle Leistungs-, Über-uns- und Kontaktbereiche</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Kontaktformular und Social-Media-Verlinkung</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Erweiterte Suchmaschinenoptimierung</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Einbindung von Bildern und Videos</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Dezente Animationen und moderne Interaktionen</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Google-Maps- und Bewertungs-Einbindung</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Domain-Verknüpfung und technische Einrichtung</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Zwei Korrekturrunden</li>
+          </ul>
+          <p class="price-card-note">Domain, Hosting und die rechtlichen Texte für Impressum und Datenschutz werden separat benötigt. Die technische Einbindung übernehmen wir, die Inhalte stellst du bereit.</p>
+          <a href="#kontakt" class="btn btn-primary nav-link" style="width:100%;" data-service="Website Business" data-msg="Ich interessiere mich für das Website-Business-Paket.">Business anfragen</a>
+        </div>
+
+        <div class="price-card">
+          <h4>Website Premium</h4>
+          <div class="price-from">Für einen digitalen Auftritt, der nachhaltig Eindruck hinterlässt</div>
+          <div class="price-amount">Ab 1.499&nbsp;€</div>
+          <ul>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Individuelle Premium-Website mit bis zu 8 Unterseiten</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Maßgeschneidertes Design passend zur Marke</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Optimiert für Smartphone, Tablet und Desktop</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Strategische Struktur mit Fokus auf Anfragen und Kundengewinnung</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Hochwertige Animationen und besondere Interaktionen</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Individuelle Leistungs-, Referenz- und Kontaktbereiche</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Erweiterte Kontaktformulare und klare Handlungsaufforderungen</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Umfassende technische Suchmaschinenoptimierung</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Performance- und Ladezeitenoptimierung</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Einbindung von Bildern, Videos, Bewertungen und Google Maps</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Analyse- und Tracking-Vorbereitung</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Domain-Verknüpfung und technische Einrichtung</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Drei Korrekturrunden</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Persönliche Einführung in die fertige Website</li>
+          </ul>
+          <p class="price-card-note">Domain, Hosting und die rechtlichen Texte für Impressum und Datenschutz werden separat benötigt. Die technische Einbindung übernehmen wir, die Inhalte stellst du bereit.</p>
+          <a href="#kontakt" class="btn btn-ghost nav-link" style="width:100%;" data-service="Website Premium" data-msg="Ich interessiere mich für das Website-Premium-Paket.">Premium anfragen</a>
+        </div>
+      </div>
+
+      <div class="price-note reveal">
+        <p>Du bist unsicher, welches Paket passt? Beschreib mir kurz dein Vorhaben – ich sage dir ehrlich, was du wirklich brauchst.</p>
+        <a href="#kontakt" class="btn btn-ghost nav-link">Webseiten-Projekt anfragen</a>
       </div>
     </div>
   </div>
@@ -2532,11 +2782,11 @@
 
     <div class="ba-slider viewfinder reveal" id="baSlider" style="--pos:50%;">
       <div class="ba-slide-after">
-        <img src="assets/nachher-beispiel.jpg" alt="Nachher: professionelle Studio-Produktfotografie von Lilla Web & Media" loading="lazy" decoding="async" width="1448" height="1086">
+        <img src="assets/nachher-beispiel.jpg" alt="Nachher: professionelle Studio-Produktfotografie von Lilla Web & Media" loading="lazy" decoding="async" width="1418" height="1036">
         <span class="ba-tag">Nachher</span>
       </div>
       <div class="ba-slide-before">
-        <img src="assets/vorher-beispiel.jpg" alt="Vorher: einfache Produktfotografie mit Smartphone-Kamera" loading="lazy" decoding="async" width="1448" height="1086">
+        <img src="assets/vorher-beispiel.jpg" alt="Vorher: einfache Produktfotografie mit Smartphone-Kamera" loading="lazy" decoding="async" width="1418" height="1036">
         <span class="ba-tag">Vorher</span>
       </div>
       <div class="ba-handle" id="baHandle" role="slider" tabindex="0" aria-label="Vergleichsregler: links Vorher, rechts Nachher" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-orientation="horizontal">
@@ -2777,77 +3027,127 @@
 ========================================================= -->
 <section class="section" id="preise">
   <div class="wrap">
-    <div class="section-head reveal">
+    <div class="section-head price-head reveal">
       <span class="eyebrow">Preise</span>
       <h2>Transparente Pakete für jeden Bedarf.</h2>
     </div>
 
-    <div class="price-grid reveal reveal-stagger">
-      <div class="price-card featured">
-        <span class="price-tag">Beliebt</span>
-        <h3>Website Starter</h3>
-        <div class="price-from">Für deinen digitalen Auftritt</div>
-        <div class="price-amount">Ab 599&nbsp;€</div>
-        <ul>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Individueller Onepager</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Optimiert für Smartphone und Desktop</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Leistungs-, Über-uns- und Kontaktbereich</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Kontaktformular und Social-Media-Verlinkung</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Grundlegende Suchmaschinenoptimierung</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Einbindung von Bildern und Videos</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Domain-Verknüpfung</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Eine Korrekturrunde</li>
-        </ul>
-        <p class="price-card-note">Domain, Hosting und die rechtlichen Texte für Impressum/Datenschutz separat – die Einbindung übernehmen wir, die Inhalte lieferst du.</p>
-        <a href="#kontakt" class="btn btn-primary nav-link" style="width:100%;">Projekt anfragen</a>
-      </div>
+    <!-- Kategorie-Auswahl: bewusst reine Ankerlinks, damit der Wechsel
+         zwischen den Leistungsbereichen auch ohne JavaScript funktioniert. -->
+    <nav class="price-cat-nav reveal" aria-label="Leistungskategorien">
+      <a href="#website-pakete" class="nav-link"><span class="num">01</span>Webseiten</a>
+      <a href="#preise-videos" class="nav-link"><span class="num">02</span>Produktvideos</a>
+      <a href="#preise-weitere" class="nav-link"><span class="num">03</span>Weitere Leistungen</a>
+    </nav>
 
-      <div class="price-card">
-        <h3>Produkt-Clip</h3>
-        <div class="price-from">Einstiegspaket</div>
-        <div class="price-amount">Ab 199&nbsp;€</div>
-        <ul>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>10–15 Sekunden</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Individuelles Grundkonzept</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Schnitt, Musik und Sounddesign</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Logo-Endcard</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Eine Korrekturrunde</li>
-        </ul>
-        <a href="#kontakt" class="btn btn-ghost nav-link" style="width:100%;">Projekt anfragen</a>
+    <!-- 01 Webseiten: die Preise stehen nur im Webseiten-Bereich, damit
+         dieselbe Leistung nicht an zwei Stellen ausgezeichnet ist. -->
+    <div class="price-cat reveal">
+      <div class="price-sub-head">
+        <h3>Webseiten</h3>
       </div>
-
-      <div class="price-card">
-        <h3>Premium-Produktspot</h3>
-        <div class="price-from">Für den starken Auftritt</div>
-        <div class="price-amount">Ab 399&nbsp;€</div>
-        <ul>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>15–25 Sekunden</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Mehrere aufeinander abgestimmte Szenen</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Ausführlicheres Konzept</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Hochwertiges Sounddesign</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Logo-Endcard</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Eine Korrekturrunde</li>
-        </ul>
-        <a href="#kontakt" class="btn btn-ghost nav-link" style="width:100%;">Projekt anfragen</a>
-      </div>
-
-      <div class="price-card">
-        <h3>Content-Serie</h3>
-        <div class="price-from">Für ganze Kampagnen</div>
-        <div class="price-amount">Ab 549&nbsp;€</div>
-        <ul>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Drei kurze Videos</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Ein gemeinsames Kampagnenkonzept</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Unterschiedliche Varianten oder Produkte</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Einheitlicher Markenauftritt</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Eine gemeinsame Korrekturrunde</li>
-        </ul>
-        <p class="price-card-note">Gilt für drei Videos auf Basis eines gemeinsamen Konzepts. Drei komplett eigenständige Konzepte ab 699&nbsp;€.</p>
-        <a href="#kontakt" class="btn btn-ghost nav-link" style="width:100%;">Projekt anfragen</a>
+      <div class="price-pointer">
+        <p><strong>Website Starter, Business und Premium.</strong> Die drei Website-Pakete
+          stehen mit allen Leistungen weiter oben im Webseiten-Bereich – dort siehst du
+          sie direkt neben Beispielen unserer Arbeit.</p>
+        <a href="#website-pakete" class="btn btn-ghost nav-link">Zu den Website-Paketen</a>
       </div>
     </div>
 
-    <p class="price-note reveal">Alle Projekte werden individuell kalkuliert. Der genaue Preis richtet sich nach Umfang, Produkt und gewünschter Umsetzung.</p>
+    <!-- 02 Produktvideos -->
+    <div class="price-cat" id="preise-videos">
+      <div class="price-sub-head reveal">
+        <h3>Produktvideos</h3>
+        <p>Vom einzelnen Clip bis zur kompletten Content-Serie.</p>
+      </div>
+      <div class="price-grid reveal reveal-stagger">
+        <div class="price-card">
+          <h4>Produkt-Clip</h4>
+          <div class="price-from">Einstiegspaket</div>
+          <div class="price-amount">Ab 199&nbsp;€</div>
+          <ul>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>10–15 Sekunden</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Individuelles Grundkonzept</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Schnitt, Musik und Sounddesign</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Logo-Endcard</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Eine Korrekturrunde</li>
+          </ul>
+          <a href="#kontakt" class="btn btn-ghost nav-link" style="width:100%;" data-service="Produktvideo" data-msg="Ich interessiere mich für das Paket Produkt-Clip.">Clip anfragen</a>
+        </div>
+
+        <div class="price-card">
+          <h4>Premium-Produktspot</h4>
+          <div class="price-from">Für den starken Auftritt</div>
+          <div class="price-amount">Ab 399&nbsp;€</div>
+          <ul>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>15–25 Sekunden</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Mehrere aufeinander abgestimmte Szenen</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Ausführlicheres Konzept</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Hochwertiges Sounddesign</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Logo-Endcard</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Eine Korrekturrunde</li>
+          </ul>
+          <a href="#kontakt" class="btn btn-ghost nav-link" style="width:100%;" data-service="Produktvideo" data-msg="Ich interessiere mich für das Paket Premium-Produktspot.">Spot anfragen</a>
+        </div>
+
+        <div class="price-card">
+          <h4>Content-Serie</h4>
+          <div class="price-from">Für ganze Kampagnen</div>
+          <div class="price-amount">Ab 549&nbsp;€</div>
+          <ul>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Drei kurze Videos</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Ein gemeinsames Kampagnenkonzept</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Unterschiedliche Varianten oder Produkte</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Einheitlicher Markenauftritt</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Eine gemeinsame Korrekturrunde</li>
+          </ul>
+          <p class="price-card-note">Gilt für drei Videos auf Basis eines gemeinsamen Konzepts. Drei komplett eigenständige Konzepte ab 699&nbsp;€.</p>
+          <a href="#kontakt" class="btn btn-ghost nav-link" style="width:100%;" data-service="Produktvideo" data-msg="Ich interessiere mich für das Paket Content-Serie.">Serie anfragen</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 Weitere Leistungen: angeboten, aber ohne festen Startpreis -
+         deshalb bewusst ohne Preisangabe statt mit erfundener Zahl. -->
+    <div class="price-cat" id="preise-weitere">
+      <div class="price-sub-head reveal">
+        <h3>Weitere Leistungen</h3>
+        <p>Diese Leistungen kalkuliere ich individuell, weil Umfang und Aufwand sich
+          stark unterscheiden. Nach einer kurzen Anfrage bekommst du ein festes Angebot.</p>
+      </div>
+      <div class="extra-grid reveal reveal-stagger">
+        <div class="extra-card">
+          <h4>Produktbilder &amp; Listing-Optimierung</h4>
+          <p>Hochwertige Produktbilder sowie stärkere Amazon- und Shop-Seiten durch klare Struktur und überzeugende Texte.</p>
+          <span class="extra-price">Individuell kalkuliert</span>
+        </div>
+
+        <div class="extra-card">
+          <h4>Social-Media-Inhalte</h4>
+          <p>Moderne Kurzvideos und Beiträge, die deine Marke professioneller und hochwertiger wirken lassen.</p>
+          <span class="extra-price">Individuell kalkuliert</span>
+        </div>
+
+        <div class="extra-card">
+          <h4>Markenauftritt &amp; Design</h4>
+          <p>Ein einheitliches Erscheinungsbild, durchdachte Gestaltung und kreative Konzepte für einen hochwertigen Auftritt.</p>
+          <span class="extra-price">Individuell kalkuliert</span>
+        </div>
+
+        <div class="extra-card">
+          <h4>Grafikdesign &amp; Print</h4>
+          <p>Logos, Flyer, Plakate und Visitenkarten – einzeln oder als stimmiges Gesamtpaket für Print und Online.</p>
+          <span class="extra-price">Individuell kalkuliert</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="price-note reveal">
+      <p>Alle Angaben sind Startpreise. Der genaue Preis richtet sich nach Umfang,
+        Produkt und gewünschter Umsetzung – nach deiner Anfrage bekommst du ein
+        verbindliches Angebot.</p>
+      <a href="#kontakt" class="btn btn-primary nav-link">Unverbindlich anfragen</a>
+    </div>
   </div>
 </section>
 
@@ -2949,7 +3249,7 @@
         </button>
         <div class="faq-answer" id="faq-a5" role="region" aria-labelledby="faq-q5">
           <div class="faq-answer-inner">
-            <p>In den Paketen ist jeweils eine Korrekturrunde enthalten. Weitere Anpassungen sind auf Anfrage möglich.</p>
+            <p>In jedem Paket ist mindestens eine Korrekturrunde enthalten – beim Website-Business-Paket sind es zwei, beim Website-Premium-Paket drei. Weitere Anpassungen sind auf Anfrage möglich.</p>
           </div>
         </div>
       </div>
@@ -3021,16 +3321,27 @@
           </div>
           <div class="field">
             <label for="c-service">Gewünschte Leistung</label>
+            <!-- Nach Leistungsbereichen gruppiert; die Buttons an den
+                 Preiskarten wählen hier automatisch den passenden Eintrag. -->
             <select id="c-service" name="service" required>
               <option value="" disabled selected>Bitte wählen</option>
-              <option value="Produktvideo">Produktvideo</option>
-              <option value="Produktbilder">Produktbilder</option>
-              <option value="Amazon- & Shop-Optimierung">Amazon- &amp; Shop-Optimierung</option>
-              <option value="Premium Webseiten">Premium Webseiten</option>
-              <option value="Social-Media-Inhalte">Social-Media-Inhalte</option>
-              <option value="Markenauftritt & Design">Markenauftritt &amp; Design</option>
-              <option value="Komplettpaket">Komplettpaket</option>
-              <option value="Sonstiges">Sonstiges</option>
+              <optgroup label="Webseiten">
+                <option value="Website Starter">Website Starter</option>
+                <option value="Website Business">Website Business</option>
+                <option value="Website Premium">Website Premium</option>
+                <option value="Premium Webseiten">Premium Webseiten (individuell)</option>
+              </optgroup>
+              <optgroup label="Produktvideos">
+                <option value="Produktvideo">Produktvideo</option>
+              </optgroup>
+              <optgroup label="Weitere Leistungen">
+                <option value="Produktbilder">Produktbilder</option>
+                <option value="Amazon- & Shop-Optimierung">Amazon- &amp; Shop-Optimierung</option>
+                <option value="Social-Media-Inhalte">Social-Media-Inhalte</option>
+                <option value="Markenauftritt & Design">Markenauftritt &amp; Design</option>
+                <option value="Komplettpaket">Komplettpaket</option>
+                <option value="Sonstiges">Sonstiges</option>
+              </optgroup>
             </select>
           </div>
           <div class="field">
@@ -3903,6 +4214,34 @@
       document.querySelectorAll('.modal-overlay.open').forEach(closeModalEl);
       closeMenu();
     }
+  });
+
+  /* ---------- Paket-Vorauswahl aus den Preiskarten ----------
+     Ein Klick auf "Business anfragen" springt nicht nur zum Formular,
+     sondern wählt dort auch die Leistung vor und schreibt einen ersten
+     Satz in die Nachricht. Ohne JavaScript bleibt der Link ein normaler
+     Anker zum Kontaktbereich. */
+  var svcField = document.getElementById('c-service');
+  var msgField = document.getElementById('c-message');
+  document.querySelectorAll('[data-msg]').forEach(function(trigger){
+    trigger.addEventListener('click', function(){
+      var wanted = trigger.getAttribute('data-service');
+      if(svcField && wanted){
+        var opts = svcField.options;
+        for(var i = 0; i < opts.length; i++){
+          if(opts[i].value === wanted){ svcField.selectedIndex = i; break; }
+        }
+      }
+      if(msgField && !msgField.value.trim()){
+        msgField.value = trigger.getAttribute('data-msg');
+      }
+      /* Kurzer Hinweis, dass die Auswahl übernommen wurde */
+      if(svcField){
+        svcField.classList.remove('field-flash');
+        void svcField.offsetWidth;
+        svcField.classList.add('field-flash');
+      }
+    });
   });
 
   /* ---------- Kontaktformular -> mailto ---------- */
