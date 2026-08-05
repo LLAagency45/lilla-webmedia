@@ -2051,6 +2051,189 @@
     .gd-logo-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin-bottom:60px; }
   }
 
+
+  /* ---------- Logo-Showcase --------------------------------------
+     Bewusst anders aufgebaut als die Konzept-Galerie: dort gleiten
+     Karten durch den Raum, hier steht die Komposition still und die
+     Logos wechseln an ihrem Platz. Dadurch gibt es hier gar keine
+     fortlaufende Verschiebung - der ganzen Fehlerklasse "laeuft ueber
+     den Inhalt hinaus" ist damit der Boden entzogen.
+
+     Die Karten bleiben in beiden Themes hell: die Logo-Dateien haben
+     ihren hellen Hintergrund fest im Bild. Eine dunkle Karte zeigte
+     darauf nur einen hellen Kasten. Was dem Theme folgt, ist alles
+     drumherum - Rahmen, Schatten, Beschriftung, Bedienung. */
+  .lg{ margin-bottom:84px; }
+
+  .lg-stage{
+    position:relative;
+    touch-action:pan-y;     /* senkrechtes Scrollen bleibt beim Browser */
+    -webkit-user-select:none; user-select:none;
+  }
+
+  .lg-grid{
+    display:grid;
+    grid-template-columns:1.62fr 1fr 1fr;
+    grid-auto-rows:minmax(0,1fr);
+    gap:18px;
+  }
+
+  .lg-slot{
+    position:relative;
+    overflow:hidden;
+    border-radius:var(--radius-sm);
+    border:1px solid var(--border);
+    background:#E9E9E7;
+    box-shadow:var(--card-shadow);
+    transition:transform .55s var(--ease-luxe), border-color .55s var(--ease-luxe),
+               box-shadow .55s var(--ease-luxe);
+  }
+  .lg-hero{ grid-column:1; grid-row:1 / span 2; aspect-ratio:4/3; }
+  .lg-sat{ aspect-ratio:16/10; }
+  .lg-peek{ display:none; }
+
+  /* Sehr zurückhaltend: ein paar Pixel Anhebung und eine feine Kante */
+  @media (hover:hover) and (pointer:fine){
+    .lg-slot:hover{
+      transform:translateY(-3px);
+      border-color:var(--accent-line);
+      box-shadow:var(--shadow-soft);
+    }
+    .lg-slot:hover .lg-item.is-on img{ transform:scale(1.03); }
+  }
+  .lg-slot:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+
+  /* Alle Logos liegen gestapelt in der Karte; nur eines ist sichtbar.
+     Kein Quellenwechsel, deshalb auch kein Aufblitzen beim Wechsel. */
+  .lg-item{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    opacity:0;
+    transform:scale(0.955);
+    transition:opacity .9s var(--ease-luxe), transform .9s var(--ease-luxe);
+    pointer-events:none;
+  }
+  .lg-item.is-on{ opacity:1; transform:none; }
+  .lg-item img{
+    /* Groesse pro Logo aus dem Seitenverhaeltnis berechnet, damit eine
+       breite Wortmarke und ein rundes Siegel optisch gleich schwer
+       wirken. Werte setzt das JS als --lw/--lh. */
+    /* --k skaliert die berechnete Box: auf den kleineren Karten der
+       Mobilansicht darf das Logo einen groesseren Anteil einnehmen. */
+    width:calc(var(--lw,40%) * var(--k,1));
+    height:calc(var(--lh,40%) * var(--k,1));
+    object-fit:contain;
+    display:block;
+    transition:transform .55s var(--ease-luxe);
+  }
+
+  /* Beschriftung nur auf der grossen Karte - editorial, nicht plakativ */
+  .lg-cap{
+    position:absolute; left:0; right:0; bottom:0;
+    display:flex; align-items:baseline; gap:10px;
+    padding:16px 20px;
+    font-size:12.5px;
+    color:#3d4046;
+    background:linear-gradient(0deg, rgba(233,233,231,0.96), rgba(233,233,231,0));
+    pointer-events:none;
+  }
+  .lg-cap b{ font-weight:600; letter-spacing:0.01em; }
+  .lg-cap span{ color:#6f7378; font-size:11.5px; letter-spacing:0.08em; text-transform:uppercase; }
+
+  /* Bedienleiste */
+  .lg-bar{
+    display:flex; align-items:center; justify-content:center; gap:16px;
+    margin-top:26px;
+  }
+  .lg-toggle{
+    width:44px; height:44px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    border-radius:50%;
+    border:1px solid var(--border);
+    background:var(--bg-1);
+    color:var(--text-1);
+    transition:color .4s var(--ease-luxe), border-color .4s var(--ease-luxe), background .4s var(--ease-luxe);
+  }
+  .lg-toggle:hover{ color:var(--text-0); border-color:var(--accent-line); background:var(--card-hover); }
+  .lg-toggle .lg-ic-play{ display:none; }
+  .lg-toggle[aria-pressed="true"] .lg-ic-play{ display:block; }
+  .lg-toggle[aria-pressed="true"] .lg-ic-pause{ display:none; }
+
+  .lg-dots{ display:flex; gap:7px; align-items:center; }
+  .lg-dot{
+    width:26px; height:44px;
+    padding:0; border:0; background:none;
+    display:flex; align-items:center;
+  }
+  .lg-dot::before{
+    content:''; display:block;
+    width:100%; height:2px; border-radius:2px;
+    background:var(--border-strong);
+    transition:background .4s var(--ease-luxe);
+  }
+  .lg-dot:hover::before{ background:var(--text-2); }
+  .lg-dot-fill{
+    position:absolute; width:26px; height:2px; border-radius:2px;
+    background:var(--accent);
+    transform:scaleX(0); transform-origin:left center;
+  }
+  .lg-dot{ position:relative; }
+  .lg-dot.is-current::before{ background:var(--accent-line); }
+  .lg-dot.is-current .lg-dot-fill{ animation:lgFill 4.2s linear forwards; }
+  .lg-dots.is-paused .lg-dot-fill{ animation-play-state:paused; }
+  .lg-dots.no-auto .lg-dot.is-current .lg-dot-fill{ animation:none; transform:scaleX(1); }
+  @keyframes lgFill{ from{ transform:scaleX(0); } to{ transform:scaleX(1); } }
+
+  /* ---- Mobil: ein Logo im Fokus, Nachbarn schauen hervor ---- */
+  @media (max-width:900px){
+    .lg-grid{
+      grid-template-columns:none;
+      display:flex; align-items:stretch;
+      gap:12px;
+      /* Der Versatz beim Wischen ist rein voruebergehend und faellt
+         immer auf 0 zurueck - er kann sich nicht aufsummieren. */
+      transform:translate3d(var(--dx,0px),0,0);
+      transition:transform .55s var(--ease-luxe);
+    }
+    .lg-grid.is-dragging{ transition:none; }
+    .lg-sat{ display:none; }
+    .lg-peek{
+      display:block;
+      flex:0 0 12%;
+      aspect-ratio:auto;
+      opacity:0.5;
+    }
+    .lg-hero{
+      flex:1 1 auto;
+      grid-column:auto; grid-row:auto;
+      aspect-ratio:5/4;
+      --k:1.15;
+    }
+    .lg-cap{ padding:13px 16px; font-size:12px; }
+    .lg-bar{ margin-top:20px; gap:12px; }
+    .lg-dot{ width:20px; }
+    .lg-dot-fill{ width:20px; }
+  }
+  @media (max-width:400px){
+    /* Auf schmalen Displays braucht die Fokuskarte jeden Pixel. Werte so
+       gewaehlt, dass die Karte an der Grenze gleich gross bleibt und
+       nicht sichtbar springt. */
+    .lg-grid{ gap:10px; }
+    .lg-peek{ flex-basis:10%; }
+    .lg-hero{ aspect-ratio:4/3; --k:1.17; }
+    .lg-dot{ width:15px; }
+    .lg-dot-fill{ width:15px; }
+    .lg-cap span{ display:none; }   /* dann nur noch der Name */
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    /* Ohne Bewegung: kein automatischer Wechsel (das JS startet ihn gar
+       nicht erst), keine Skalierung, nur ein schlichtes Umschalten. */
+    .lg-item{ transform:none; }
+    .lg-item.is-on img{ transform:none !important; }
+    .lg-grid{ transition:none; }
+  }
+
   .gd-cases{ display:flex; flex-direction:column; gap:64px; }
   .gd-case{
     display:grid;
@@ -3235,15 +3418,35 @@
       <p>Von der klassischen Wortmarke über geometrische Monogramme bis zum handgemachten Siegel – je nach Branche und Charakter der Marke.</p>
     </div>
 
-    <div class="gd-logo-grid reveal reveal-stagger">
-      <div class="gd-logo-tile" role="button" tabindex="0" data-lb data-lb-kind="img" data-lb-title="Aequitas — Wortmarke"><img src="assets/logo-konzept-aequitas.jpg" alt="Logo-Entwurf Aequitas: elegante Wortmarke in Serifenschrift" loading="lazy" decoding="async" width="405" height="110"></div>
-      <div class="gd-logo-tile" role="button" tabindex="0" data-lb data-lb-kind="img" data-lb-title="Kordeck — Monogramm"><img src="assets/logo-konzept-kordeck.jpg" alt="Logo-Entwurf Kordeck: geometrisches K-Monogramm in Dunkelblau" loading="lazy" decoding="async" width="350" height="240"></div>
-      <div class="gd-logo-tile" role="button" tabindex="0" data-lb data-lb-kind="img" data-lb-title="Nordeck — Monogramm"><img src="assets/logo-konzept-nordeck.jpg" alt="Logo-Entwurf Nordeck: geometrisches Monogramm in Gold und Anthrazit" loading="lazy" decoding="async" width="320" height="250"></div>
-      <div class="gd-logo-tile" role="button" tabindex="0" data-lb data-lb-kind="img" data-lb-title="The Oak &amp; Olive — Siegel"><img src="assets/logo-konzept-oakolive.jpg" alt="Logo-Entwurf The Oak &amp; Olive: rundes Siegel mit Olivenzweig in Grün" loading="lazy" decoding="async" width="275" height="285"></div>
-      <div class="gd-logo-tile warm" role="button" tabindex="0" data-lb data-lb-kind="img" data-lb-title="Kreda — Wappen-Monogramm"><img src="assets/logo-konzept-kreda.jpg" alt="Logo-Entwurf Kreda: Wappen-Monogramm in Schwarz" loading="lazy" decoding="async" width="335" height="275"></div>
-      <div class="gd-logo-tile warm" role="button" tabindex="0" data-lb data-lb-kind="img" data-lb-title="Cypher — Bildmarke"><img src="assets/logo-konzept-cypher.jpg" alt="Logo-Entwurf Cypher: technische Bildmarke im Sechseck in Cyan" loading="lazy" decoding="async" width="580" height="190"></div>
-      <div class="gd-logo-tile warm" role="button" tabindex="0" data-lb data-lb-kind="img" data-lb-title="Hearth &amp; Stone — Siegel"><img src="assets/logo-konzept-hearth.jpg" alt="Logo-Entwurf Hearth &amp; Stone: rundes Siegel mit Flamme in Terrakotta" loading="lazy" decoding="async" width="315" height="245"></div>
-      <div class="gd-logo-tile warm" role="button" tabindex="0" data-lb data-lb-kind="img" data-lb-title="Vauche — Monogramm"><img src="assets/logo-konzept-vauche.jpg" alt="Logo-Entwurf Vauche: verschlungenes VA-Monogramm mit Wortmarke" loading="lazy" decoding="async" width="405" height="320"></div>
+    <!-- LOGO-SHOWCASE ---------------------------------------------
+         Feste, leicht asymmetrische Komposition: eine grosse Karte, vier
+         kleinere. Gewechselt wird nicht die Anordnung, sondern der Inhalt
+         jeder Karte. Aufgebaut wird sie aus LOGOS im Skript. -->
+    <div class="lg reveal" id="logoShow" role="group" aria-roledescription="Galerie"
+         aria-label="Logo-Entwürfe">
+      <div class="lg-stage">
+        <div class="lg-grid" id="lgGrid"></div>
+      </div>
+      <div class="lg-bar">
+        <button class="lg-toggle" id="lgToggle" type="button" aria-pressed="false"
+                aria-label="Automatischen Wechsel pausieren">
+          <svg class="lg-ic-pause" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5v14M15 5v14" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+          <svg class="lg-ic-play" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 5v14l12-7L8 5z" fill="currentColor"/></svg>
+        </button>
+        <div class="lg-dots" id="lgDots" role="group" aria-label="Logo auswählen"></div>
+      </div>
+      <noscript>
+        <div class="gd-logo-grid">
+          <div class="gd-logo-tile"><img src="assets/logo-konzept-aequitas.jpg" alt="Logo-Entwurf Aequitas: elegante Wortmarke in Serifenschrift" loading="lazy" decoding="async" width="405" height="110"></div>
+          <div class="gd-logo-tile"><img src="assets/logo-konzept-kordeck.jpg" alt="Logo-Entwurf Kordeck: geometrisches K-Monogramm in Dunkelblau" loading="lazy" decoding="async" width="350" height="240"></div>
+          <div class="gd-logo-tile"><img src="assets/logo-konzept-nordeck.jpg" alt="Logo-Entwurf Nordeck: geometrisches Monogramm in Gold und Anthrazit" loading="lazy" decoding="async" width="320" height="250"></div>
+          <div class="gd-logo-tile"><img src="assets/logo-konzept-oakolive.jpg" alt="Logo-Entwurf The Oak &amp; Olive: rundes Siegel mit Olivenzweig in Grün" loading="lazy" decoding="async" width="275" height="285"></div>
+          <div class="gd-logo-tile"><img src="assets/logo-konzept-kreda.jpg" alt="Logo-Entwurf Kreda: Wappen-Monogramm in Schwarz" loading="lazy" decoding="async" width="335" height="275"></div>
+          <div class="gd-logo-tile"><img src="assets/logo-konzept-cypher.jpg" alt="Logo-Entwurf Cypher: technische Bildmarke im Sechseck in Cyan" loading="lazy" decoding="async" width="580" height="190"></div>
+          <div class="gd-logo-tile"><img src="assets/logo-konzept-hearth.jpg" alt="Logo-Entwurf Hearth &amp; Stone: rundes Siegel mit Flamme in Terrakotta" loading="lazy" decoding="async" width="315" height="245"></div>
+          <div class="gd-logo-tile"><img src="assets/logo-konzept-vauche.jpg" alt="Logo-Entwurf Vauche: verschlungenes VA-Monogramm mit Wortmarke" loading="lazy" decoding="async" width="405" height="320"></div>
+        </div>
+      </noscript>
     </div>
 
     <div class="gd-sub-head reveal">
@@ -4366,6 +4569,308 @@
      animieren. Das ergibt eine echte "shared element"-Bewegung statt eines
      harten Popups - und läuft rein über transform, also GPU-freundlich. */
 
+
+  /* ---------- Logo-Showcase -------------------------------------------
+     Sieben Karten (eine grosse, vier kleine, zwei nur mobil) bilden eine
+     feste Komposition. Gewechselt wird nicht die Anordnung, sondern der
+     Inhalt: jede Karte enthaelt alle Logos gestapelt, sichtbar ist immer
+     genau eines. Es gibt damit keinerlei fortlaufende Verschiebung, keine
+     Klone und keine Translate-Werte, die anwachsen koennten - der Umlauf
+     ist schlicht ein Modulo auf dem Index.
+
+     Alle Angaben stehen in LOGOS. Ein weiteres Logo ergaenzen heisst:
+     Datei nach assets/ legen und hier einen Eintrag anhaengen. */
+  var logoShowAPI = (function initLogoShowcase(){
+
+    var LOGOS = [
+      { datei:'logo-konzept-aequitas', name:'Aequitas',        art:'Wortmarke',
+        b:405, h:110, bg:'#EAEAEA',
+        alt:'Logo-Entwurf Aequitas: elegante Wortmarke in Serifenschrift' },
+      { datei:'logo-konzept-kordeck',  name:'Kordeck',         art:'Monogramm',
+        b:350, h:240, bg:'#EAEAEA',
+        alt:'Logo-Entwurf Kordeck: geometrisches K-Monogramm in Dunkelblau' },
+      { datei:'logo-konzept-oakolive', name:'The Oak & Olive', art:'Siegel',
+        b:275, h:285, bg:'#EBEBEB',
+        alt:'Logo-Entwurf The Oak & Olive: rundes Siegel mit Olivenzweig in Grün' },
+      { datei:'logo-konzept-cypher',   name:'Cypher',          art:'Bildmarke',
+        b:580, h:190, bg:'#EAE9E4',
+        alt:'Logo-Entwurf Cypher: technische Bildmarke im Sechseck in Cyan' },
+      { datei:'logo-konzept-nordeck',  name:'Nordeck',         art:'Monogramm',
+        b:320, h:250, bg:'#EAEAEA',
+        alt:'Logo-Entwurf Nordeck: geometrisches Monogramm in Gold und Anthrazit' },
+      { datei:'logo-konzept-hearth',   name:'Hearth & Stone',  art:'Siegel',
+        b:315, h:245, bg:'#E9E9E4',
+        alt:'Logo-Entwurf Hearth & Stone: rundes Siegel mit Flamme in Terrakotta' },
+      { datei:'logo-konzept-vauche',   name:'Vauche',          art:'Monogramm',
+        b:405, h:320, bg:'#E9E9E3',
+        alt:'Logo-Entwurf Vauche: verschlungenes VA-Monogramm mit Wortmarke' },
+      { datei:'logo-konzept-kreda',    name:'Kreda',           art:'Wappen',
+        b:335, h:275, bg:'#E8E8E3',
+        alt:'Logo-Entwurf Kreda: Wappen-Monogramm in Schwarz' }
+    ];
+
+    var wurzel = document.getElementById('logoShow');
+    if(!wurzel || !LOGOS.length) return null;
+
+    var raster  = document.getElementById('lgGrid');
+    var dotsBox = document.getElementById('lgDots');
+    var toggle  = document.getElementById('lgToggle');
+    var PFAD = 'assets/';
+    var n = LOGOS.length;
+
+    /* Optische Groesse: gleiche Flaeche statt gleicher Breite.
+       Bei gleicher Breite wirkt eine 3,7:1 breite Wortmarke winzig und
+       ein quadratisches Siegel riesig. Aus dem Seitenverhaeltnis r und
+       einem Flaechenanteil f ergibt sich die Box zu
+         Breite  = sqrt(f * r / S)   Hoehe = sqrt(f * S / r)
+       mit S als Bezugsverhaeltnis der Karte. */
+    var FLAECHE = 0.16, BEZUG = 1.5;
+    LOGOS.forEach(function(l){
+      var r = l.b / l.h;
+      l.lw = (Math.sqrt(FLAECHE * r / BEZUG) * 100).toFixed(1) + '%';
+      l.lh = (Math.sqrt(FLAECHE * BEZUG / r) * 100).toFixed(1) + '%';
+    });
+
+    /* ----- Aufbau -----
+       Reihenfolge im DOM: linke Vorschau, grosse Karte, vier kleine,
+       rechte Vorschau. Mobil sind die kleinen ausgeblendet, am Desktop
+       die beiden Vorschauen. */
+    var SLOTS = [
+      { klasse:'lg-peek lg-peek-l', versatz:-1, gross:false },
+      { klasse:'lg-hero',           versatz:0,  gross:true  },
+      { klasse:'lg-sat',            versatz:1,  gross:false },
+      { klasse:'lg-sat',            versatz:2,  gross:false },
+      { klasse:'lg-sat',            versatz:3,  gross:false },
+      { klasse:'lg-sat',            versatz:4,  gross:false },
+      { klasse:'lg-peek lg-peek-r', versatz:1,  gross:false }
+    ];
+
+    var slots = SLOTS.map(function(def, si){
+      var el = document.createElement('div');
+      el.className = 'lg-slot ' + def.klasse;
+      el.dataset.versatz = String(def.versatz);
+
+      var eintraege = LOGOS.map(function(l, li){
+        var item = document.createElement('div');
+        item.className = 'lg-item';
+        item.style.background = l.bg;
+
+        var img = document.createElement('img');
+        img.src = PFAD + l.datei + '.jpg';
+        img.alt = def.gross ? l.alt : '';       /* Beschreibung nur einmal */
+        if(!def.gross) img.setAttribute('aria-hidden', 'true');
+        img.width = l.b; img.height = l.h;      /* feste Masse: kein Layout-Sprung */
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        img.draggable = false;
+        img.style.setProperty('--lw', l.lw);
+        img.style.setProperty('--lh', l.lh);
+        item.appendChild(img);
+
+        if(def.gross){
+          var cap = document.createElement('div');
+          cap.className = 'lg-cap';
+          cap.innerHTML = '<b></b><span></span>';
+          cap.querySelector('b').textContent = l.name;
+          cap.querySelector('span').textContent = l.art;
+          item.appendChild(cap);
+          /* Nur die grosse Karte traegt die Ausloeser der Grossansicht */
+          item.setAttribute('data-lb', '');
+          item.setAttribute('data-lb-kind', 'img');
+          item.setAttribute('data-lb-group', 'logos');
+          item.setAttribute('data-lb-manual', '');
+          item.setAttribute('data-lb-title', l.name + ' — ' + l.art);
+        }
+        el.appendChild(item);
+        return item;
+      });
+
+      if(def.gross){
+        el.setAttribute('role', 'button');
+        el.setAttribute('tabindex', '0');
+      }
+      raster.appendChild(el);
+      return { el: el, eintraege: eintraege, versatz: def.versatz, gross: def.gross };
+    });
+
+    var dots = LOGOS.map(function(l, i){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'lg-dot';
+      b.setAttribute('aria-label', 'Logo ' + (i + 1) + ' von ' + n + ': ' + l.name);
+      b.innerHTML = '<span class="lg-dot-fill"></span>';
+      b.addEventListener('click', function(){ geheZu(i, true); });
+      dotsBox.appendChild(b);
+      return b;
+    });
+
+    /* ----- Zustand ----- */
+    var aktuell = 0;
+    var autoErlaubt = !reduceMotion;
+    var vomNutzerPausiert = false;
+    var hover = false, imBild = true, tabAktiv = true, ziehend = false, lbOffen = false;
+    var wartetBis = 0;
+
+    function zeige(idx){
+      aktuell = ((idx % n) + n) % n;   /* Umlauf per Modulo - nichts waechst */
+      slots.forEach(function(s){
+        var z = ((aktuell + s.versatz) % n + n) % n;
+        s.eintraege.forEach(function(item, i){
+          item.classList.toggle('is-on', i === z);
+        });
+      });
+      dots.forEach(function(d, i){ d.classList.toggle('is-current', i === aktuell); });
+      wurzel.setAttribute('aria-label',
+        'Logo-Entwürfe, ' + (aktuell + 1) + ' von ' + n + ': ' + LOGOS[aktuell].name);
+      starteFortschritt();
+    }
+
+    function geheZu(idx, manuell){
+      zeige(idx);
+      if(manuell) merkeBedienung();
+    }
+    function schritt(dir, manuell){ geheZu(aktuell + dir, manuell); }
+
+    /* ----- Automatischer Ablauf -----
+       Der Takt kommt aus der CSS-Animation der Fortschrittslinie; ihr
+       animationend schaltet weiter. Pausieren heisst animation-play-state,
+       daher braucht es keinen Timer im JS. */
+    function pausiert(){
+      return vomNutzerPausiert || hover || ziehend || lbOffen ||
+             !tabAktiv || !imBild || Date.now() < wartetBis;
+    }
+    function pruefePause(){ dotsBox.classList.toggle('is-paused', pausiert()); }
+    function starteFortschritt(){
+      if(!autoErlaubt) return;
+      var f = dots[aktuell].querySelector('.lg-dot-fill');
+      f.style.animation = 'none';
+      void f.offsetWidth;              /* Reflow: Animation neu starten */
+      f.style.animation = '';
+      pruefePause();
+    }
+    function merkeBedienung(){
+      wartetBis = Date.now() + 8000;   /* nach eigener Bedienung 8s Ruhe */
+      pruefePause();
+      setTimeout(function(){
+        if(Date.now() >= wartetBis){ starteFortschritt(); pruefePause(); }
+      }, 8050);
+    }
+    dotsBox.addEventListener('animationend', function(e){
+      if(e.animationName !== 'lgFill' || !autoErlaubt || pausiert()) return;
+      schritt(1, false);
+    });
+
+    toggle.addEventListener('click', function(){
+      vomNutzerPausiert = !vomNutzerPausiert;
+      toggle.setAttribute('aria-pressed', vomNutzerPausiert ? 'true' : 'false');
+      toggle.setAttribute('aria-label', vomNutzerPausiert
+        ? 'Automatischen Wechsel starten' : 'Automatischen Wechsel pausieren');
+      if(!vomNutzerPausiert){ wartetBis = 0; starteFortschritt(); }
+      pruefePause();
+    });
+
+    wurzel.addEventListener('mouseenter', function(){ hover = true;  pruefePause(); });
+    wurzel.addEventListener('mouseleave', function(){ hover = false; pruefePause(); });
+    document.addEventListener('visibilitychange', function(){
+      tabAktiv = !document.hidden; pruefePause();
+    });
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(e){
+        imBild = e[0].isIntersecting; pruefePause();
+      }, { threshold:0.2 }).observe(wurzel);
+    }
+
+    /* ----- Wischen (mobil) und Ziehen (Maus) -----
+       Der Versatz ist rein voruebergehend: er wird beim Loslassen immer
+       auf 0 zurueckgesetzt. Es kann sich also nichts aufsummieren. */
+    var startX = 0, startY = 0, aktivGezogen = false, zeigerId = null;
+
+    raster.addEventListener('pointerdown', function(e){
+      if(e.button !== undefined && e.button !== 0) return;
+      zeigerId = e.pointerId; startX = e.clientX; startY = e.clientY;
+      ziehend = true; aktivGezogen = false;
+      pruefePause();
+    });
+    raster.addEventListener('pointermove', function(e){
+      if(!ziehend || e.pointerId !== zeigerId) return;
+      var dx = e.clientX - startX, dy = e.clientY - startY;
+      if(!aktivGezogen){
+        if(Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy)){
+          aktivGezogen = true;
+          raster.classList.add('is-dragging');
+          try { raster.setPointerCapture(zeigerId); } catch(err){}
+        } else if(Math.abs(dy) > 12){
+          ziehend = false; zeigerId = null; pruefePause();
+          return;
+        }
+      }
+      if(aktivGezogen){
+        /* Mit Widerstand, damit die Geste begrenzt bleibt */
+        var max = raster.offsetWidth * 0.28;
+        var v = Math.max(-max, Math.min(max, dx * 0.55));
+        raster.style.setProperty('--dx', v.toFixed(1) + 'px');
+      }
+    }, { passive:true });
+
+    function zeigerEnde(e){
+      if(!ziehend || (zeigerId !== null && e.pointerId !== zeigerId)) return;
+      var war = aktivGezogen, dx = e.clientX - startX;
+      ziehend = false; aktivGezogen = false;
+      raster.classList.remove('is-dragging');
+      try { raster.releasePointerCapture(zeigerId); } catch(err){}
+      zeigerId = null;
+      raster.style.setProperty('--dx', '0px');    /* immer zurueck auf null */
+      if(war && Math.abs(dx) > raster.offsetWidth * 0.12){
+        schritt(dx < 0 ? 1 : -1, true);
+      } else if(war){
+        merkeBedienung();
+      }
+      pruefePause();
+    }
+    raster.addEventListener('pointerup', zeigerEnde);
+    raster.addEventListener('pointercancel', zeigerEnde);
+
+    /* ----- Grossansicht und Tastatur ----- */
+    var hero = slots.filter(function(s){ return s.gross; })[0];
+    function oeffneGross(){
+      if(!lightboxAPI || !hero) return;
+      var idx = lightboxAPI.indexOf(hero.eintraege[aktuell]);
+      if(idx >= 0) lightboxAPI.open(idx);
+    }
+    if(hero){
+      hero.el.addEventListener('click', function(e){
+        if(Math.abs(e.clientX - startX) > 10) return;   /* war ein Ziehen */
+        oeffneGross();
+      });
+      hero.el.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); oeffneGross(); }
+        else if(e.key === 'ArrowLeft'){ e.preventDefault(); schritt(-1, true); }
+        else if(e.key === 'ArrowRight'){ e.preventDefault(); schritt(1, true); }
+      });
+    }
+    /* Klick auf eine kleine Karte holt dieses Logo nach vorn */
+    slots.forEach(function(s){
+      if(s.gross) return;
+      s.el.addEventListener('click', function(e){
+        if(Math.abs(e.clientX - startX) > 10) return;   /* war ein Ziehen */
+        geheZu(aktuell + s.versatz, true);
+      });
+    });
+
+    /* ----- Start ----- */
+    if(!autoErlaubt) dotsBox.classList.add('no-auto');
+    zeige(0);
+    pruefePause();
+
+    return {
+      syncVon: function(el){
+        if(!hero) return;
+        var i = hero.eintraege.indexOf(el);
+        if(i >= 0 && i !== aktuell) geheZu(i, true);
+      },
+      setzeLightboxOffen: function(offen){ lbOffen = offen; pruefePause(); }
+    };
+  })();
+
   /* ---------- Konzept-Galerie ----------------------------------------
      Raeumlicher Slider fuer die fiktiven Website-Konzepte.
 
@@ -4949,6 +5454,7 @@
         }
       }
       if(galerieAPI && gruppeVon(trigger) === 'konzepte'){ galerieAPI.syncVon(trigger); }
+      if(logoShowAPI && gruppeVon(trigger) === 'logos'){ logoShowAPI.syncVon(trigger); }
 
       if(reduceMotion || !animateFrom){
         lbMedia.style.transition = 'none';
@@ -4974,6 +5480,7 @@
       lb.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
       if(galerieAPI) galerieAPI.setzeLightboxOffen(true);
+      if(logoShowAPI) logoShowAPI.setzeLightboxOffen(true);
       show(index, sourceRect(triggers[index]));
       setTimeout(function(){
         var c = document.getElementById('lbClose');
@@ -4997,6 +5504,7 @@
         lbMedia.innerHTML = '';
         isAnimating = false;
         if(galerieAPI) galerieAPI.setzeLightboxOffen(false);
+        if(logoShowAPI) logoShowAPI.setzeLightboxOffen(false);
         if(lastFocused && lastFocused.focus){ lastFocused.focus(); }
       }
 
