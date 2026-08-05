@@ -1007,9 +1007,12 @@
     display:grid;
     grid-template-columns:1fr;
     max-width:760px;
-    margin:0 auto;
+    margin:96px auto 0;
   }
-  .webs-text h2{ margin-bottom:20px; }
+  /* Seit die Galerie den Abschnitt eroeffnet, ist dies eine Unter-
+     ueberschrift. Groesse an die uebrigen Zwischenkoepfe angeglichen -
+     vorher stand sie ohne Angabe auf den 24px der Browser-Vorgabe. */
+  .webs-text h3{ font-size:clamp(21px,2.3vw,27px); margin-bottom:20px; }
   .webs-text > p{ font-size:16px; margin-bottom:36px; max-width:520px; }
   .feature-list{
     display:grid;
@@ -1345,7 +1348,9 @@
      transform/opacity - beides laeuft auf dem Compositor.
      Teure Eigenschaften (filter, box-shadow) wechseln dagegen nur ueber
      Klassen und CSS-Transitions, nie pro Frame. */
-  .cg{ margin-top:96px; }
+  /* Eroeffnet den Webseiten-Abschnitt, deshalb kein zusaetzlicher
+     Abstand nach oben - den liefert schon das Section-Padding. */
+  .cg{ margin-top:0; }
 
   .cg-stage{
     position:relative;
@@ -1725,6 +1730,9 @@
   .pkg-block{ margin-top:96px; }
   .price-sub-head{ max-width:640px; margin:0 0 40px; }
   .price-sub-head h3{ font-size:clamp(22px,2.4vw,29px); }
+  /* Die Galerie eroeffnet ihren Abschnitt und traegt daher eine
+     Ueberschrift in voller Section-Groesse. */
+  .price-sub-head h2{ font-size:clamp(28px,3.6vw,40px); }
   .price-sub-head p{ margin-top:14px; font-size:15.5px; }
 
   /* Kategorie-Navigation über der Preisübersicht: reine Ankerlinks,
@@ -1825,6 +1833,7 @@
   }
   @media (max-width:768px){
     .pkg-block{ margin-top:64px; }
+    .webs-grid{ margin-top:64px; }
     .price-cat-nav{ margin-bottom:48px; }
     .price-sub-head{ margin-bottom:32px; }
   }
@@ -2759,10 +2768,77 @@
 ========================================================= -->
 <section class="section" id="webseiten">
   <div class="wrap">
+    <!-- KONZEPT-GALERIE ------------------------------------------------
+         Ersetzt das frühere Übersichtsvideo: gleiche Aufgabe, aber der
+         Besucher kann selbst blättern, wischen und ein Konzept gross
+         ansehen. Die Karten erzeugt das JS aus KONZEPTE, damit alle
+         Angaben zu einem Konzept an genau einer Stelle stehen. -->
+    <div class="cg" id="konzeptGalerie">
+      <div class="price-sub-head reveal">
+        <span class="eyebrow">Website-Konzepte</span>
+        <h2>So unterschiedlich kann dein digitaler Auftritt aussehen.</h2>
+        <p>Von modernem Handwerk bis zur hochwertigen Premium-Marke: Entdecke verschiedene
+          Designrichtungen und finde heraus, welcher Stil zu deinem Unternehmen passt.</p>
+      </div>
+
+      <div class="cg-stage" id="cgStage" tabindex="0" role="group"
+           aria-roledescription="Galerie"
+           aria-label="Website-Konzepte, 1 von 6: AVORA Architektur">
+        <div class="cg-atmo" aria-hidden="true">
+          <div class="cg-atmo-layer" id="cgAtmoA"></div>
+          <div class="cg-atmo-layer" id="cgAtmoB"></div>
+        </div>
+        <div class="cg-viewport" id="cgViewport"></div>
+        <button class="cg-arrow cg-prev" id="cgPrev" type="button" aria-label="Vorheriges Konzept"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="cg-arrow cg-next" id="cgNext" type="button" aria-label="Nächstes Konzept"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+
+      <div class="cg-info is-in" id="cgInfo" aria-live="polite">
+        <div class="cg-info-top">
+          <span class="cg-branche" id="cgBranche">Architektur</span>
+          <span class="cg-badge">Konzeptprojekt</span>
+        </div>
+        <h3 class="cg-name" id="cgName">AVORA Architektur</h3>
+        <p class="cg-desc" id="cgDesc">Minimalistischer Markenauftritt mit grosszügiger Bildsprache
+          und ruhiger Projektpräsentation. Viel Weissraum, klare Typografie – die Bauten stehen
+          im Mittelpunkt.</p>
+        <div class="cg-actions">
+          <button class="btn btn-ghost" id="cgAnsehen" type="button">Konzept ansehen</button>
+          <a class="btn btn-primary nav-link" id="cgAnfrage" href="#kontakt"
+             data-service="Premium Webseiten"
+             data-msg="Ich interessiere mich für eine Website in der Designrichtung &bdquo;AVORA Architektur&ldquo;.">Ähnlichen Auftritt anfragen</a>
+        </div>
+      </div>
+
+      <div class="cg-bar">
+        <button class="cg-toggle" id="cgToggle" type="button" aria-pressed="false"
+                aria-label="Automatischen Wechsel pausieren">
+          <svg class="cg-ic-pause" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5v14M15 5v14" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+          <svg class="cg-ic-play" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 5v14l12-7L8 5z" fill="currentColor"/></svg>
+        </button>
+        <div class="cg-dots" id="cgDots" role="group" aria-label="Konzept auswählen"></div>
+      </div>
+
+      <p class="cg-disclaimer">Die dargestellten Marken und Webseiten sind fiktive Konzeptprojekte.
+        Sie zeigen beispielhaft, welche individuellen digitalen Auftritte mit Lilla&nbsp;Web&nbsp;&amp;&nbsp;Media
+        möglich sind.</p>
+
+      <noscript>
+        <div class="cg-noscript">
+        <img src="assets/webkonzepte/konzept-avora-640.jpg" alt="Website-Konzept für ein Architekturbüro" width="640" height="360">
+        <img src="assets/webkonzepte/konzept-lumea-640.jpg" alt="Website-Konzept für ein Restaurant" width="640" height="360">
+        <img src="assets/webkonzepte/konzept-nordlicht-640.jpg" alt="Website-Konzept für einen Handwerksbetrieb" width="640" height="360">
+        <img src="assets/webkonzepte/konzept-sk-fotografie-640.jpg" alt="Website-Konzept für ein Fotografie-Portfolio" width="640" height="360">
+        <img src="assets/webkonzepte/konzept-puls-studio-640.jpg" alt="Website-Konzept für eine Designagentur" width="640" height="360">
+        <img src="assets/webkonzepte/konzept-aurelion-640.jpg" alt="Website-Konzept für eine Unternehmensberatung" width="640" height="360">
+        </div>
+      </noscript>
+    </div>
+
     <div class="webs-grid">
       <div class="webs-text reveal">
         <span class="eyebrow">Digitaler Markenauftritt</span>
-        <h2>Webseiten, die wirklich gut sind.</h2>
+        <h3>Webseiten, die wirklich gut sind.</h3>
         <p><strong style="color:var(--text-0);">Diese Website, die du gerade siehst,</strong> ist selbst ein gutes Beispiel für unsere Arbeit.</p>
         <p>Individuelle, moderne Webseiten, die auf jedem Gerät gut aussehen – mit hochwertigem Design, schnellen Ladezeiten und klarer Markenwirkung. Ideal für Unternehmen, Onlineshops, Start-ups und Selbstständige.</p>
 
@@ -2800,73 +2876,6 @@
       </div>
     </div>
 
-
-    <!-- KONZEPT-GALERIE ------------------------------------------------
-         Ersetzt das frühere Übersichtsvideo: gleiche Aufgabe, aber der
-         Besucher kann selbst blättern, wischen und ein Konzept gross
-         ansehen. Die Karten erzeugt das JS aus KONZEPTE, damit alle
-         Angaben zu einem Konzept an genau einer Stelle stehen. -->
-    <div class="cg" id="konzeptGalerie">
-      <div class="price-sub-head reveal">
-        <span class="eyebrow">Website-Konzepte</span>
-        <h3>So unterschiedlich kann dein digitaler Auftritt aussehen.</h3>
-        <p>Von modernem Handwerk bis zur hochwertigen Premium-Marke: Entdecke verschiedene
-          Designrichtungen und finde heraus, welcher Stil zu deinem Unternehmen passt.</p>
-      </div>
-
-      <div class="cg-stage" id="cgStage" tabindex="0" role="group"
-           aria-roledescription="Galerie"
-           aria-label="Website-Konzepte, 1 von 6: AVORA Architektur">
-        <div class="cg-atmo" aria-hidden="true">
-          <div class="cg-atmo-layer" id="cgAtmoA"></div>
-          <div class="cg-atmo-layer" id="cgAtmoB"></div>
-        </div>
-        <div class="cg-viewport" id="cgViewport"></div>
-        <button class="cg-arrow cg-prev" id="cgPrev" type="button" aria-label="Vorheriges Konzept"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <button class="cg-arrow cg-next" id="cgNext" type="button" aria-label="Nächstes Konzept"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      </div>
-
-      <div class="cg-info is-in" id="cgInfo" aria-live="polite">
-        <div class="cg-info-top">
-          <span class="cg-branche" id="cgBranche">Architektur</span>
-          <span class="cg-badge">Konzeptprojekt</span>
-        </div>
-        <h4 class="cg-name" id="cgName">AVORA Architektur</h4>
-        <p class="cg-desc" id="cgDesc">Minimalistischer Markenauftritt mit grosszügiger Bildsprache
-          und ruhiger Projektpräsentation. Viel Weissraum, klare Typografie – die Bauten stehen
-          im Mittelpunkt.</p>
-        <div class="cg-actions">
-          <button class="btn btn-ghost" id="cgAnsehen" type="button">Konzept ansehen</button>
-          <a class="btn btn-primary nav-link" id="cgAnfrage" href="#kontakt"
-             data-service="Premium Webseiten"
-             data-msg="Ich interessiere mich für eine Website in der Designrichtung &bdquo;AVORA Architektur&ldquo;.">Ähnlichen Auftritt anfragen</a>
-        </div>
-      </div>
-
-      <div class="cg-bar">
-        <button class="cg-toggle" id="cgToggle" type="button" aria-pressed="false"
-                aria-label="Automatischen Wechsel pausieren">
-          <svg class="cg-ic-pause" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5v14M15 5v14" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
-          <svg class="cg-ic-play" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 5v14l12-7L8 5z" fill="currentColor"/></svg>
-        </button>
-        <div class="cg-dots" id="cgDots" role="group" aria-label="Konzept auswählen"></div>
-      </div>
-
-      <p class="cg-disclaimer">Die dargestellten Marken und Webseiten sind fiktive Konzeptprojekte.
-        Sie zeigen beispielhaft, welche individuellen digitalen Auftritte mit Lilla&nbsp;Web&nbsp;&amp;&nbsp;Media
-        möglich sind.</p>
-
-      <noscript>
-        <div class="cg-noscript">
-        <img src="assets/webkonzepte/konzept-avora-640.jpg" alt="Website-Konzept für ein Architekturbüro" width="640" height="360">
-        <img src="assets/webkonzepte/konzept-lumea-640.jpg" alt="Website-Konzept für ein Restaurant" width="640" height="360">
-        <img src="assets/webkonzepte/konzept-nordlicht-640.jpg" alt="Website-Konzept für einen Handwerksbetrieb" width="640" height="360">
-        <img src="assets/webkonzepte/konzept-sk-fotografie-640.jpg" alt="Website-Konzept für ein Fotografie-Portfolio" width="640" height="360">
-        <img src="assets/webkonzepte/konzept-puls-studio-640.jpg" alt="Website-Konzept für eine Designagentur" width="640" height="360">
-        <img src="assets/webkonzepte/konzept-aurelion-640.jpg" alt="Website-Konzept für eine Unternehmensberatung" width="640" height="360">
-        </div>
-      </noscript>
-    </div>
 
     <!-- WEBSITE-PAKETE ------------------------------------------------
          Stehen bewusst hier und nicht im Preise-Bereich: wer sich für
