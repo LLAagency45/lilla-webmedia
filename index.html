@@ -139,7 +139,7 @@
     --border-strong: rgba(10,14,18,0.18);
     --text-0: #12151a;
     --text-1: #4d525a;
-    --text-2: #6b6f77; /* für WCAG-AA-Kontrast (~4.7:1) auf --bg-0 */
+    --text-2: #63676f; /* WCAG AA auch auf weissen Karten (>=5:1) */
     --accent: #1a8a97;
     --accent-bright: #0f7a86;
     --accent-deep: #0d525c;
@@ -205,6 +205,9 @@
     transition:top .35s var(--ease-luxe);
   }
   .skip-link:focus{ top:16px; }
+  /* Im Hell-Modus dunklere Flaeche mit weisser Schrift - die dunkle
+     Schrift auf --accent erreicht dort nur 4,23:1. */
+  :root[data-theme="light"] .skip-link{ background:var(--accent-ink); color:#ffffff; }
 
   /* ---------- Intro-Sequenz ---------- */
   .intro-overlay{
@@ -247,7 +250,9 @@
     font-size:12.5px;
     letter-spacing:0.16em;
     text-transform:uppercase;
-    color:var(--accent);
+    /* --accent-ink statt --accent: bei dieser Groesse reicht das helle
+       Tuerkis im Hell-Modus nicht fuer WCAG AA (3,85:1). */
+    color:var(--accent-ink);
     font-weight:600;
     margin-bottom:18px;
   }
@@ -1328,7 +1333,9 @@
     font-family:'Space Grotesk',sans-serif;
     font-size:14px; font-weight:600;
     color:var(--bg-0);
-    background:var(--accent);
+    /* --accent-ink: im Hell-Modus laege helle Schrift auf --accent nur bei
+       3,84:1. Im Dunkel-Modus ist der Wert mit --accent identisch. */
+    background:var(--accent-ink);
     width:52px; height:52px;
     border-radius:50%;
     display:flex; align-items:center; justify-content:center;
@@ -1765,7 +1772,7 @@
   }
   .price-cat-nav a .num{
     font-family:'Space Grotesk',sans-serif;
-    font-size:11.5px; font-weight:600; color:var(--accent);
+    font-size:11.5px; font-weight:600; color:var(--accent-ink);
   }
   /* Gleicher Rhythmus zwischen den Kategorien und vor der Schlussnotiz -
      deren margin-top fällt durch Margin-Collapsing mit diesem zusammen. */
@@ -2048,7 +2055,7 @@
   .gd-case-colors{ font-size:12.5px; color:var(--text-2); letter-spacing:0.02em; }
   .gd-badge{
     font-size:10.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase;
-    color:var(--accent);
+    color:var(--accent-ink);
     border:1px solid var(--accent-line);
     border-radius:100px;
     padding:4px 11px;
@@ -2465,7 +2472,7 @@
     font-size:13px; color:var(--text-2); margin-top:16px; display:flex; align-items:center; gap:8px;
   }
   .form-alt{ font-size:13.5px; margin-top:10px; }
-  .form-alt a{ color:var(--accent); border-bottom:1px solid var(--accent-line); }
+  .form-alt a{ color:var(--accent-ink); border-bottom:1px solid var(--accent-line); }
   .confirm-box{
     display:flex;
     margin-top:18px;
@@ -4447,10 +4454,14 @@
       frame.className = 'cg-frame';
 
       var img = document.createElement('img');
-      img.src    = PFAD + k.bild + '-1100.jpg';
-      img.srcset = PFAD + k.bild + '-640.jpg 640w, ' +
-                   PFAD + k.bild + '-1100.jpg 1100w, ' +
-                   PFAD + k.bild + '-1800.jpg 1800w';
+      /* Quelle bewusst noch nicht gesetzt: loading="lazy" allein genuegt
+         nicht, weil der Browser bei dieser Entfernung vom Seitenanfang
+         von sich aus vorlaedt - die Galerie kostete so rund 1,5 MB bei
+         jedem Seitenaufruf. Zugewiesen wird erst in ladeNachbarn(). */
+      img.dataset.src    = PFAD + k.bild + '-1100.jpg';
+      img.dataset.srcset = PFAD + k.bild + '-640.jpg 640w, ' +
+                           PFAD + k.bild + '-1100.jpg 1100w, ' +
+                           PFAD + k.bild + '-1800.jpg 1800w';
       img.sizes  = '(max-width:768px) 86vw, (max-width:1100px) 76vw, 860px';
       img.alt    = k.alt;
       img.width  = 1100; img.height = 619;   /* feste Masse gegen Layout-Spruenge */
@@ -4604,7 +4615,12 @@
       for(var k = -1; k <= 1; k++){
         var i = aktuell + k;
         if(i < 0 || i > n - 1) continue;
-        if(slides[i].img.loading === 'lazy'){ slides[i].img.loading = 'eager'; }
+        var b = slides[i].img;
+        if(b.dataset.src){
+          b.srcset = b.dataset.srcset;
+          b.src    = b.dataset.src;
+          delete b.dataset.src; delete b.dataset.srcset;
+        }
       }
     }
 
