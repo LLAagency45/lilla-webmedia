@@ -302,6 +302,9 @@
     align-items:center;
     justify-content:center;
     gap:10px;
+    /* Ohne Angabe erben <button> und <a> unterschiedliche Zeilenhoehen und
+       sind dann verschieden hoch, sobald beide nebeneinander stehen. */
+    line-height:1.6;
     padding:15px 30px;
     border-radius:100px;
     font-size:15px;
@@ -1333,6 +1336,301 @@
     .process-grid::before{ display:none; }
   }
   @media (max-width:560px){ .process-grid{ grid-template-columns:1fr; } }
+
+
+  /* ---------- Konzept-Galerie (Coverflow) ----------
+     Raeumlicher Slider fuer die fiktiven Website-Konzepte. Die Position
+     jeder Karte ergibt sich aus ihrem Abstand zur aktiven Karte; diesen
+     Abstand berechnet das JS pro Frame und schreibt ihn direkt in
+     transform/opacity - beides laeuft auf dem Compositor.
+     Teure Eigenschaften (filter, box-shadow) wechseln dagegen nur ueber
+     Klassen und CSS-Transitions, nie pro Frame. */
+  .cg{ margin-top:96px; }
+
+  .cg-stage{
+    position:relative;
+    perspective:1700px;
+    perspective-origin:50% 46%;
+    margin-top:44px;
+    padding:22px 0 26px;
+    /* pan-y: waagerechtes Wischen gehoert dem Slider, senkrechtes
+       Scrollen bleibt beim Browser - die Seite bleibt bedienbar. */
+    touch-action:pan-y;
+    -webkit-user-select:none; user-select:none;
+    overflow:hidden;
+    cursor:grab;
+  }
+  .cg-stage.is-dragging{ cursor:grabbing; }
+  .cg-stage:focus-visible{ outline:2px solid var(--accent); outline-offset:6px; border-radius:var(--radius); }
+
+  /* Atmosphaerischer Hintergrund: zwei Ebenen, die sich beim Wechsel
+     ueberblenden. Der Blur wird einmal beim Laden gerechnet, nicht laufend. */
+  .cg-atmo{ position:absolute; inset:-14% -6%; z-index:0; pointer-events:none; }
+  .cg-atmo-layer{
+    position:absolute; inset:0;
+    background-size:cover; background-position:center;
+    filter:blur(64px) saturate(130%);
+    opacity:0;
+    transform:scale(1.18);
+    transition:opacity 1.5s var(--ease-luxe);
+  }
+  .cg-atmo-layer.is-on{ opacity:0.20; }
+  :root[data-theme="light"] .cg-atmo-layer.is-on{ opacity:0.16; }
+  /* Abdunkelnder Schleier: haelt den Hintergrund ruhig und die Schrift lesbar */
+  .cg-atmo::after{
+    content:''; position:absolute; inset:0;
+    background:
+      radial-gradient(60% 60% at 50% 44%, rgba(47,180,196,0.10), transparent 70%),
+      linear-gradient(180deg, var(--bg-0) 0%, rgba(7,8,10,0.55) 22%, rgba(7,8,10,0.55) 78%, var(--bg-0) 100%);
+  }
+  :root[data-theme="light"] .cg-atmo::after{
+    background:
+      radial-gradient(60% 60% at 50% 44%, rgba(26,138,151,0.08), transparent 70%),
+      linear-gradient(180deg, var(--bg-0) 0%, rgba(247,248,249,0.62) 22%, rgba(247,248,249,0.62) 78%, var(--bg-0) 100%);
+  }
+
+  .cg-viewport{
+    position:relative;
+    width:min(860px, 68vw);
+    aspect-ratio:16/9;      /* reserviert die Hoehe -> kein Layout-Sprung */
+    margin:0 auto;
+    z-index:1;
+    transform-style:preserve-3d;
+  }
+  .cg-slide{
+    position:absolute; inset:0;
+    transform-origin:50% 50%;
+    backface-visibility:hidden;
+    will-change:transform, opacity;
+  }
+  /* Karten ausserhalb des Sichtfensters gar nicht erst zeichnen */
+  .cg-slide[data-far="1"]{ visibility:hidden; }
+
+  .cg-frame{
+    position:absolute; inset:0;
+    border-radius:14px;
+    overflow:hidden;
+    background:var(--bg-1);
+    border:1px solid rgba(255,255,255,0.09);
+    box-shadow:0 38px 80px -34px rgba(0,0,0,0.85);
+    transition:border-color .9s var(--ease-luxe), box-shadow .9s var(--ease-luxe),
+               filter .9s var(--ease-luxe);
+    /* Nachbarkarten: leicht unscharf und dunkler. Fester Wert statt
+       laufender Neuberechnung. */
+    filter:blur(2.4px) brightness(0.6) saturate(0.85);
+  }
+  .cg-slide.is-active .cg-frame{
+    filter:blur(0) brightness(1) saturate(1);
+    border-color:rgba(47,180,196,0.32);
+    box-shadow:
+      0 54px 110px -34px rgba(0,0,0,0.9),
+      0 0 0 1px rgba(47,180,196,0.13),
+      0 20px 64px -34px rgba(47,180,196,0.32);
+  }
+  :root[data-theme="light"] .cg-frame{
+    border-color:rgba(10,14,18,0.12);
+    box-shadow:0 30px 70px -34px rgba(20,22,26,0.4);
+  }
+  :root[data-theme="light"] .cg-slide.is-active .cg-frame{
+    border-color:rgba(26,138,151,0.34);
+    box-shadow:
+      0 40px 90px -34px rgba(20,22,26,0.35),
+      0 0 0 1px rgba(26,138,151,0.14),
+      0 18px 54px -34px rgba(26,138,151,0.3);
+  }
+  .cg-frame img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+    /* Etwas groesser gezeichnet, damit der Parallax-Versatz keine
+       Bildkante freilegt. */
+    transform:scale(1.05) translate3d(var(--ix,0px), var(--iy,0px), 0);
+    transition:transform .5s var(--ease-luxe);
+  }
+  .cg-stage.is-dragging .cg-frame img{ transition:none; }
+  /* Feine Lichtkante oben - gibt der aktiven Karte Materialitaet */
+  .cg-frame::after{
+    content:''; position:absolute; inset:0; pointer-events:none;
+    border-radius:inherit;
+    background:linear-gradient(160deg, rgba(255,255,255,0.10), transparent 38%);
+    opacity:0; transition:opacity .9s var(--ease-luxe);
+  }
+  .cg-slide.is-active .cg-frame::after{ opacity:1; }
+
+  .cg-slide:not(.is-active){ cursor:pointer; }
+  .cg-slide.is-active .cg-frame{ cursor:zoom-in; }
+
+  /* Pfeile */
+  .cg-arrow{
+    position:absolute; top:50%; z-index:3;
+    width:52px; height:52px;
+    transform:translateY(-50%);
+    display:flex; align-items:center; justify-content:center;
+    border-radius:50%;
+    border:1px solid var(--border-strong);
+    background:rgba(12,13,15,0.72);
+    -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+    color:var(--text-0);
+    transition:background .45s var(--ease-luxe), border-color .45s var(--ease-luxe),
+               transform .45s var(--ease-luxe), opacity .45s var(--ease-luxe);
+  }
+  :root[data-theme="light"] .cg-arrow{ background:rgba(255,255,255,0.82); }
+  .cg-prev{ left:10px; }
+  .cg-next{ right:10px; }
+  .cg-arrow:hover{
+    border-color:var(--accent-line); background:var(--accent-soft);
+    transform:translateY(-50%) scale(1.07);
+  }
+  .cg-arrow:active{ transform:translateY(-50%) scale(0.94); }
+
+  /* Projektinformationen */
+  .cg-info{
+    max-width:620px; margin:38px auto 0; text-align:center;
+    position:relative; z-index:2;
+  }
+  .cg-info-top{
+    display:flex; align-items:center; justify-content:center; gap:12px;
+    flex-wrap:wrap; margin-bottom:14px;
+  }
+  .cg-branche{
+    font-size:12px; letter-spacing:0.16em; text-transform:uppercase;
+    color:var(--accent-ink); font-weight:600;
+  }
+  .cg-badge{
+    font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--text-2); font-weight:600;
+    padding:5px 12px; border-radius:100px;
+    border:1px solid var(--border);
+  }
+  .cg-name{ font-size:clamp(22px,2.6vw,30px); margin-bottom:12px; }
+  .cg-desc{ font-size:15.5px; line-height:1.6; }
+  .cg-actions{
+    display:flex; gap:12px; justify-content:center; flex-wrap:wrap;
+    margin-top:26px;
+  }
+  /* Die drei Textgruppen laufen leicht zeitversetzt ein */
+  .cg-info-top, .cg-name, .cg-desc, .cg-actions{
+    opacity:0; transform:translateY(9px);
+    transition:opacity .5s var(--ease-luxe), transform .5s var(--ease-luxe);
+  }
+  .cg-info.is-in .cg-info-top{ opacity:1; transform:none; transition-delay:0s; }
+  .cg-info.is-in .cg-name   { opacity:1; transform:none; transition-delay:.07s; }
+  .cg-info.is-in .cg-desc   { opacity:1; transform:none; transition-delay:.13s; }
+  .cg-info.is-in .cg-actions{ opacity:1; transform:none; transition-delay:.18s; }
+
+  /* Steuerleiste: Play/Pause + klickbare Fortschrittsanzeige */
+  .cg-bar{
+    display:flex; align-items:center; justify-content:center; gap:18px;
+    margin-top:34px;
+  }
+  .cg-toggle{
+    width:44px; height:44px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    border-radius:50%;
+    border:1px solid var(--border);
+    background:var(--bg-1);
+    color:var(--text-1);
+    transition:color .4s var(--ease-luxe), border-color .4s var(--ease-luxe),
+               background .4s var(--ease-luxe);
+  }
+  .cg-toggle:hover{ color:var(--text-0); border-color:var(--accent-line); background:var(--card-hover); }
+  .cg-toggle .cg-ic-pause{ display:none; }
+  .cg-toggle[aria-pressed="false"] .cg-ic-pause{ display:block; }
+  .cg-toggle[aria-pressed="false"] .cg-ic-play{ display:none; }
+
+  .cg-dots{ display:flex; gap:9px; align-items:center; }
+  .cg-dot{
+    position:relative;
+    /* Der sichtbare Strich ist nur 2px hoch - die Schaltflaeche darum
+       herum bleibt trotzdem gross genug zum Antippen. */
+    width:34px; min-width:22px; height:44px;
+    padding:0; border:0; background:none;
+    display:flex; align-items:center;
+  }
+  .cg-dot::before{
+    content:''; display:block;
+    width:100%; height:2px; border-radius:2px;
+    background:var(--border-strong);
+    transition:background .4s var(--ease-luxe);
+  }
+  .cg-dot:hover::before{ background:var(--text-2); }
+  .cg-dot-fill{
+    position:absolute; left:0; top:50%; margin-top:-1px;
+    width:100%; height:2px; border-radius:2px;
+    background:var(--accent);
+    transform:scaleX(0); transform-origin:left center;
+  }
+  .cg-dot.is-current::before{ background:var(--accent-line); }
+  .cg-dot.is-current .cg-dot-fill{ animation:cgFill 6s linear forwards; }
+  .cg-dots.is-paused .cg-dot-fill{ animation-play-state:paused; }
+  /* Ohne Autoplay bleibt die aktive Linie einfach gefuellt stehen */
+  .cg-dots.no-auto .cg-dot.is-current .cg-dot-fill{ animation:none; transform:scaleX(1); }
+  @keyframes cgFill{ from{ transform:scaleX(0); } to{ transform:scaleX(1); } }
+
+  .cg-disclaimer{
+    max-width:620px; margin:40px auto 0;
+    text-align:center; font-size:13px; line-height:1.6;
+    color:var(--text-2);
+  }
+
+  .cg-noscript{
+    display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin-top:34px;
+  }
+  .cg-noscript img{ width:100%; height:auto; border-radius:12px; border:1px solid var(--border); }
+
+  @media (max-width:1100px){
+    .cg-viewport{ width:min(720px, 76vw); }
+  }
+  @media (max-width:768px){
+    .cg{ margin-top:64px; }
+    /* Mobil: eine Karte gross, von den Nachbarn nur ein schmaler Streifen.
+       Blur und Tiefe sind reduziert - das spart Rechenzeit auf dem Geraet. */
+    .cg-viewport{ width:min(560px, 86vw); }
+    .cg-stage{ perspective:1300px; padding:14px 0 18px; }
+    .cg-frame{ filter:blur(1.4px) brightness(0.62); }
+    .cg-arrow{ width:44px; height:44px; }
+    .cg-prev{ left:2px; } .cg-next{ right:2px; }
+    .cg-info{ margin-top:30px; }
+    .cg-actions .btn{ flex:1 1 auto; min-width:180px; justify-content:center; }
+    .cg-atmo-layer{ filter:blur(46px); }
+    .cg-noscript{ grid-template-columns:minmax(0,1fr); }
+  }
+  @media (max-width:480px){
+    .cg-viewport{ width:88vw; }
+    .cg-actions{ flex-direction:column; }
+    .cg-actions .btn{ width:100%; }
+    .cg-disclaimer{ margin-top:32px; }
+  }
+
+  /* Grossansicht: Zusatzangaben zum Konzept unter dem Bild */
+  .lb-meta{ display:none; text-align:center; max-width:560px; margin:0 auto; }
+  .lb-meta.is-on{ display:block; }
+  .lb-meta-top{
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    flex-wrap:wrap; margin-bottom:8px;
+  }
+  .lb-branche{
+    font-size:11.5px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--accent-ink); font-weight:600;
+  }
+  .lb-badge{
+    font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--text-2); font-weight:600;
+    padding:4px 10px; border-radius:100px; border:1px solid var(--border);
+  }
+  .lb-desc{ font-size:13.5px; line-height:1.55; color:var(--text-1); margin-top:6px; }
+  .lb-meta .btn{ margin-top:14px; }
+
+  @media (prefers-reduced-motion: reduce){
+    /* Ohne Bewegung: flache, ruhige Darstellung. Kein 3D, kein Parallax,
+       kein Autoplay (das JS startet ihn gar nicht erst). */
+    .cg-stage{ perspective:none; }
+    .cg-frame{ filter:none; }
+    .cg-slide:not(.is-active){ opacity:0.32; }
+    .cg-frame img{ transform:none; }
+    .cg-atmo-layer{ display:none; }
+    .cg-info-top, .cg-name, .cg-desc, .cg-actions{ opacity:1; transform:none; }
+  }
 
   /* ---------- Pricing ----------
      Zwei Bereiche teilen sich diese Komponenten: die Website-Pakete stehen
@@ -2468,22 +2766,6 @@
         <p><strong style="color:var(--text-0);">Diese Website, die du gerade siehst,</strong> ist selbst ein gutes Beispiel für unsere Arbeit.</p>
         <p>Individuelle, moderne Webseiten, die auf jedem Gerät gut aussehen – mit hochwertigem Design, schnellen Ladezeiten und klarer Markenwirkung. Ideal für Unternehmen, Onlineshops, Start-ups und Selbstständige.</p>
 
-        <!-- SHOWCASE: videos/webseiten-showcase.mp4 - Überblick verschiedener
-             Seiten. Läuft stumm in Endlosschleife, sobald sichtbar. -->
-        <div class="webs-showcase">
-          <div class="showreel-frame viewfinder" id="showreelFrame">
-            <video id="showreelVideo" class="showreel-video" src="videos/webseiten-showcase.mp4" poster="assets/webseiten-showcase-poster.jpg" muted autoplay loop playsinline preload="metadata" width="1920" height="1080" aria-hidden="true"></video>
-            <span class="showreel-scrim" aria-hidden="true"></span>
-            <div class="showreel-play">
-              <div class="play-circle">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 5v14l12-7L8 5z" fill="#f2f3f4"/></svg>
-              </div>
-              <span class="showreel-note">So entsteht eine Seite</span>
-            </div>
-            <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
-          </div>
-        </div>
-
         <div class="feature-list">
           <div class="feature-item">
             <span class="f-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
@@ -2516,6 +2798,74 @@
         </div>
 
       </div>
+    </div>
+
+
+    <!-- KONZEPT-GALERIE ------------------------------------------------
+         Ersetzt das frühere Übersichtsvideo: gleiche Aufgabe, aber der
+         Besucher kann selbst blättern, wischen und ein Konzept gross
+         ansehen. Die Karten erzeugt das JS aus KONZEPTE, damit alle
+         Angaben zu einem Konzept an genau einer Stelle stehen. -->
+    <div class="cg" id="konzeptGalerie">
+      <div class="price-sub-head reveal">
+        <span class="eyebrow">Website-Konzepte</span>
+        <h3>So unterschiedlich kann dein digitaler Auftritt aussehen.</h3>
+        <p>Von modernem Handwerk bis zur hochwertigen Premium-Marke: Entdecke verschiedene
+          Designrichtungen und finde heraus, welcher Stil zu deinem Unternehmen passt.</p>
+      </div>
+
+      <div class="cg-stage" id="cgStage" tabindex="0" role="group"
+           aria-roledescription="Galerie"
+           aria-label="Website-Konzepte, 1 von 6: AVORA Architektur">
+        <div class="cg-atmo" aria-hidden="true">
+          <div class="cg-atmo-layer" id="cgAtmoA"></div>
+          <div class="cg-atmo-layer" id="cgAtmoB"></div>
+        </div>
+        <div class="cg-viewport" id="cgViewport"></div>
+        <button class="cg-arrow cg-prev" id="cgPrev" type="button" aria-label="Vorheriges Konzept"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="cg-arrow cg-next" id="cgNext" type="button" aria-label="Nächstes Konzept"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+
+      <div class="cg-info is-in" id="cgInfo" aria-live="polite">
+        <div class="cg-info-top">
+          <span class="cg-branche" id="cgBranche">Architektur</span>
+          <span class="cg-badge">Konzeptprojekt</span>
+        </div>
+        <h4 class="cg-name" id="cgName">AVORA Architektur</h4>
+        <p class="cg-desc" id="cgDesc">Minimalistischer Markenauftritt mit grosszügiger Bildsprache
+          und ruhiger Projektpräsentation. Viel Weissraum, klare Typografie – die Bauten stehen
+          im Mittelpunkt.</p>
+        <div class="cg-actions">
+          <button class="btn btn-ghost" id="cgAnsehen" type="button">Konzept ansehen</button>
+          <a class="btn btn-primary nav-link" id="cgAnfrage" href="#kontakt"
+             data-service="Premium Webseiten"
+             data-msg="Ich interessiere mich für eine Website in der Designrichtung &bdquo;AVORA Architektur&ldquo;.">Ähnlichen Auftritt anfragen</a>
+        </div>
+      </div>
+
+      <div class="cg-bar">
+        <button class="cg-toggle" id="cgToggle" type="button" aria-pressed="false"
+                aria-label="Automatischen Wechsel pausieren">
+          <svg class="cg-ic-pause" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5v14M15 5v14" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+          <svg class="cg-ic-play" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 5v14l12-7L8 5z" fill="currentColor"/></svg>
+        </button>
+        <div class="cg-dots" id="cgDots" role="group" aria-label="Konzept auswählen"></div>
+      </div>
+
+      <p class="cg-disclaimer">Die dargestellten Marken und Webseiten sind fiktive Konzeptprojekte.
+        Sie zeigen beispielhaft, welche individuellen digitalen Auftritte mit Lilla&nbsp;Web&nbsp;&amp;&nbsp;Media
+        möglich sind.</p>
+
+      <noscript>
+        <div class="cg-noscript">
+        <img src="assets/webkonzepte/konzept-avora-640.jpg" alt="Website-Konzept für ein Architekturbüro" width="640" height="360">
+        <img src="assets/webkonzepte/konzept-lumea-640.jpg" alt="Website-Konzept für ein Restaurant" width="640" height="360">
+        <img src="assets/webkonzepte/konzept-nordlicht-640.jpg" alt="Website-Konzept für einen Handwerksbetrieb" width="640" height="360">
+        <img src="assets/webkonzepte/konzept-sk-fotografie-640.jpg" alt="Website-Konzept für ein Fotografie-Portfolio" width="640" height="360">
+        <img src="assets/webkonzepte/konzept-puls-studio-640.jpg" alt="Website-Konzept für eine Designagentur" width="640" height="360">
+        <img src="assets/webkonzepte/konzept-aurelion-640.jpg" alt="Website-Konzept für eine Unternehmensberatung" width="640" height="360">
+        </div>
+      </noscript>
     </div>
 
     <!-- WEBSITE-PAKETE ------------------------------------------------
@@ -3438,6 +3788,16 @@
     <span class="lb-title" id="lbTitle"></span>
     <span class="lb-counter" id="lbCounter"></span>
   </div>
+  <!-- Zusatzangaben, nur bei Eintraegen mit data-lb-desc sichtbar -->
+  <div class="lb-chrome lb-meta" id="lbMeta">
+    <div class="lb-meta-top">
+      <span class="lb-branche" id="lbBranche"></span>
+      <span class="lb-badge" id="lbBadge"></span>
+    </div>
+    <p class="lb-desc" id="lbDesc"></p>
+    <a class="btn btn-primary btn-sm" id="lbCta" href="#kontakt"
+       data-service="Premium Webseiten">Ähnlichen Auftritt anfragen</a>
+  </div>
 </div>
 
 <!-- =========================================================
@@ -3972,14 +4332,488 @@
      Transform zurück auf die Ausgangsposition setzen und zur Identität
      animieren. Das ergibt eine echte "shared element"-Bewegung statt eines
      harten Popups - und läuft rein über transform, also GPU-freundlich. */
-  (function initLightbox(){
+
+  /* ---------- Konzept-Galerie ----------------------------------------
+     Raeumlicher Slider fuer die fiktiven Website-Konzepte.
+
+     Alle Inhalte stehen ausschliesslich in KONZEPTE. Ein weiteres Konzept
+     ergaenzen heisst: Bilder nach assets/webkonzepte/ legen (Endungen
+     -640/-1100/-1800.jpg) und hier einen Eintrag anhaengen. Sonst ist
+     nirgends etwas anzupassen.
+
+     Bewegung: das JS schreibt pro Frame nur transform und opacity, also
+     reine Compositor-Eigenschaften. Unschaerfe, Rahmen und Schatten
+     wechseln ueber Klassen mit CSS-Transitions und werden nie pro Frame
+     neu berechnet. Die Schleife laeuft nur, solange sich etwas bewegt. */
+  var galerieAPI = (function initKonzeptGalerie(){
+
+    var KONZEPTE = [
+      {
+        bild: 'konzept-avora',
+        titel: 'AVORA Architektur',
+        branche: 'Architektur',
+        beschreibung: 'Minimalistischer Markenauftritt mit grosszügiger Bildsprache und ruhiger Projektpräsentation. Viel Weissraum, klare Typografie – die Bauten stehen im Mittelpunkt.',
+        alt: 'Website-Konzept für ein Architekturbüro: minimalistische Startseite mit grossem Gebäudefoto auf einem Monitor',
+        anfrage: 'Ich interessiere mich für eine Website in der Designrichtung „AVORA Architektur".'
+      },
+      {
+        bild: 'konzept-lumea',
+        titel: 'LUMEA Küche & Bar',
+        branche: 'Gastronomie',
+        beschreibung: 'Dunkler, warmer Auftritt mit goldenen Akzenten. Das Gericht trägt die Startseite, die Reservierung ist immer nur einen Klick entfernt.',
+        alt: 'Website-Konzept für ein Restaurant: dunkle Startseite mit grossem Gerichtefoto und goldener Schrift',
+        anfrage: 'Ich interessiere mich für eine Website in der Designrichtung „LUMEA Küche & Bar".'
+      },
+      {
+        bild: 'konzept-nordlicht',
+        titel: 'NORDLICHT Gebäudetechnik',
+        branche: 'Handwerk & Gebäudetechnik',
+        beschreibung: 'Sachlicher, vertrauenswürdiger Auftritt für einen Handwerksbetrieb: Leistungen auf einen Blick, Notdienst sichtbar – auf dem Smartphone genauso klar wie am Rechner.',
+        alt: 'Website-Konzept für einen Handwerksbetrieb, dargestellt auf Laptop und Smartphone',
+        anfrage: 'Ich interessiere mich für eine Website in der Designrichtung „NORDLICHT Gebäudetechnik".'
+      },
+      {
+        bild: 'konzept-sk-fotografie',
+        titel: 'SK Fotografie',
+        branche: 'Fotografie',
+        beschreibung: 'Reduziertes Portfolio in Schwarzweiss. Ein ruhiges Raster führt durch die Serien, die Bilder bekommen den ganzen Raum.',
+        alt: 'Website-Konzept für ein Fotografie-Portfolio in Schwarzweiss auf einem Tablet',
+        anfrage: 'Ich interessiere mich für eine Website in der Designrichtung „SK Fotografie".'
+      },
+      {
+        bild: 'konzept-puls-studio',
+        titel: 'PULS Studio',
+        branche: 'Designagentur',
+        beschreibung: 'Heller, selbstbewusster Auftritt mit kräftigem Orange und plastischen Formen. Projekte und Team stehen gleich auf der Startseite.',
+        alt: 'Website-Konzept für eine Designagentur: helle Startseite mit orangen Akzenten und 3D-Formen auf einem Monitor',
+        anfrage: 'Ich interessiere mich für eine Website in der Designrichtung „PULS Studio".'
+      },
+      {
+        bild: 'konzept-aurelion',
+        titel: 'AURELION Partners',
+        branche: 'Unternehmensberatung',
+        beschreibung: 'Seriöser Auftritt in tiefem Navy mit Serifenschrift. Kennzahlen und Schwerpunkte schaffen früh Orientierung.',
+        alt: 'Website-Konzept für eine Unternehmensberatung: dunkelblaue Startseite mit Skyline-Motiv auf einem Monitor',
+        anfrage: 'Ich interessiere mich für eine Website in der Designrichtung „AURELION Partners".'
+      }
+    ];
+
+    var stage = document.getElementById('cgStage');
+    if(!stage || !KONZEPTE.length) return null;
+
+    var viewport = document.getElementById('cgViewport');
+    var info     = document.getElementById('cgInfo');
+    var dotsBox  = document.getElementById('cgDots');
+    var toggle   = document.getElementById('cgToggle');
+    var atmoA    = document.getElementById('cgAtmoA');
+    var atmoB    = document.getElementById('cgAtmoB');
+
+    var n = KONZEPTE.length;
+    var PFAD = 'assets/webkonzepte/';
+
+    /* ----- Aufbau ----- */
+    var slides = KONZEPTE.map(function(k, i){
+      var el = document.createElement('div');
+      el.className = 'cg-slide';
+      el.setAttribute('data-lb', '');
+      el.setAttribute('data-lb-kind', 'img');
+      el.setAttribute('data-lb-group', 'konzepte');
+      el.setAttribute('data-lb-manual', '');   /* Öffnen steuert die Galerie */
+      el.setAttribute('data-lb-title', k.titel);
+      el.setAttribute('data-lb-eyebrow', k.branche);
+      el.setAttribute('data-lb-badge', 'Fiktives Konzeptprojekt');
+      el.setAttribute('data-lb-desc', k.beschreibung);
+      el.setAttribute('data-lb-msg', k.anfrage);
+
+      var frame = document.createElement('div');
+      frame.className = 'cg-frame';
+
+      var img = document.createElement('img');
+      img.src    = PFAD + k.bild + '-1100.jpg';
+      img.srcset = PFAD + k.bild + '-640.jpg 640w, ' +
+                   PFAD + k.bild + '-1100.jpg 1100w, ' +
+                   PFAD + k.bild + '-1800.jpg 1800w';
+      img.sizes  = '(max-width:768px) 86vw, (max-width:1100px) 76vw, 860px';
+      img.alt    = k.alt;
+      img.width  = 1100; img.height = 619;   /* feste Masse gegen Layout-Spruenge */
+      img.decoding = 'async';
+      img.draggable = false;
+      /* Die Galerie liegt weit unterhalb des ersten Bildschirms. Deshalb
+         laedt zunaechst nichts; der Beobachter weiter unten holt das
+         aktive Bild und seine Nachbarn rechtzeitig vor dem Sichtbarwerden. */
+      img.loading = 'lazy';
+
+      frame.appendChild(img);
+      el.appendChild(frame);
+      viewport.appendChild(el);
+      return { el: el, img: img, frame: frame, daten: k };
+    });
+
+    /* Fortschrittsanzeige */
+    var dots = KONZEPTE.map(function(k, i){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'cg-dot';
+      b.setAttribute('aria-label', 'Konzept ' + (i + 1) + ' von ' + n + ': ' + k.titel);
+      b.innerHTML = '<span class="cg-dot-fill"></span>';
+      b.addEventListener('click', function(){ geheZu(i, true); });
+      dotsBox.appendChild(b);
+      return b;
+    });
+
+    /* ----- Zustand ----- */
+    var pos = 0, ziel = 0, tempo = 0;      /* Position im Ring (fortlaufend) */
+    var raf = 0, laeuft = false;
+    var ziehend = false, aktivGezogen = false;
+    var px = 0, py = 0;                    /* Parallax, -1 .. 1 */
+    var autoErlaubt = !reduceMotion;
+    var vomNutzerPausiert = false;
+    var imBild = true, hover = false, tabAktiv = true, lbOffen = false;
+    var wartetBis = 0;                     /* Sperre nach manueller Bedienung */
+
+    var STEIFE = 0.062, DAEMPFUNG = 0.78;  /* Federkurve des Übergangs */
+    var ABSTAND = 54;                      /* seitlicher Versatz in % der Karte */
+
+    function indexAus(p){ return ((Math.round(p) % n) + n) % n; }
+    var aktuell = 0;
+
+    /* ----- Zeichnen ----- */
+    function zeichne(){
+      for(var i = 0; i < n; i++){
+        var s = slides[i];
+        var d = i - pos;
+        /* kürzester Weg im Ring: dadurch springt beim Überlauf nichts */
+        if(d >  n / 2) d -= n;
+        if(d < -n / 2) d += n;
+        var ad = Math.abs(d);
+
+        if(ad > 2.15){
+          if(s.el.dataset.far !== '1'){ s.el.dataset.far = '1'; }
+          continue;
+        }
+        if(s.el.dataset.far !== '0') s.el.dataset.far = '0';
+
+        var b = Math.min(ad, 2);
+        var tx = d * ABSTAND;
+        var tz = -b * 130;
+        var ry = -d * 21;
+        var rx = 0;
+        var sc = 1 - b * 0.13;
+
+        /* Parallax nur auf der vorderen Karte und nur dort, wo sie fast
+           mittig steht - sonst überlagert er die Übergangsbewegung. */
+        if(!reduceMotion && ad < 0.5){
+          var g = 1 - ad * 2;
+          ry += px * 3.2 * g;
+          rx  = -py * 2.0 * g;
+        }
+
+        s.el.style.transform =
+          'translateX(' + tx.toFixed(2) + '%) translateZ(' + tz.toFixed(1) + 'px) ' +
+          'rotateY(' + ry.toFixed(2) + 'deg) rotateX(' + rx.toFixed(2) + 'deg) ' +
+          'scale(' + sc.toFixed(4) + ')';
+        s.el.style.opacity = Math.max(0, 1 - ad * 0.42).toFixed(3);
+        s.el.style.zIndex = String(100 - Math.round(ad * 10));
+      }
+    }
+
+    function schleife(){
+      if(!ziehend){
+        var diff = ziel - pos;
+        tempo += diff * STEIFE;
+        tempo *= DAEMPFUNG;
+        pos += tempo;
+        if(Math.abs(diff) < 0.0006 && Math.abs(tempo) < 0.0006){
+          pos = ziel; tempo = 0; laeuft = false;
+        }
+      }
+      zeichne();
+      if(laeuft || ziehend){ raf = requestAnimationFrame(schleife); }
+      else { raf = 0; }
+    }
+    function starte(){
+      if(!laeuft){ laeuft = true; }
+      if(!raf){ raf = requestAnimationFrame(schleife); }
+    }
+
+    /* ----- Aktives Konzept ----- */
+    function setzeAktiv(idx){
+      if(idx === aktuell) return;
+      aktuell = idx;
+      var k = KONZEPTE[idx];
+
+      slides.forEach(function(s, i){ s.el.classList.toggle('is-active', i === idx); });
+      dots.forEach(function(d, i){ d.classList.toggle('is-current', i === idx); });
+
+      /* Text leicht zeitversetzt neu einlaufen lassen */
+      info.classList.remove('is-in');
+      document.getElementById('cgBranche').textContent = k.branche;
+      document.getElementById('cgName').textContent    = k.titel;
+      document.getElementById('cgDesc').textContent    = k.beschreibung;
+      var cta = document.getElementById('cgAnfrage');
+      cta.setAttribute('data-msg', k.anfrage);
+      void info.offsetWidth;
+      info.classList.add('is-in');
+
+      stage.setAttribute('aria-label',
+        'Website-Konzepte, ' + (idx + 1) + ' von ' + n + ': ' + k.titel);
+
+      atmoWechsel(k.bild);
+      ladeNachbarn();
+      starteFortschritt();
+    }
+
+    /* Hintergrund: zwei Ebenen wechseln sich ab, damit weich überblendet
+       wird statt hart umzuschalten. */
+    var atmoOben = false;
+    function atmoWechsel(name){
+      if(reduceMotion) return;
+      var neu = atmoOben ? atmoA : atmoB;
+      var alt = atmoOben ? atmoB : atmoA;
+      neu.style.backgroundImage = 'url("' + PFAD + name + '-640.jpg")';
+      neu.classList.add('is-on');
+      alt.classList.remove('is-on');
+      atmoOben = !atmoOben;
+    }
+
+    /* Direkte Nachbarn rechtzeitig laden, alles Weitere bleibt lazy */
+    function ladeNachbarn(){
+      for(var k = -1; k <= 1; k++){
+        var i = ((aktuell + k) % n + n) % n;
+        if(slides[i].img.loading === 'lazy'){ slides[i].img.loading = 'eager'; }
+      }
+    }
+
+    /* ----- Navigation ----- */
+    function geheZu(idx, manuell){
+      /* auf dem kürzesten Weg zum Zielindex, damit die Schleife nahtlos bleibt */
+      var akt = indexAus(pos);
+      var d = idx - akt;
+      if(d >  n / 2) d -= n;
+      if(d < -n / 2) d += n;
+      ziel = Math.round(pos) + d;
+      starte();
+      setzeAktiv(idx);
+      if(manuell) merkeBedienung();
+    }
+    function schritt(dir, manuell){
+      geheZu(((aktuell + dir) % n + n) % n, manuell);
+    }
+
+    /* ----- Autoplay -------------------------------------------------
+       Der Takt kommt aus der CSS-Animation der Fortschrittslinie: sie
+       laeuft 6s, ihr animationend schaltet weiter. Pausieren heisst
+       animation-play-state:paused - der Rest ergibt sich von selbst,
+       ganz ohne Timer im JS. */
+    function pausiert(){
+      return vomNutzerPausiert || hover || ziehend || lbOffen ||
+             !tabAktiv || !imBild || Date.now() < wartetBis;
+    }
+    function pruefePause(){
+      dotsBox.classList.toggle('is-paused', pausiert());
+    }
+    function starteFortschritt(){
+      if(!autoErlaubt) return;
+      var fill = dots[aktuell].querySelector('.cg-dot-fill');
+      fill.style.animation = 'none';
+      void fill.offsetWidth;      /* Reflow: Animation wirklich neu starten */
+      fill.style.animation = '';
+      pruefePause();
+    }
+    function merkeBedienung(){
+      /* Nach eigener Bedienung erst nach 10s wieder automatisch wechseln */
+      wartetBis = Date.now() + 10000;
+      pruefePause();
+      setTimeout(function(){
+        if(Date.now() >= wartetBis){ starteFortschritt(); pruefePause(); }
+      }, 10050);
+    }
+    dotsBox.addEventListener('animationend', function(e){
+      if(e.animationName !== 'cgFill' || !autoErlaubt || pausiert()) return;
+      schritt(1, false);
+    });
+
+    toggle.addEventListener('click', function(){
+      vomNutzerPausiert = !vomNutzerPausiert;
+      toggle.setAttribute('aria-pressed', vomNutzerPausiert ? 'true' : 'false');
+      toggle.setAttribute('aria-label', vomNutzerPausiert
+        ? 'Automatischen Wechsel starten' : 'Automatischen Wechsel pausieren');
+      if(!vomNutzerPausiert){ wartetBis = 0; starteFortschritt(); }
+      pruefePause();
+    });
+
+    stage.addEventListener('mouseenter', function(){ hover = true;  pruefePause(); });
+    stage.addEventListener('mouseleave', function(){ hover = false; px = py = 0; starte(); pruefePause(); });
+    document.addEventListener('visibilitychange', function(){
+      tabAktiv = !document.hidden; pruefePause();
+    });
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(eintraege){
+        imBild = eintraege[0].isIntersecting;
+        pruefePause();
+      }, { threshold:0.25 }).observe(stage);
+
+      /* Getrennter Beobachter mit Vorlauf: die Bilder sind da, bevor die
+         Galerie in den Blick kommt - ohne sie schon beim Seitenaufruf
+         mitzuladen. */
+      var vorlader = new IntersectionObserver(function(eintraege){
+        if(!eintraege[0].isIntersecting) return;
+        ladeNachbarn();
+        vorlader.disconnect();
+      }, { rootMargin:'700px 0px 700px 0px' });
+      vorlader.observe(stage);
+    } else {
+      ladeNachbarn();
+    }
+
+    /* ----- Zeiger: Ziehen und Parallax ----- */
+    var startX = 0, startY = 0, startPos = 0, letzteX = 0, letzteZeit = 0, schwung = 0;
+    var pointerId = null;
+
+    stage.addEventListener('pointerdown', function(e){
+      if(e.button !== undefined && e.button !== 0) return;
+      pointerId = e.pointerId;
+      startX = letzteX = e.clientX; startY = e.clientY;
+      startPos = pos; schwung = 0; letzteZeit = e.timeStamp;
+      ziehend = true; aktivGezogen = false;
+      tempo = 0;
+      pruefePause();
+    });
+
+    var zeigerWartet = false;
+    stage.addEventListener('pointermove', function(e){
+      if(ziehend && e.pointerId === pointerId){
+        var dx = e.clientX - startX, dy = e.clientY - startY;
+        if(!aktivGezogen){
+          /* Erst ab einer klaren waagerechten Bewegung übernehmen - so
+             bleiben Klicks Klicks und senkrechtes Scrollen möglich. */
+          if(Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)){
+            aktivGezogen = true;
+            stage.classList.add('is-dragging');
+            try { stage.setPointerCapture(pointerId); } catch(err){}
+          } else if(Math.abs(dy) > 10){
+            ziehend = false; pointerId = null; pruefePause();
+            return;
+          }
+        }
+        if(aktivGezogen){
+          var breite = viewport.offsetWidth * (ABSTAND / 100);
+          pos = startPos - dx / breite;
+          var dt = e.timeStamp - letzteZeit;
+          if(dt > 0){ schwung = (e.clientX - letzteX) / breite / dt * 16; }
+          letzteX = e.clientX; letzteZeit = e.timeStamp;
+          starte();
+        }
+        return;
+      }
+      /* Parallax - auf Zeigergeräten, gedrosselt über rAF */
+      if(reduceMotion || zeigerWartet) return;
+      zeigerWartet = true;
+      requestAnimationFrame(function(){
+        zeigerWartet = false;
+        var r = stage.getBoundingClientRect();
+        px = ((e.clientX - r.left) / r.width  - 0.5) * 2;
+        py = ((e.clientY - r.top)  / r.height - 0.5) * 2;
+        var s = slides[aktuell];
+        if(s){
+          s.img.style.setProperty('--ix', (-px * 7).toFixed(1) + 'px');
+          s.img.style.setProperty('--iy', (-py * 5).toFixed(1) + 'px');
+        }
+        starte();
+      });
+    }, { passive:true });
+
+    function zeigerEnde(e){
+      if(!ziehend || (pointerId !== null && e.pointerId !== pointerId)) return;
+      var warGezogen = aktivGezogen;
+      ziehend = false; aktivGezogen = false;
+      stage.classList.remove('is-dragging');
+      try { stage.releasePointerCapture(pointerId); } catch(err){}
+      pointerId = null;
+
+      if(warGezogen){
+        /* Schwung einrechnen, dann sauber auf ein Konzept einrasten -
+           höchstens ein Schritt über die aktuelle Position hinaus. */
+        var mitSchwung = pos - schwung * 3.2;
+        var z = Math.round(mitSchwung);
+        var maxZ = Math.round(startPos) + 1, minZ = Math.round(startPos) - 1;
+        ziel = Math.max(minZ, Math.min(maxZ, z));
+        starte();
+        setzeAktiv(indexAus(ziel));
+        merkeBedienung();
+      }
+      pruefePause();
+    }
+    stage.addEventListener('pointerup', zeigerEnde);
+    stage.addEventListener('pointercancel', zeigerEnde);
+
+    /* Klick: seitliche Karte holen, aktive Karte gross zeigen */
+    stage.addEventListener('click', function(e){
+      if(Math.abs(e.clientX - startX) > 8) return;   /* war ein Ziehen */
+      var slideEl = e.target.closest ? e.target.closest('.cg-slide') : null;
+      if(!slideEl) return;
+      var i = slides.findIndex(function(s){ return s.el === slideEl; });
+      if(i < 0) return;
+      if(i === aktuell){ oeffneGross(); }
+      else { geheZu(i, true); }
+    });
+
+    /* ----- Tastatur ----- */
+    stage.addEventListener('keydown', function(e){
+      if(e.key === 'ArrowLeft'){ e.preventDefault(); schritt(-1, true); }
+      else if(e.key === 'ArrowRight'){ e.preventDefault(); schritt(1, true); }
+      else if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); oeffneGross(); }
+    });
+
+    document.getElementById('cgPrev').addEventListener('click', function(){ schritt(-1, true); });
+    document.getElementById('cgNext').addEventListener('click', function(){ schritt(1, true); });
+    document.getElementById('cgAnsehen').addEventListener('click', oeffneGross);
+
+    function oeffneGross(){
+      if(!lightboxAPI) return;
+      var idx = lightboxAPI.indexOf(slides[aktuell].el);
+      if(idx >= 0) lightboxAPI.open(idx);
+    }
+
+    /* ----- Start ----- */
+    slides[0].el.classList.add('is-active');
+    dots[0].classList.add('is-current');
+    info.classList.add('is-in');
+    if(!autoErlaubt) dotsBox.classList.add('no-auto');
+    atmoWechsel(KONZEPTE[0].bild);
+    zeichne();
+    pruefePause();
+    window.addEventListener('resize', zeichne, { passive:true });
+
+    return {
+      /* Von der Grossansicht genutzt, damit Galerie und Grossansicht
+         beim Blättern nicht auseinanderlaufen. */
+      syncVon: function(el){
+        var i = slides.findIndex(function(s){ return s.el === el; });
+        if(i >= 0 && i !== aktuell) geheZu(i, true);
+      },
+      setzeLightboxOffen: function(offen){ lbOffen = offen; pruefePause(); }
+    };
+  })();
+
+  var lightboxAPI = (function initLightbox(){
     var lb = document.getElementById('lightbox');
     if(!lb) return;
     var lbMedia   = document.getElementById('lbMedia');
     var lbTitle   = document.getElementById('lbTitle');
     var lbCounter = document.getElementById('lbCounter');
+    var lbMeta    = document.getElementById('lbMeta');
     var triggers  = Array.prototype.slice.call(document.querySelectorAll('[data-lb]'));
     if(!triggers.length) return;
+
+    /* Gruppen: die Konzept-Galerie und die Grafikdesign-Arbeiten sind zwei
+       getrennte Sammlungen. Vor- und Zurueckblaettern bleibt deshalb
+       innerhalb der Gruppe, aus der geoeffnet wurde. */
+    function gruppeVon(t){ return t.getAttribute('data-lb-group') || 'standard'; }
+    function gruppeListe(t){
+      var g = gruppeVon(t);
+      return triggers.filter(function(x){ return gruppeVon(x) === g; });
+    }
 
     var current = -1;
     var lastFocused = null;
@@ -4029,7 +4863,22 @@
       current = index;
       buildContent(trigger);
       lbTitle.textContent = trigger.getAttribute('data-lb-title') || '';
-      lbCounter.textContent = (index + 1) + ' / ' + triggers.length;
+      var liste = gruppeListe(trigger);
+      lbCounter.textContent = (liste.indexOf(trigger) + 1) + ' / ' + liste.length;
+
+      /* Zusatzangaben nur zeigen, wenn der Eintrag welche mitbringt */
+      var desc = trigger.getAttribute('data-lb-desc');
+      if(lbMeta){
+        lbMeta.classList.toggle('is-on', !!desc);
+        if(desc){
+          document.getElementById('lbBranche').textContent = trigger.getAttribute('data-lb-eyebrow') || '';
+          document.getElementById('lbBadge').textContent   = trigger.getAttribute('data-lb-badge') || '';
+          document.getElementById('lbDesc').textContent    = desc;
+          var cta = document.getElementById('lbCta');
+          cta.setAttribute('data-msg', trigger.getAttribute('data-lb-msg') || '');
+        }
+      }
+      if(galerieAPI && gruppeVon(trigger) === 'konzepte'){ galerieAPI.syncVon(trigger); }
 
       if(reduceMotion || !animateFrom){
         lbMedia.style.transition = 'none';
@@ -4054,6 +4903,7 @@
       lb.classList.add('open');
       lb.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
+      if(galerieAPI) galerieAPI.setzeLightboxOffen(true);
       show(index, sourceRect(triggers[index]));
       setTimeout(function(){
         var c = document.getElementById('lbClose');
@@ -4076,6 +4926,7 @@
         lbMedia.style.opacity = '';
         lbMedia.innerHTML = '';
         isAnimating = false;
+        if(galerieAPI) galerieAPI.setzeLightboxOffen(false);
         if(lastFocused && lastFocused.focus){ lastFocused.focus(); }
       }
 
@@ -4092,7 +4943,9 @@
     }
 
     function step(dir){
-      var next = (current + dir + triggers.length) % triggers.length;
+      var liste = gruppeListe(triggers[current]);
+      var pos = liste.indexOf(triggers[current]);
+      var next = triggers.indexOf(liste[(pos + dir + liste.length) % liste.length]);
       /* Beim Blättern von der aktuellen Position aus einblenden, damit die
          Bewegung zusammenhängend bleibt statt aus dem Nichts zu erscheinen. */
       var r = lbMedia.getBoundingClientRect();
@@ -4104,6 +4957,9 @@
     }
 
     triggers.forEach(function(trigger, i){
+      /* Die Galerie unterscheidet selbst zwischen "Karte holen" und
+         "gross ansehen" und ruft open() daher direkt auf. */
+      if(trigger.hasAttribute('data-lb-manual')) return;
       trigger.addEventListener('click', function(){ open(i); });
       trigger.addEventListener('keydown', function(e){
         if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); open(i); }
@@ -4111,6 +4967,19 @@
     });
 
     document.getElementById('lbClose').addEventListener('click', close);
+    /* Anfrage aus der Grossansicht: erst schliessen, dann zum Formular -
+       solange die Grossansicht offen ist, ist das Scrollen gesperrt. */
+    var lbCta = document.getElementById('lbCta');
+    if(lbCta){
+      lbCta.addEventListener('click', function(e){
+        e.preventDefault();
+        close();
+        setTimeout(function(){
+          var ziel = document.getElementById('kontakt');
+          if(ziel) ziel.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block:'start' });
+        }, reduceMotion ? 0 : 500);
+      });
+    }
     document.getElementById('lbPrev').addEventListener('click', function(){ step(-1); });
     document.getElementById('lbNext').addEventListener('click', function(){ step(1); });
     Array.prototype.forEach.call(lb.querySelectorAll('[data-lb-dismiss]'), function(el){
@@ -4132,6 +5001,12 @@
       }
     }, true);
 
+    /* Von der Galerie genutzt, um die Grossansicht selbst zu oeffnen */
+    var api = {
+      open: open,
+      indexOf: function(el){ return triggers.indexOf(el); }
+    };
+
     /* Wischen auf Touchgeräten */
     var touchX = null;
     lb.addEventListener('touchstart', function(e){ touchX = e.changedTouches[0].clientX; }, { passive:true });
@@ -4141,6 +5016,8 @@
       if(Math.abs(dx) > 55){ step(dx > 0 ? -1 : 1); }
       touchX = null;
     }, { passive:true });
+
+    return api;
   })();
 
   /* ---------- Portfolio-Modal ---------- */
@@ -4223,25 +5100,28 @@
      Anker zum Kontaktbereich. */
   var svcField = document.getElementById('c-service');
   var msgField = document.getElementById('c-message');
-  document.querySelectorAll('[data-msg]').forEach(function(trigger){
-    trigger.addEventListener('click', function(){
-      var wanted = trigger.getAttribute('data-service');
-      if(svcField && wanted){
-        var opts = svcField.options;
-        for(var i = 0; i < opts.length; i++){
-          if(opts[i].value === wanted){ svcField.selectedIndex = i; break; }
-        }
+  /* Delegiert statt pro Element gebunden: so greift die Vorauswahl auch
+     für Schaltflächen, die erst zur Laufzeit entstehen - etwa die in der
+     Grossansicht eines Konzepts. */
+  document.addEventListener('click', function(e){
+    var trigger = e.target.closest ? e.target.closest('[data-msg]') : null;
+    if(!trigger) return;
+    var wanted = trigger.getAttribute('data-service');
+    if(svcField && wanted){
+      var opts = svcField.options;
+      for(var i = 0; i < opts.length; i++){
+        if(opts[i].value === wanted){ svcField.selectedIndex = i; break; }
       }
-      if(msgField && !msgField.value.trim()){
-        msgField.value = trigger.getAttribute('data-msg');
-      }
-      /* Kurzer Hinweis, dass die Auswahl übernommen wurde */
-      if(svcField){
-        svcField.classList.remove('field-flash');
-        void svcField.offsetWidth;
-        svcField.classList.add('field-flash');
-      }
-    });
+    }
+    if(msgField && !msgField.value.trim()){
+      msgField.value = trigger.getAttribute('data-msg');
+    }
+    /* Kurzer Hinweis, dass die Auswahl übernommen wurde */
+    if(svcField){
+      svcField.classList.remove('field-flash');
+      void svcField.offsetWidth;
+      svcField.classList.add('field-flash');
+    }
   });
 
   /* ---------- Kontaktformular -> mailto ---------- */
