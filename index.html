@@ -1266,15 +1266,6 @@
     background:var(--card);
   }
   .modal-concept-badge .dot{ width:5px; height:5px; border-radius:50%; background:var(--accent); }
-  .legal-placeholder{
-    display:inline-flex; align-items:center; gap:8px;
-    font-size:11px; letter-spacing:0.05em; text-transform:uppercase;
-    color:#f2b544;
-    padding:8px 14px; margin-bottom:22px;
-    border-radius:100px;
-    border:1px solid rgba(242,181,68,0.35);
-    background:rgba(242,181,68,0.09);
-  }
   .legal-placeholder svg{ flex-shrink:0; }
   .modal-box h4{
     font-size:13.5px; color:var(--text-0); margin:20px 0 8px;
@@ -4123,10 +4114,6 @@
   <div class="modal-box">
     <button class="modal-close" data-close-modal aria-label="Schließen">✕</button>
     <h3>Impressum</h3>
-    <span class="legal-placeholder">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 3.5l10 17H2l10-17z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 10v4.5M12 17.5h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-      Gewerbeanmeldung ausstehend — vor dem Livegang prüfen
-    </span>
     <!-- TODO vor Veroeffentlichung: Telefonnummer ergaenzen. Nach der
          Gewerbeanmeldung pruefen, ob eine Umsatzsteuer-ID vorliegt
          (dann hier eintragen) oder die Kleinunternehmerregelung greift. -->
@@ -4154,12 +4141,10 @@
     <h4>Streitbeilegung</h4>
     <p class="desc">Zur Teilnahme an einem Streitbeilegungsverfahren vor einer
       Verbraucherschlichtungsstelle sind wir weder verpflichtet noch bereit.</p>
-
-    <h4>Noch offen</h4>
-    <ul>
-      <li>Telefonnummer (nach § 5 DDG erforderlich)</li>
-      <li>Umsatzsteuer-ID bzw. Hinweis auf die Kleinunternehmerregelung nach § 19 UStG – abhängig von der Gewerbeanmeldung</li>
-    </ul>
+    <!-- INTERN, nicht oeffentlich: noch zu ergaenzen
+         - Telefonnummer (nach § 5 DDG erforderlich)
+         - Umsatzsteuer-ID bzw. Hinweis auf die Kleinunternehmer-
+           regelung nach § 19 UStG, sobald das Gewerbe angemeldet ist -->
   </div>
 </div>
 
@@ -4167,10 +4152,6 @@
   <div class="modal-box">
     <button class="modal-close" data-close-modal aria-label="Schließen">✕</button>
     <h3>Datenschutzerklärung</h3>
-    <span class="legal-placeholder">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 3.5l10 17H2l10-17z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 10v4.5M12 17.5h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-      Entwurf — vor dem Livegang juristisch prüfen lassen
-    </span>
     <!-- TODO vor Veroeffentlichung:
          1. Vollstaendigen Namen und Anschrift des Hosters eintragen und den
             Auftragsverarbeitungsvertrag nach Art. 28 DSGVO abschliessen.
