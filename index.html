@@ -1145,7 +1145,7 @@
   .ba-slider.is-dragging .ba-handle-grip{ transform:scale(1.12); border-color:var(--accent); }
   .ba-handle.at-center .ba-handle-grip{ box-shadow:0 0 0 3px var(--accent-soft), 0 0 26px -2px var(--accent-line); }
   .ba-details{ display:grid; grid-template-columns:1fr 1fr; gap:22px; }
-  .ba-detail-col h4{ font-size:17px; margin-bottom:14px; }
+  .ba-detail-col h3{ font-size:17px; margin-bottom:14px; }
   .ba-detail-col ul li{
     font-size:14px; color:var(--text-1);
     padding:7px 0;
@@ -1229,7 +1229,7 @@
     transition:opacity .45s var(--ease-luxe), letter-spacing .45s var(--ease-luxe);
   }
   .p-card:hover .p-meta .cat{ opacity:1; letter-spacing:0.15em; }
-  .p-meta h4{ font-size:17px; color:#fff; transition:transform .5s var(--ease-luxe); }
+  .p-meta h3{ font-size:17px; color:#fff; transition:transform .5s var(--ease-luxe); }
   /* Diese Karte enthält ein Querformat-Video. Über die volle Rasterbreite
      wurde sie rund 660px hoch und dominierte den Seitenfluss - deshalb
      begrenzt und zentriert. */
@@ -1244,7 +1244,7 @@
      stammte noch aus der Zeit, als hier ein Standbild lag, und hätte den
      Laptop an beiden Seiten abgeschnitten. */
   .p-card.wide .p-visual{ aspect-ratio:16/9; }
-  .p-card.wide .p-meta h4{ font-size:20px; }
+  .p-card.wide .p-meta h3{ font-size:20px; }
   @media (max-width:980px){ .portfolio-grid{ grid-template-columns:repeat(2,1fr); } }
   @media (max-width:600px){ .portfolio-grid{ grid-template-columns:1fr; } }
 
@@ -1349,7 +1349,7 @@
     margin-bottom:26px;
     position:relative; z-index:2;
   }
-  .p-step h4{ font-size:17.5px; margin-bottom:10px; }
+  .p-step h3{ font-size:17.5px; margin-bottom:10px; }
   .p-step p{ font-size:14px; }
   @media (max-width:900px){
     .process-grid{ grid-template-columns:1fr 1fr; row-gap:44px; }
@@ -2703,9 +2703,13 @@
   .footer-legal{ display:flex; gap:22px; }
   .footer-legal a{ font-size:13px; color:var(--text-2); transition:color .3s var(--ease); }
   .footer-legal a:hover{ color:var(--accent); }
-  .footer-col h5{
+  /* Als h3 greift sonst die Basisregel fuer Ueberschriften (Space
+     Grotesk, enge Zeilenhoehe). Hier bewusst ueberschrieben, damit die
+     Spaltenkoepfe unveraendert aussehen. */
+  .footer-col h3{
+    font-family:'Inter',sans-serif;
     font-size:13px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-2);
-    margin-bottom:18px; font-weight:600;
+    line-height:1.6; margin-bottom:18px; font-weight:600;
   }
   .footer-col ul li{ margin-bottom:12px; }
   .footer-col ul li a{ font-size:14.5px; color:var(--text-1); transition:color .3s var(--ease); }
@@ -3231,7 +3235,7 @@
         <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#101a1c;--tint2:#0a0c0e;">
           <div class="p-visual-inner"><video src="videos/webseiten.mp4" poster="assets/webseiten-poster.jpg" muted autoplay loop playsinline preload="metadata" width="1280" height="720" aria-label="Website-Relaunch für Unternehmen – Konzeptprojekt von Lilla Web &amp; Media"></video></div>
-          <div class="p-meta"><span class="cat">Premium Webseiten</span><h4>Website-Relaunch für Unternehmen</h4></div>
+          <div class="p-meta"><span class="cat">Premium Webseiten</span><h3>Website-Relaunch für Unternehmen</h3></div>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
       </div>
@@ -3241,7 +3245,7 @@
         <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#15181c;--tint2:#0b0b0d;">
           <div class="p-visual-inner"><img src="assets/portfolio-02-sneaker.jpg" alt="Werbevideo für Sneaker – Konzeptprojekt von Lilla Web & Media" loading="lazy" decoding="async" width="1122" height="1402"></div>
-          <div class="p-meta"><span class="cat">Produktvideo</span><h4>Werbevideo für Sneaker</h4></div>
+          <div class="p-meta"><span class="cat">Produktvideo</span><h3>Werbevideo für Sneaker</h3></div>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
       </div>
@@ -3251,7 +3255,7 @@
         <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#1c1712;--tint2:#0b0b0d;">
           <div class="p-visual-inner"><video src="videos/portfolio-03-protein-drink.mp4" poster="assets/portfolio-03-protein-drink.jpg" muted autoplay loop playsinline preload="metadata" width="1080" height="1920" aria-label="Produktvideo für Proteingetränk – Konzeptprojekt von Lilla Web &amp; Media"></video></div>
-          <div class="p-meta"><span class="cat">Produktvideo</span><h4>Produktvideo für Proteingetränk</h4></div>
+          <div class="p-meta"><span class="cat">Produktvideo</span><h3>Produktvideo für Proteingetränk</h3></div>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
       </div>
@@ -3261,7 +3265,7 @@
         <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#1a1a1a;--tint2:#0b0b0d;">
           <div class="p-visual-inner"><img src="assets/portfolio-04-kopfhoerer.jpg" alt="Amazon-Seite für kabellose Kopfhörer – Konzeptprojekt von Lilla Web & Media" loading="lazy" decoding="async" width="1122" height="1402"></div>
-          <div class="p-meta"><span class="cat">Amazon- &amp; Shop-Optimierung</span><h4>Amazon-Seite für kabellose Kopfhörer</h4></div>
+          <div class="p-meta"><span class="cat">Amazon- &amp; Shop-Optimierung</span><h3>Amazon-Seite für kabellose Kopfhörer</h3></div>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
       </div>
@@ -3271,7 +3275,7 @@
         <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#1c1519;--tint2:#0b0b0d;">
           <div class="p-visual-inner"><img src="assets/portfolio-05-parfum.jpg" alt="Produktbilder für Parfüm – Konzeptprojekt von Lilla Web & Media" loading="lazy" decoding="async" width="1122" height="1402"></div>
-          <div class="p-meta"><span class="cat">Produktbilder</span><h4>Produktbilder für Parfüm</h4></div>
+          <div class="p-meta"><span class="cat">Produktbilder</span><h3>Produktbilder für Parfüm</h3></div>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
       </div>
@@ -3281,7 +3285,7 @@
         <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#14161c;--tint2:#0b0b0d;">
           <div class="p-visual-inner"><img src="assets/portfolio-06-smartwatch.jpg" alt="Detailaufnahmen einer Smartwatch – Konzeptprojekt von Lilla Web & Media" loading="lazy" decoding="async" width="1122" height="1402"></div>
-          <div class="p-meta"><span class="cat">Produktbilder</span><h4>Detailaufnahmen einer Smartwatch</h4></div>
+          <div class="p-meta"><span class="cat">Produktbilder</span><h3>Detailaufnahmen einer Smartwatch</h3></div>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
       </div>
@@ -3291,7 +3295,7 @@
         <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#151a19;--tint2:#0b0b0d;">
           <div class="p-visual-inner"><img src="assets/portfolio-07-skincare.jpg" alt="Kampagne für eine Hautpflege-Marke – Konzeptprojekt von Lilla Web & Media" loading="lazy" decoding="async" width="1122" height="1402"></div>
-          <div class="p-meta"><span class="cat">Produktbilder</span><h4>Kampagne für eine Hautpflege-Marke</h4></div>
+          <div class="p-meta"><span class="cat">Produktbilder</span><h3>Kampagne für eine Hautpflege-Marke</h3></div>
         </div>
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
       </div>
@@ -3328,7 +3332,7 @@
 
     <div class="ba-details reveal reveal-stagger">
       <div class="ba-detail-col">
-        <h4>Vorher</h4>
+        <h3>Vorher</h3>
         <ul>
           <li>Einfache Produktbilder</li>
           <li>Schwache Produktseite</li>
@@ -3337,7 +3341,7 @@
         </ul>
       </div>
       <div class="ba-detail-col after">
-        <h4>Nachher</h4>
+        <h3>Nachher</h3>
         <ul>
           <li>Hochwertige Produktvideos</li>
           <li>Professionelle Produktbilder</li>
@@ -3509,22 +3513,22 @@
     <div class="process-grid reveal">
       <div class="p-step">
         <div class="p-num">01</div>
-        <h4>Anfrage</h4>
+        <h3>Anfrage</h3>
         <p>Der Kunde beschreibt sein Produkt und das gewünschte Ergebnis.</p>
       </div>
       <div class="p-step">
         <div class="p-num">02</div>
-        <h4>Konzept</h4>
+        <h3>Konzept</h3>
         <p>Lilla Web & Media erstellt die visuelle Idee und den passenden Stil.</p>
       </div>
       <div class="p-step">
         <div class="p-num">03</div>
-        <h4>Produktion</h4>
+        <h3>Produktion</h3>
         <p>Produktvideo, Produktbilder, Webseite oder Amazon-Seite werden erstellt.</p>
       </div>
       <div class="p-step">
         <div class="p-num">04</div>
-        <h4>Lieferung</h4>
+        <h3>Lieferung</h3>
         <p>Der Kunde erhält die fertigen Inhalte zur direkten Nutzung.</p>
       </div>
     </div>
@@ -3890,7 +3894,7 @@
         <span class="footer-status"><span class="footer-status-dot" aria-hidden="true"></span>Aktuell offen für neue Projekte</span>
       </div>
       <div class="footer-col">
-        <h5>Navigation</h5>
+        <h3>Navigation</h3>
         <!-- Zweispaltig: sieben Punkte in einer Reihe machten den Footer
              unnötig hoch und die Markenspalte daneben leer. -->
         <ul class="footer-nav-cols">
@@ -3906,7 +3910,7 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h5>Kontakt</h5>
+        <h3>Kontakt</h3>
         <ul>
           <li><a href="https://www.instagram.com/lilla.webmedia/" target="_blank" rel="noopener">Instagram</a></li>
           <li><a href="mailto:info@lilla-webmedia.de">E-Mail</a></li>
