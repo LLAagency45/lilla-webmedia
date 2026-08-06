@@ -2624,6 +2624,9 @@
   .form-note{
     font-size:13px; color:var(--text-2); margin-top:16px; display:flex; align-items:center; gap:8px;
   }
+  /* Honigtopf aus dem Blickfeld nehmen, ohne display:none - manche Bots
+     ueberspringen ausgeblendete Felder gezielt. */
+  .hp-feld{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
   .form-alt{ font-size:13.5px; margin-top:10px; }
   .form-alt a{ color:var(--accent-ink); border-bottom:1px solid var(--accent-line); }
   /* Platzhalter lagen bisher bei der Browser-Vorgabe und waren in beiden
@@ -2650,6 +2653,13 @@
     transform:translateY(0) scale(1);
     max-height:80px; margin-top:18px; padding-top:14px; padding-bottom:14px;
   }
+  /* Fehlerfall deutlich unterscheidbar vom Erfolgsfall */
+  .confirm-box.is-fehler{
+    border-color:rgba(242,181,68,0.4);
+    background:rgba(242,181,68,0.08);
+    color:#f2b544;
+  }
+  .confirm-box.is-fehler svg{ display:none; }
   .confirm-box.show svg{ transform:scale(1); opacity:1; }
   @media (max-width:900px){
     .contact-grid{ grid-template-columns:minmax(0,1fr); gap:40px; }
@@ -3833,7 +3843,11 @@
 
       <div class="form-card reveal">
         <!-- Kontaktformular: baut beim Absenden automatisch eine mailto-Nachricht auf. -->
-        <form id="contactForm" novalidate>
+        <!-- action/method gesetzt: ohne JavaScript wird das Formular ganz
+             normal an kontakt.php geschickt. Mit JavaScript faengt das
+             Skript weiter unten das Absenden ab und schickt es per fetch,
+             damit die Seite stehen bleibt. -->
+        <form id="contactForm" action="kontakt.php" method="post" novalidate>
           <div class="form-row">
             <div class="field">
               <label for="c-name">Name</label>
@@ -3873,20 +3887,25 @@
               </optgroup>
             </select>
           </div>
+          <!-- Honigtopf: fuer Menschen unsichtbar, Bots fuellen ihn aus. -->
+          <div class="hp-feld" aria-hidden="true">
+            <label for="c-website">Website (bitte frei lassen)</label>
+            <input type="text" id="c-website" name="website" tabindex="-1" autocomplete="off">
+          </div>
           <div class="field">
             <label for="c-message">Nachricht</label>
             <textarea id="c-message" name="message" required placeholder="Erzähl mir kurz von deinem Projekt und deiner Idee ..."></textarea>
           </div>
 
-          <button type="submit" class="btn btn-primary" style="width:100%;">Anfrage per E-Mail senden</button>
+          <button type="submit" class="btn btn-primary" style="width:100%;">Anfrage senden</button>
 
           <p class="form-note" id="formNote">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M12 8v5M12 16h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            Beim Absenden öffnet sich deine E-Mail-Anwendung mit den ausgefüllten Angaben.
+            Deine Anfrage geht direkt an info@lilla-webmedia.de.
           </p>
-          <div class="confirm-box" id="confirmBox">
+          <div class="confirm-box" id="confirmBox" role="status">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            Deine E-Mail-Anwendung wird geöffnet.
+            <span id="confirmText">Danke für deine Anfrage.</span>
           </div>
           <p class="form-alt">Alternativ direkt <a href="https://www.instagram.com/lilla.webmedia/" target="_blank" rel="noopener">über Instagram schreiben</a>.</p>
         </form>
@@ -5669,44 +5688,88 @@
     }
   });
 
-  /* ---------- Kontaktformular -> mailto ---------- */
+  /* ---------- Kontaktformular ----------------------------------------
+     Ohne JavaScript schickt das Formular ganz normal an kontakt.php.
+     Mit JavaScript faengt dieser Block das Absenden ab und schickt es
+     per fetch, damit die Seite stehen bleibt.
+
+     Antwortet der Server nicht (Hoster down, PHP aus), faellt es auf die
+     bisherige mailto-Loesung zurueck - dann geht wenigstens nichts
+     verloren. */
   var form = document.getElementById('contactForm');
   var confirmBox = document.getElementById('confirmBox');
+  var confirmText = document.getElementById('confirmText');
+  var sendeKnopf = form ? form.querySelector('button[type="submit"]') : null;
+  var knopfText = sendeKnopf ? sendeKnopf.textContent : '';
 
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-
-    var name = document.getElementById('c-name').value.trim();
-    var company = document.getElementById('c-company').value.trim();
-    var email = document.getElementById('c-email').value.trim();
-    var service = document.getElementById('c-service').value;
-    var message = document.getElementById('c-message').value.trim();
-
-    if(!name || !email || !service || !message){
-      alert('Bitte fülle alle Pflichtfelder aus (Name, E-Mail, gewünschte Leistung, Nachricht).');
-      return;
+  function melden(text, erfolg){
+    if(confirmText) confirmText.textContent = text;
+    if(confirmBox){
+      confirmBox.classList.toggle('is-fehler', !erfolg);
+      confirmBox.classList.add('show');
     }
+  }
 
-    var subject = 'Projektanfrage über Lilla Web & Media';
-    var bodyLines = [
-      'Name: ' + name,
-      'Unternehmen: ' + (company || '-'),
-      'E-Mail: ' + email,
-      'Gewünschte Leistung: ' + service,
-      '',
-      'Nachricht:',
-      message
-    ];
-    var body = bodyLines.join('\n');
-
-    var mailtoLink = 'mailto:' + CONTACT_EMAIL +
-      '?subject=' + encodeURIComponent(subject) +
+  function mailtoFallback(daten){
+    var body = [
+      'Name: ' + daten.name,
+      'Unternehmen: ' + (daten.company || '-'),
+      'E-Mail: ' + daten.email,
+      'Gewünschte Leistung: ' + daten.service,
+      '', 'Nachricht:', daten.message
+    ].join('\n');
+    window.location.href = 'mailto:' + CONTACT_EMAIL +
+      '?subject=' + encodeURIComponent('Projektanfrage über Lilla Web & Media') +
       '&body=' + encodeURIComponent(body);
+  }
 
-    window.location.href = mailtoLink;
+  if(form){
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
 
-    confirmBox.classList.add('show');
-  });
+      var daten = {
+        name:    document.getElementById('c-name').value.trim(),
+        company: document.getElementById('c-company').value.trim(),
+        email:   document.getElementById('c-email').value.trim(),
+        service: document.getElementById('c-service').value,
+        message: document.getElementById('c-message').value.trim(),
+        website: document.getElementById('c-website').value
+      };
+
+      if(!daten.name || !daten.email || !daten.service || !daten.message){
+        melden('Bitte fülle Name, E-Mail, gewünschte Leistung und Nachricht aus.', false);
+        return;
+      }
+
+      if(sendeKnopf){ sendeKnopf.disabled = true; sendeKnopf.textContent = 'Wird gesendet …'; }
+
+      var koerper = new FormData();
+      Object.keys(daten).forEach(function(k){ koerper.append(k, daten[k]); });
+
+      fetch('kontakt.php', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: koerper
+      })
+      .then(function(r){ return r.json().catch(function(){ throw new Error('keine JSON-Antwort'); }); })
+      .then(function(a){
+        if(a && a.ok){
+          melden(a.text || 'Danke für deine Anfrage.', true);
+          form.reset();
+        } else {
+          melden((a && a.text) || 'Das hat gerade nicht geklappt.', false);
+        }
+      })
+      .catch(function(){
+        /* Server nicht erreichbar: nichts verlieren, E-Mail-Programm oeffnen */
+        melden('Der Versand über die Seite klappt gerade nicht – ich öffne dein E-Mail-Programm.', false);
+        mailtoFallback(daten);
+      })
+      .finally(function(){
+        if(sendeKnopf){ sendeKnopf.disabled = false; sendeKnopf.textContent = knopfText; }
+      });
+    });
+  }
 
 })();
 </script>
