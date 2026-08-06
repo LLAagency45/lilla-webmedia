@@ -1027,45 +1027,8 @@
      vorher stand sie ohne Angabe auf den 24px der Browser-Vorgabe. */
   .webs-text h3{ font-size:clamp(21px,2.3vw,27px); margin-bottom:20px; }
   .webs-text > p{ font-size:16px; margin-bottom:36px; max-width:520px; }
-  .feature-list{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-  }
-  .feature-item{
-    display:flex; align-items:center; gap:12px;
-    padding:15px 17px;
-    border:1px solid var(--border);
-    border-radius:12px;
-    /* var(--card) statt festem Weiss: auf hellem Grund waere eine weisse
-       Flaeche mit 3% Deckkraft unsichtbar. */
-    background:var(--card);
-    backdrop-filter:blur(14px) saturate(140%);
-    -webkit-backdrop-filter:blur(14px) saturate(140%);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
-    font-size:14px;
-    color:var(--text-0);
-    transition:border-color .5s var(--ease-luxe), background .5s var(--ease-luxe), transform .5s var(--ease-luxe), box-shadow .5s var(--ease-luxe);
-  }
-  .feature-item:hover{
-    border-color:var(--accent-line);
-    background:var(--card-hover);
-    transform:translateY(-2px);
-    box-shadow:0 10px 26px -16px rgba(47,180,196,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
-  }
-  .feature-item .f-icon{
-    width:30px; height:30px;
-    border-radius:8px;
-    background:var(--accent-soft);
-    color:var(--accent);
-    display:flex; align-items:center; justify-content:center;
-    flex-shrink:0;
-  }
   @media (max-width:900px){
     .webs-grid{ gap:40px; }
-  }
-  @media (max-width:560px){
-    .feature-list{ grid-template-columns:1fr; }
   }
 
   /* ---------- Before / After ---------- */
@@ -1504,6 +1467,15 @@
   }
 
 
+  /* Preisanker im Hero: sonst muss ein Interessent auf dem Handy rund
+     22 Bildschirme scrollen, bevor er die erste Zahl sieht. */
+  .hero-preis{
+    font-size:14.5px; color:var(--text-2);
+    margin:22px 0 0; letter-spacing:0.01em;
+  }
+  .hero-preis strong{ color:var(--text-1); font-weight:600; }
+  @media (max-width:768px){ .hero-preis{ font-size:13.5px; margin-top:18px; } }
+
   /* ---------- Konzept-Galerie (Coverflow) ----------
      Raeumlicher Slider fuer die fiktiven Website-Konzepte. Die Position
      jeder Karte ergibt sich aus ihrem Abstand zur aktiven Karte; diesen
@@ -1887,6 +1859,29 @@
     text-align:center; margin-top:44px; font-size:13.5px; color:var(--text-2); max-width:520px; margin-left:auto; margin-right:auto;
   }
   .price-note p{ color:var(--text-2); }
+
+  /* Auf dem Handy stehen sonst 33 Leistungspunkte untereinander - die
+     Preiskarten allein machten dort 7,2 Bildschirme aus. Erst vier
+     Punkte, den Rest auf Wunsch. Ohne JavaScript wird .is-kurz nie
+     gesetzt, dann ist wie bisher alles sichtbar. */
+  .price-mehr{ display:none; }
+  @media (max-width:700px){
+    .price-card.is-kurz ul li:nth-child(n+5){ display:none; }
+    .price-mehr{
+      display:flex; align-items:center; gap:8px;
+      margin:-14px 0 22px;
+      padding:0; border:0; background:none;
+      font-size:13.5px; font-weight:500; color:var(--accent-ink);
+      font-family:inherit;
+    }
+    .price-mehr::after{
+      content:''; width:7px; height:7px; margin-top:-3px;
+      border-right:1.5px solid currentColor; border-bottom:1.5px solid currentColor;
+      transform:rotate(45deg);
+      transition:transform .35s var(--ease-luxe);
+    }
+    .price-card:not(.is-kurz) .price-mehr::after{ transform:rotate(-135deg); margin-top:2px; }
+  }
   .price-note .btn{ margin-top:18px; }
 
   /* Zwischenüberschrift für einen Paket- oder Kategorieblock innerhalb
@@ -2406,14 +2401,6 @@
     display:flex; align-items:center; justify-content:center;
     overflow:hidden;
   }
-  .gd-variants{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
-  .gd-variant{
-    container-type:inline-size;
-    aspect-ratio:220/138;
-    border-radius:var(--radius-sm);
-    display:flex; align-items:center; justify-content:center;
-    overflow:hidden;
-  }
   .gd-flyer{
     container-type:inline-size;
     aspect-ratio:559/794;
@@ -2433,10 +2420,6 @@
   .gd-lh-sub{ display:flex; align-items:center; gap:2.2cqw; margin-top:1.3cqw; }
   .gd-lh-sub span{ font-family:'Karla',sans-serif; font-weight:500; font-size:2.2cqw; letter-spacing:0.3em; text-transform:uppercase; color:#C2643C; }
   .gd-lh-sub i{ width:5.6cqw; height:1px; background:#C2643C; display:block; }
-  .gd-var-lh-1{ background:#23402F; }
-  .gd-var-lh-1 span{ font-family:'Cormorant Garamond',serif; font-size:11.8cqw; color:#F5EFE4; letter-spacing:0.02em; }
-  .gd-var-lh-2{ background:#C2643C; }
-  .gd-var-lh-2 .gd-leaf{ width:20.9cqw; height:20.9cqw; background:#F5EFE4; }
   .gd-flyer-lh{ background:#F5EFE4; }
   .gd-flyer-lh .gd-flyer-img{ height:54.2%; margin:4.3cqw 4.3cqw 0; overflow:hidden; }
   .gd-flyer-lh .gd-flyer-img img{ object-position:50% 62%; }
@@ -2457,10 +2440,6 @@
   .gd-kw-text{ display:flex; flex-direction:column; gap:0.9cqw; }
   .gd-kw-name{ font-family:'Archivo Black',sans-serif; font-size:7.4cqw; line-height:0.9; letter-spacing:-0.02em; color:#16181A; }
   .gd-kw-sub{ font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:3.7cqw; letter-spacing:0.42em; text-transform:uppercase; color:#FF6A00; }
-  .gd-var-kw-1{ background:#16181A; }
-  .gd-var-kw-1 span{ font-family:'Archivo Black',sans-serif; font-size:10cqw; letter-spacing:-0.02em; color:#F2F2F0; }
-  .gd-var-kw-2{ background:#FF6A00; }
-  .gd-var-kw-2 .gd-bolt{ width:15.5cqw; height:27.3cqw; background:#16181A; }
   .gd-flyer-kw{ background:#16181A; }
   .gd-flyer-kw .gd-flyer-img{ height:46.9%; clip-path:polygon(0 0, 100% 0, 100% 78%, 0 100%); position:relative; overflow:hidden; }
   .gd-flyer-kw .gd-flyer-img img{ object-position:50% 42%; }
@@ -3088,6 +3067,11 @@
 
     <p class="hero-sub reveal" style="transition-delay:.28s">Lilla Web & Media entwickelt moderne Webseiten, hochwertige Produktvideos, Produktbilder und optimierte Produktseiten für Unternehmen, Marken und Onlineshops, die professionell auftreten und nachhaltig wachsen möchten.</p>
 
+    <p class="hero-preis reveal" style="transition-delay:.33s">
+      Webseiten <strong>ab 599&nbsp;€</strong> · Produktvideos <strong>ab 199&nbsp;€</strong> ·
+      Grafikdesign auf Anfrage
+    </p>
+
     <div class="hero-actions reveal" style="transition-delay:.38s">
       <a href="#kontakt" class="btn btn-primary nav-link btn-magnetic">Projekt anfragen</a>
       <a href="#projekte" class="btn btn-ghost nav-link">Projekte ansehen</a>
@@ -3150,7 +3134,7 @@
           <button class="btn btn-ghost" id="cgAnsehen" type="button">Konzept ansehen</button>
           <a class="btn btn-primary nav-link" id="cgAnfrage" href="#kontakt"
              data-service="Premium Webseiten"
-             data-msg="Ich interessiere mich für eine Website in der Designrichtung &bdquo;AVORA Architektur&ldquo;.">Ähnlichen Auftritt anfragen</a>
+             data-msg="Ich interessiere mich für eine Website in der Designrichtung &bdquo;AVORA Architektur&ldquo;.">Projekt anfragen</a>
         </div>
       </div>
 
@@ -3185,38 +3169,6 @@
         <h3>Webseiten, die wirklich gut sind.</h3>
         <p><strong style="color:var(--text-0);">Diese Website, die du gerade siehst,</strong> ist selbst ein gutes Beispiel für unsere Arbeit.</p>
         <p>Individuelle, moderne Webseiten, die auf jedem Gerät gut aussehen – mit hochwertigem Design, schnellen Ladezeiten und klarer Markenwirkung. Ideal für Unternehmen, Onlineshops, Start-ups und Selbstständige.</p>
-
-        <div class="feature-list">
-          <div class="feature-item">
-            <span class="f-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
-            Individuelles Design
-          </div>
-          <div class="feature-item">
-            <span class="f-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
-            Für Smartphones optimiert
-          </div>
-          <div class="feature-item">
-            <span class="f-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
-            Schnelle Ladezeiten
-          </div>
-          <div class="feature-item">
-            <span class="f-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
-            SEO-Basis
-          </div>
-          <div class="feature-item">
-            <span class="f-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
-            Kontaktformulare
-          </div>
-          <div class="feature-item">
-            <span class="f-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
-            Moderne Animationen
-          </div>
-          <div class="feature-item" style="grid-column:1/-1;">
-            <span class="f-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
-            Wartungsfreundlicher Aufbau
-          </div>
-        </div>
-
       </div>
     </div>
 
@@ -3299,7 +3251,7 @@
 
       <div class="price-note reveal">
         <p>Du bist unsicher, welches Paket passt? Beschreib mir kurz dein Vorhaben – ich sage dir ehrlich, was du wirklich brauchst.</p>
-        <a href="#kontakt" class="btn btn-ghost nav-link">Webseiten-Projekt anfragen</a>
+        <a href="#kontakt" class="btn btn-ghost nav-link">Projekt anfragen</a>
       </div>
     </div>
   </div>
@@ -3386,6 +3338,61 @@
 </section>
 
 <!-- =========================================================
+     ABLAUF
+========================================================= -->
+<section class="section" id="ablauf">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Ablauf</span>
+      <h2>Von der Idee bis zum fertigen Ergebnis.</h2>
+    </div>
+
+    <!-- ABLAUF-TIMELINE -------------------------------------------------
+         Gleiche vier Schritte, nur raeumlich: die Karten liegen auf
+         unterschiedlichen Z-Ebenen und kommen beim Scrollen der Reihe
+         nach nach vorn. Mobil wird daraus eine senkrechte Timeline. -->
+    <div class="pt reveal" id="ablaufTimeline">
+      <div class="pt-scene" id="ptScene">
+        <div class="pt-rail" aria-hidden="true">
+          <span class="pt-rail-track"></span>
+          <span class="pt-rail-fill"></span>
+        </div>
+        <div class="pt-steps">
+        <div class="pt-step">
+          <div class="pt-node"><span class="pt-num">01</span></div>
+          <div class="pt-text">
+            <h3>Anfrage</h3>
+            <p>Der Kunde beschreibt sein Produkt und das gewünschte Ergebnis.</p>
+          </div>
+        </div>
+        <div class="pt-step">
+          <div class="pt-node"><span class="pt-num">02</span></div>
+          <div class="pt-text">
+            <h3>Konzept</h3>
+            <p>Lilla Web & Media erstellt die visuelle Idee und den passenden Stil.</p>
+          </div>
+        </div>
+        <div class="pt-step">
+          <div class="pt-node"><span class="pt-num">03</span></div>
+          <div class="pt-text">
+            <h3>Produktion</h3>
+            <p>Produktvideo, Produktbilder, Webseite oder Amazon-Seite werden erstellt.</p>
+          </div>
+        </div>
+        <div class="pt-step">
+          <div class="pt-node"><span class="pt-num">04</span></div>
+          <div class="pt-text">
+            <h3>Lieferung</h3>
+            <p>Der Kunde erhält die fertigen Inhalte zur direkten Nutzung.</p>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
      PROJEKTE / PORTFOLIO
 ========================================================= -->
 <section class="section" id="projekte">
@@ -3402,7 +3409,6 @@
 
       <!-- VIDEO: webseiten.mp4 - Kamerafahrt über eine Seite auf dem Laptop -->
       <div class="p-card wide viewfinder" tabindex="0" data-title="Website-Relaunch für Unternehmen" data-cat="Premium Webseiten" data-desc="Individuelle Webseite, die auf jedem Gerät gut aussieht – mit modernem Design, klarer Markenführung, schnellen Ladezeiten und integriertem Kontaktformular.">
-        <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#101a1c;--tint2:#0a0c0e;">
           <div class="p-visual-inner"><video src="videos/webseiten.mp4" poster="assets/webseiten-poster.jpg" muted autoplay loop playsinline preload="metadata" width="1280" height="720" aria-label="Website-Relaunch für Unternehmen – Konzeptprojekt von Lilla Web &amp; Media"></video></div>
           <div class="p-meta"><span class="cat">Premium Webseiten</span><h3>Website-Relaunch für Unternehmen</h3></div>
@@ -3412,7 +3418,6 @@
 
       <!-- BILD: portfolio-02-sneaker.jpg (Format 4:5, hochkant) -->
       <div class="p-card viewfinder" tabindex="0" data-title="Werbevideo für Sneaker" data-cat="Produktvideo" data-desc="Dynamisches Werbevideo für einen neuen Sneaker mit starkem visuellem Rhythmus und schwebender Produktinszenierung.">
-        <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#15181c;--tint2:#0b0b0d;">
           <div class="p-visual-inner"><img src="assets/portfolio-02-sneaker.jpg" alt="Werbevideo für Sneaker – Konzeptprojekt von Lilla Web & Media" loading="lazy" decoding="async" width="1122" height="1402"></div>
           <div class="p-meta"><span class="cat">Produktvideo</span><h3>Werbevideo für Sneaker</h3></div>
@@ -3422,7 +3427,6 @@
 
       <!-- VIDEO: portfolio-03-protein-drink.mp4 (Hochformat 9:16), Poster: portfolio-03-protein-drink.jpg -->
       <div class="p-card viewfinder" tabindex="0" data-title="Produktvideo für Proteingetränk" data-cat="Produktvideo" data-desc="Hochwertiges Produktvideo für ein Getränk mit dynamischem Spritzeffekt – inszeniert für Social Media und Werbeanzeigen.">
-        <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#1c1712;--tint2:#0b0b0d;">
           <div class="p-visual-inner"><video src="videos/portfolio-03-protein-drink.mp4" poster="assets/portfolio-03-protein-drink.jpg" muted autoplay loop playsinline preload="metadata" width="1080" height="1920" aria-label="Produktvideo für Proteingetränk – Konzeptprojekt von Lilla Web &amp; Media"></video></div>
           <div class="p-meta"><span class="cat">Produktvideo</span><h3>Produktvideo für Proteingetränk</h3></div>
@@ -3432,7 +3436,6 @@
 
       <!-- BILD: portfolio-04-kopfhoerer.jpg (Format 4:5, hochkant) -->
       <div class="p-card viewfinder" tabindex="0" data-title="Amazon-Seite für kabellose Kopfhörer" data-cat="Amazon- &amp; Shop-Optimierung" data-desc="Vollständige Überarbeitung einer Amazon-Seite für kabellose Kopfhörer mit neuen Produktbildern und klarer Struktur.">
-        <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#1a1a1a;--tint2:#0b0b0d;">
           <div class="p-visual-inner"><img src="assets/portfolio-04-kopfhoerer.jpg" alt="Amazon-Seite für kabellose Kopfhörer – Konzeptprojekt von Lilla Web & Media" loading="lazy" decoding="async" width="1122" height="1402"></div>
           <div class="p-meta"><span class="cat">Amazon- &amp; Shop-Optimierung</span><h3>Amazon-Seite für kabellose Kopfhörer</h3></div>
@@ -3442,7 +3445,6 @@
 
       <!-- BILD: portfolio-05-parfum.jpg (Format 4:5, hochkant) -->
       <div class="p-card viewfinder" tabindex="0" data-title="Produktbilder für Parfüm" data-cat="Produktbilder" data-desc="Elegante Produktbildserie für ein Parfüm mit dramatischer Lichtstimmung und feinen Reflexionen.">
-        <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#1c1519;--tint2:#0b0b0d;">
           <div class="p-visual-inner"><img src="assets/portfolio-05-parfum.jpg" alt="Produktbilder für Parfüm – Konzeptprojekt von Lilla Web & Media" loading="lazy" decoding="async" width="1122" height="1402"></div>
           <div class="p-meta"><span class="cat">Produktbilder</span><h3>Produktbilder für Parfüm</h3></div>
@@ -3452,7 +3454,6 @@
 
       <!-- BILD: portfolio-06-smartwatch.jpg (Format 4:5, hochkant) -->
       <div class="p-card viewfinder" tabindex="0" data-title="Detailaufnahmen einer Smartwatch" data-cat="Produktbilder" data-desc="Reduzierte, technisch anmutende Makro- und Detailaufnahmen für eine Smartwatch.">
-        <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#14161c;--tint2:#0b0b0d;">
           <div class="p-visual-inner"><img src="assets/portfolio-06-smartwatch.jpg" alt="Detailaufnahmen einer Smartwatch – Konzeptprojekt von Lilla Web & Media" loading="lazy" decoding="async" width="1122" height="1402"></div>
           <div class="p-meta"><span class="cat">Produktbilder</span><h3>Detailaufnahmen einer Smartwatch</h3></div>
@@ -3462,7 +3463,6 @@
 
       <!-- BILD: portfolio-07-skincare.jpg (Format 4:5, hochkant) -->
       <div class="p-card viewfinder" tabindex="0" data-title="Kampagne für eine Hautpflege-Marke" data-cat="Produktbilder" data-desc="Kreative Bildserie für eine Hautpflege-Kampagne mit weichem Studiolicht und stimmigem, hochwertigem Stil.">
-        <span class="p-concept-badge"><span class="dot"></span>Konzeptprojekt</span>
         <div class="p-visual" style="--tint1:#151a19;--tint2:#0b0b0d;">
           <div class="p-visual-inner"><img src="assets/portfolio-07-skincare.jpg" alt="Kampagne für eine Hautpflege-Marke – Konzeptprojekt von Lilla Web & Media" loading="lazy" decoding="async" width="1122" height="1402"></div>
           <div class="p-meta"><span class="cat">Produktbilder</span><h3>Kampagne für eine Hautpflege-Marke</h3></div>
@@ -3470,6 +3470,8 @@
         <span class="vf-corner vf-tl"></span><span class="vf-corner vf-tr"></span><span class="vf-corner vf-bl"></span><span class="vf-corner vf-br"></span>
       </div>
     </div>
+
+    <p class="cg-disclaimer">Die gezeigten Arbeiten sind Konzeptprojekte. Sie zeigen beispielhaft, was mit Lilla&nbsp;Web&nbsp;&amp;&nbsp;Media möglich ist.</p>
   </div>
 </section>
 
@@ -3545,7 +3547,7 @@
         </div>
         <p>Für das jährliche Osterfeuer des Burschenvereins Oberschweinbach. Das Feuer trägt den Flyer, die gebrochene Schrift greift den traditionellen Charakter auf – alle Infos bleiben auf einen Blick lesbar.</p>
         <p><strong style="color:var(--text-0);">So etwas brauchst du auch?</strong> Ob Vereinsfest, Aktion im Laden oder Veranstaltung im Ort – melde dich einfach.</p>
-        <a href="#kontakt" class="btn btn-ghost nav-link" style="margin-top:8px;">Flyer anfragen</a>
+        <a href="#kontakt" class="btn btn-ghost nav-link" style="margin-top:8px;">Projekt anfragen</a>
       </div>
     </div>
 
@@ -3607,10 +3609,6 @@
               <div class="gd-lh-sub"><i></i><span>Dorfcafé</span><i></i></div>
             </div>
           </div>
-          <div class="gd-variants">
-            <div class="gd-variant gd-var-lh-1"><span>Café Lindenhof</span></div>
-            <div class="gd-variant gd-var-lh-2"><span class="gd-leaf"></span></div>
-          </div>
         </div>
         <div class="gd-flyer gd-flyer-lh lb-trigger" role="button" tabindex="0" data-lb data-lb-kind="node" data-lb-title="Café Lindenhof — A5-Flyer">
           <div class="gd-flyer-img">
@@ -3644,10 +3642,6 @@
               <div class="gd-kw-sub">Fitness</div>
             </div>
           </div>
-          <div class="gd-variants">
-            <div class="gd-variant gd-var-kw-1"><span>KRAFTWERK</span></div>
-            <div class="gd-variant gd-var-kw-2"><span class="gd-bolt"></span></div>
-          </div>
         </div>
         <div class="gd-flyer gd-flyer-kw lb-trigger" role="button" tabindex="0" data-lb data-lb-kind="node" data-lb-title="Kraftwerk Fitness — A5-Flyer">
           <div class="gd-flyer-img">
@@ -3670,60 +3664,6 @@
   </div>
 </section>
 
-<!-- =========================================================
-     ABLAUF
-========================================================= -->
-<section class="section" id="ablauf">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="eyebrow">Ablauf</span>
-      <h2>Von der Idee bis zum fertigen Ergebnis.</h2>
-    </div>
-
-    <!-- ABLAUF-TIMELINE -------------------------------------------------
-         Gleiche vier Schritte, nur raeumlich: die Karten liegen auf
-         unterschiedlichen Z-Ebenen und kommen beim Scrollen der Reihe
-         nach nach vorn. Mobil wird daraus eine senkrechte Timeline. -->
-    <div class="pt reveal" id="ablaufTimeline">
-      <div class="pt-scene" id="ptScene">
-        <div class="pt-rail" aria-hidden="true">
-          <span class="pt-rail-track"></span>
-          <span class="pt-rail-fill"></span>
-        </div>
-        <div class="pt-steps">
-        <div class="pt-step">
-          <div class="pt-node"><span class="pt-num">01</span></div>
-          <div class="pt-text">
-            <h3>Anfrage</h3>
-            <p>Der Kunde beschreibt sein Produkt und das gewünschte Ergebnis.</p>
-          </div>
-        </div>
-        <div class="pt-step">
-          <div class="pt-node"><span class="pt-num">02</span></div>
-          <div class="pt-text">
-            <h3>Konzept</h3>
-            <p>Lilla Web & Media erstellt die visuelle Idee und den passenden Stil.</p>
-          </div>
-        </div>
-        <div class="pt-step">
-          <div class="pt-node"><span class="pt-num">03</span></div>
-          <div class="pt-text">
-            <h3>Produktion</h3>
-            <p>Produktvideo, Produktbilder, Webseite oder Amazon-Seite werden erstellt.</p>
-          </div>
-        </div>
-        <div class="pt-step">
-          <div class="pt-node"><span class="pt-num">04</span></div>
-          <div class="pt-text">
-            <h3>Lieferung</h3>
-            <p>Der Kunde erhält die fertigen Inhalte zur direkten Nutzung.</p>
-          </div>
-        </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- =========================================================
      PREISE
@@ -3849,7 +3789,7 @@
       <p>Alle Angaben sind Startpreise. Der genaue Preis richtet sich nach Umfang,
         Produkt und gewünschter Umsetzung – nach deiner Anfrage bekommst du ein
         verbindliches Angebot.</p>
-      <a href="#kontakt" class="btn btn-primary nav-link">Unverbindlich anfragen</a>
+      <a href="#kontakt" class="btn btn-primary nav-link">Projekt anfragen</a>
     </div>
   </div>
 </section>
@@ -4161,7 +4101,7 @@
     </div>
     <p class="lb-desc" id="lbDesc"></p>
     <a class="btn btn-primary btn-sm" id="lbCta" href="#kontakt"
-       data-service="Premium Webseiten">Ähnlichen Auftritt anfragen</a>
+       data-service="Premium Webseiten">Projekt anfragen</a>
   </div>
 </div>
 
@@ -4805,6 +4745,49 @@
 
      Alle Angaben stehen in LOGOS. Ein weiteres Logo ergaenzen heisst:
      Datei nach assets/ legen und hier einen Eintrag anhaengen. */
+
+  /* ---------- Preiskarten: auf dem Handy erst vier Punkte ----------
+     Die Karten sind auf schmalen Displays sehr hoch. Die Vorgabe im CSS
+     ist die vollstaendige Liste - erst dieses Skript kuerzt sie, damit
+     ohne JavaScript nichts fehlt. */
+  (function initPreisKurz(){
+    var schmal = window.matchMedia('(max-width:700px)');
+    var karten = Array.prototype.slice.call(document.querySelectorAll('.price-card'));
+    karten.forEach(function(karte){
+      var punkte = karte.querySelectorAll('ul li');
+      if(punkte.length <= 5) return;          /* lohnt sich nicht */
+      var versteckt = punkte.length - 4;
+
+      var knopf = document.createElement('button');
+      knopf.type = 'button';
+      knopf.className = 'price-mehr';
+      knopf.setAttribute('aria-expanded', 'false');
+      knopf.textContent = 'Alle ' + punkte.length + ' Leistungen anzeigen';
+
+      var liste = karte.querySelector('ul');
+      liste.parentNode.insertBefore(knopf, liste.nextSibling);
+
+      function anwenden(){
+        if(schmal.matches){
+          karte.classList.add('is-kurz');
+          knopf.setAttribute('aria-expanded', 'false');
+          knopf.textContent = 'Alle ' + punkte.length + ' Leistungen anzeigen';
+        } else {
+          karte.classList.remove('is-kurz');
+        }
+      }
+      knopf.addEventListener('click', function(){
+        var offen = karte.classList.toggle('is-kurz') === false;
+        knopf.setAttribute('aria-expanded', offen ? 'true' : 'false');
+        knopf.textContent = offen
+          ? 'Weniger anzeigen'
+          : 'Alle ' + punkte.length + ' Leistungen anzeigen';
+      });
+      anwenden();
+      if(schmal.addEventListener) schmal.addEventListener('change', anwenden);
+      else if(schmal.addListener) schmal.addListener(anwenden);
+    });
+  })();
 
   /* ---------- Ablauf: Timeline an die Scrollposition koppeln ----------
      Der Fortschritt ergibt sich aus der Lage der Section im Fenster, nicht
