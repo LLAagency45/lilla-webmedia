@@ -1323,39 +1323,185 @@
   .modal-box ul li::before{ content:'–'; position:absolute; left:0; color:var(--text-2); }
 
   /* ---------- Process ---------- */
-  .process-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:0;
+  /* ---------- Ablauf: raeumliche Timeline -------------------------
+     Die vier Schritte liegen nicht mehr flach nebeneinander, sondern auf
+     leicht unterschiedlichen Z-Ebenen. Beim Scrollen holt das Skript sie
+     der Reihe nach nach vorn.
+
+     Pro Frame schreibt das JS nur zwei CSS-Variablen (--f fuer den
+     Fortschritt, --s je Schritt) - transform und opacity leiten sich
+     daraus ab und laufen auf dem Compositor. Glow, Rahmen und Schatten
+     haengen dagegen an Klassen mit CSS-Transitions und werden nie pro
+     Frame neu berechnet. */
+  .pt{ perspective:1400px; perspective-origin:50% 42%; }
+  .pt-scene{
     position:relative;
+    transform-style:preserve-3d;
+    /* Maus-Parallaxe: bewusst nur wenige Grad, man soll es eher spueren
+       als sehen. */
+    transform:rotateY(calc(var(--mx,0) * 2.1deg)) rotateX(calc(var(--my,0) * -1.3deg));
+    transition:transform .8s var(--ease-luxe);
   }
-  .process-grid::before{
-    content:'';
+  .pt-scene.is-zeigend{ transition:transform .18s linear; }
+
+  /* ----- Schiene ----- */
+  .pt-rail{
     position:absolute; top:26px; left:0; right:0; height:1px;
-    background:linear-gradient(90deg, transparent, var(--border-strong), transparent);
+    transform:translateZ(-30px);
   }
-  .p-step{ padding:0 26px 0 0; position:relative; }
-  .p-step:first-child{ padding-left:0; }
-  .p-num{
+  .pt-rail-track, .pt-rail-fill{
+    position:absolute; inset:0;
+    border-radius:1px;
+  }
+  .pt-rail-track{
+    background:linear-gradient(90deg, transparent, var(--border-strong) 12%, var(--border-strong) 88%, transparent);
+  }
+  .pt-rail-fill{
+    background:linear-gradient(90deg, transparent, var(--accent) 12%, var(--accent) 88%, transparent);
+    transform:scaleX(var(--f,1));
+    transform-origin:left center;
+    opacity:0.75;
+  }
+
+  .pt-steps{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    transform-style:preserve-3d;
+  }
+
+  /* ----- Einzelner Schritt ----- */
+  .pt-step{
+    position:relative;
+    padding:0 26px 0 0;
+    transform-style:preserve-3d;
+    /* --s laeuft beim Scrollen von 0 auf 1: aus der Tiefe nach vorn. */
+    /* Vorgabewert 1 = Endzustand: ohne JavaScript steht die Timeline
+       fertig da, statt halbtransparent im Hintergrund zu haengen. Das
+       Skript setzt --s beim Start auf 0 und faehrt sie dann hoch. */
+    transform:
+      translate3d(0, calc((1 - var(--s,1)) * 18px), calc((var(--s,1) - 1) * 78px))
+      rotateY(calc((1 - var(--s,1)) * var(--dreh,0) * 1deg))
+      scale(calc(0.965 + var(--s,1) * 0.035));
+    opacity:calc(0.34 + var(--s,1) * 0.66);
+    will-change:transform, opacity;
+  }
+  .pt-step:first-child{ padding-left:0; }
+  /* Leicht unterschiedliche Ausgangsdrehung - das nimmt der Reihe die
+     Gleichfoermigkeit, ohne unruhig zu wirken. */
+  .pt-step:nth-child(1){ --dreh:7; }
+  .pt-step:nth-child(2){ --dreh:-5; }
+  .pt-step:nth-child(3){ --dreh:6; }
+  .pt-step:nth-child(4){ --dreh:-4; }
+
+  /* ----- Knoten mit der Nummer ----- */
+  .pt-node{
+    position:relative; z-index:2;
+    width:52px; height:52px;
+    margin-bottom:26px;
+    transform:translateZ(18px);
+    transform-style:preserve-3d;
+  }
+  .pt-num{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    border-radius:50%;
     font-family:'Space Grotesk',sans-serif;
     font-size:14px; font-weight:600;
     color:var(--bg-0);
-    /* --accent-ink: im Hell-Modus laege helle Schrift auf --accent nur bei
-       3,84:1. Im Dunkel-Modus ist der Wert mit --accent identisch. */
     background:var(--accent-ink);
-    width:52px; height:52px;
+    box-shadow:0 6px 18px -8px rgba(0,0,0,0.55);
+    transition:transform .6s var(--ease-luxe), box-shadow .6s var(--ease-luxe);
+  }
+  /* Weicher Lichtschein unter dem Knoten - nur im aktiven Zustand */
+  .pt-node::after{
+    content:''; position:absolute; left:50%; top:50%;
+    width:104px; height:104px; margin:-52px 0 0 -52px;
     border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    margin-bottom:26px;
-    position:relative; z-index:2;
+    background:radial-gradient(circle, var(--accent-soft), transparent 66%);
+    opacity:0; transform:translateZ(-14px) scale(0.7);
+    transition:opacity .8s var(--ease-luxe), transform .8s var(--ease-luxe);
+    pointer-events:none;
   }
-  .p-step h3{ font-size:17.5px; margin-bottom:10px; }
-  .p-step p{ font-size:14px; }
+  .pt-step.is-aktiv .pt-node::after{ opacity:1; transform:translateZ(-14px) scale(1); }
+  .pt-step.is-aktiv .pt-num{
+    transform:translateZ(10px) scale(1.06);
+    box-shadow:0 12px 30px -10px rgba(0,0,0,0.6), 0 0 0 6px var(--accent-soft);
+  }
+
+  .pt-step h3{ font-size:17.5px; margin-bottom:10px; }
+  .pt-step p{ font-size:14px; }
+  .pt-text{ transform:translateZ(6px); }
+
+  @media (hover:hover) and (pointer:fine){
+    .pt-step:hover{ z-index:3; }
+    .pt-step:hover .pt-num{ transform:translateZ(16px) scale(1.09); }
+    .pt-step:hover .pt-text{ transform:translateZ(12px); }
+    .pt-text{ transition:transform .5s var(--ease-luxe); }
+  }
+
+  /* ----- Hell-Modus: Tiefe ueber Schatten statt ueber Leuchten ----- */
+  :root[data-theme="light"] .pt-num{
+    box-shadow:0 4px 12px -4px rgba(20,22,26,0.28);
+  }
+  :root[data-theme="light"] .pt-step.is-aktiv .pt-num{
+    box-shadow:0 10px 24px -8px rgba(20,22,26,0.3), 0 0 0 5px rgba(26,138,151,0.13);
+  }
+  :root[data-theme="light"] .pt-node::after{
+    background:radial-gradient(circle, rgba(26,138,151,0.13), transparent 68%);
+  }
+  :root[data-theme="light"] .pt-rail-fill{ opacity:0.9; }
+
+  /* ----- Mobil: eigene senkrechte Timeline ----- */
   @media (max-width:900px){
-    .process-grid{ grid-template-columns:1fr 1fr; row-gap:44px; }
-    .process-grid::before{ display:none; }
+    .pt{ perspective:900px; }
+    .pt-scene{ transform:none; }          /* keine Maus, keine Drehung */
+    .pt-steps{
+      grid-template-columns:1fr;
+      row-gap:34px;
+    }
+    /* Schiene laeuft senkrecht durch die Knotenmitte */
+    .pt-rail{
+      top:26px; bottom:26px; left:25px; right:auto;
+      width:1px; height:auto;
+    }
+    .pt-rail-track{
+      background:linear-gradient(180deg, var(--border-strong), var(--border-strong));
+    }
+    .pt-rail-fill{
+      background:linear-gradient(180deg, var(--accent), var(--accent));
+      transform:scaleY(var(--f,1));
+      transform-origin:center top;
+    }
+    .pt-step{
+      display:grid;
+      grid-template-columns:52px 1fr;
+      column-gap:20px; align-items:start;
+      padding:0;
+      /* Flacher: nur Tiefe und Versatz, keine Drehung */
+      transform:
+        translate3d(0, calc((1 - var(--s,1)) * 14px), calc((var(--s,1) - 1) * 40px))
+        scale(calc(0.98 + var(--s,1) * 0.02));
+    }
+    .pt-node{ margin-bottom:0; }
+    .pt-node::after{ width:80px; height:80px; margin:-40px 0 0 -40px; }
+    .pt-step h3{ margin-top:14px; }
   }
-  @media (max-width:560px){ .process-grid{ grid-template-columns:1fr; } }
+  @media (max-width:420px){
+    .pt-step{ grid-template-columns:44px 1fr; column-gap:16px; }
+    .pt-node{ width:44px; height:44px; }
+    .pt-rail{ left:21px; }
+    .pt-step h3{ margin-top:10px; font-size:16.5px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    /* Ohne Bewegung: alles sofort da, flach und ruhig. Das Skript setzt
+       --s und --f in diesem Fall einmalig auf 1. */
+    .pt{ perspective:none; }
+    .pt-scene{ transform:none; }
+    .pt-step{ transform:none; opacity:1; }
+    .pt-node, .pt-num, .pt-text{ transform:none; }
+    .pt-node::after{ display:none; }
+  }
 
 
   /* ---------- Konzept-Galerie (Coverflow) ----------
@@ -3534,26 +3680,46 @@
       <h2>Von der Idee bis zum fertigen Ergebnis.</h2>
     </div>
 
-    <div class="process-grid reveal">
-      <div class="p-step">
-        <div class="p-num">01</div>
-        <h3>Anfrage</h3>
-        <p>Der Kunde beschreibt sein Produkt und das gewünschte Ergebnis.</p>
-      </div>
-      <div class="p-step">
-        <div class="p-num">02</div>
-        <h3>Konzept</h3>
-        <p>Lilla Web & Media erstellt die visuelle Idee und den passenden Stil.</p>
-      </div>
-      <div class="p-step">
-        <div class="p-num">03</div>
-        <h3>Produktion</h3>
-        <p>Produktvideo, Produktbilder, Webseite oder Amazon-Seite werden erstellt.</p>
-      </div>
-      <div class="p-step">
-        <div class="p-num">04</div>
-        <h3>Lieferung</h3>
-        <p>Der Kunde erhält die fertigen Inhalte zur direkten Nutzung.</p>
+    <!-- ABLAUF-TIMELINE -------------------------------------------------
+         Gleiche vier Schritte, nur raeumlich: die Karten liegen auf
+         unterschiedlichen Z-Ebenen und kommen beim Scrollen der Reihe
+         nach nach vorn. Mobil wird daraus eine senkrechte Timeline. -->
+    <div class="pt reveal" id="ablaufTimeline">
+      <div class="pt-scene" id="ptScene">
+        <div class="pt-rail" aria-hidden="true">
+          <span class="pt-rail-track"></span>
+          <span class="pt-rail-fill"></span>
+        </div>
+        <div class="pt-steps">
+        <div class="pt-step">
+          <div class="pt-node"><span class="pt-num">01</span></div>
+          <div class="pt-text">
+            <h3>Anfrage</h3>
+            <p>Der Kunde beschreibt sein Produkt und das gewünschte Ergebnis.</p>
+          </div>
+        </div>
+        <div class="pt-step">
+          <div class="pt-node"><span class="pt-num">02</span></div>
+          <div class="pt-text">
+            <h3>Konzept</h3>
+            <p>Lilla Web & Media erstellt die visuelle Idee und den passenden Stil.</p>
+          </div>
+        </div>
+        <div class="pt-step">
+          <div class="pt-node"><span class="pt-num">03</span></div>
+          <div class="pt-text">
+            <h3>Produktion</h3>
+            <p>Produktvideo, Produktbilder, Webseite oder Amazon-Seite werden erstellt.</p>
+          </div>
+        </div>
+        <div class="pt-step">
+          <div class="pt-node"><span class="pt-num">04</span></div>
+          <div class="pt-text">
+            <h3>Lieferung</h3>
+            <p>Der Kunde erhält die fertigen Inhalte zur direkten Nutzung.</p>
+          </div>
+        </div>
+        </div>
       </div>
     </div>
   </div>
@@ -4639,6 +4805,125 @@
 
      Alle Angaben stehen in LOGOS. Ein weiteres Logo ergaenzen heisst:
      Datei nach assets/ legen und hier einen Eintrag anhaengen. */
+
+  /* ---------- Ablauf: Timeline an die Scrollposition koppeln ----------
+     Der Fortschritt ergibt sich aus der Lage der Section im Fenster, nicht
+     aus einem einmaligen Ausloeser. Dadurch laeuft die Bewegung beim
+     Zurueckscrollen genauso sauber rueckwaerts.
+
+     Gerechnet wird nur, solange die Section sichtbar ist; ein
+     IntersectionObserver haengt den Scroll-Listener an und wieder ab.
+     Pro Frame werden ausschliesslich CSS-Variablen gesetzt. */
+  (function initAblaufTimeline(){
+    var wurzel = document.getElementById('ablaufTimeline');
+    if(!wurzel) return;
+    var szene  = document.getElementById('ptScene');
+    var schritte = Array.prototype.slice.call(wurzel.querySelectorAll('.pt-step'));
+    if(!schritte.length) return;
+    var n = schritte.length;
+
+    if(reduceMotion){
+      /* Ohne Bewegung: Endzustand direkt setzen, nichts wird berechnet. */
+      szene.style.setProperty('--f', '1');
+      schritte.forEach(function(s){ s.style.setProperty('--s', '1'); });
+      return;
+    }
+
+    var laeuft = false, sichtbar = false, letzterAktiv = -1;
+
+    /* Ausgangszustand aktiv setzen - die CSS-Vorgabe ist bewusst der
+       Endzustand, damit die Timeline ohne JavaScript vollstaendig da ist. */
+    szene.style.setProperty('--f', '0');
+    schritte.forEach(function(s){ s.style.setProperty('--s', '0'); });
+
+    function klemme(v){ return v < 0 ? 0 : (v > 1 ? 1 : v); }
+
+    function rechne(){
+      var r = wurzel.getBoundingClientRect();
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+
+      /* Fenster der Animation: beginnt, wenn die Section von unten ins
+         Bild kommt, endet, wenn sie im oberen Drittel steht. Die Hoehe
+         der Section geht mit ein, damit die lange Mobilfassung nicht
+         schneller durchlaeuft als die flache Desktopfassung. */
+      var start = vh * 0.94;
+      var ende  = vh * 0.22 - r.height * 0.5;
+      var f = klemme((start - r.top) / Math.max(1, start - ende));
+
+      szene.style.setProperty('--f', f.toFixed(4));
+
+      /* Jeder Schritt bekommt ein eigenes, versetztes Teilstueck des
+         Fortschritts - so kommen sie nacheinander nach vorn. */
+      var aktiv = -1;
+      for(var i = 0; i < n; i++){
+        var s = klemme((f - i * 0.19) / 0.3);
+        schritte[i].style.setProperty('--s', s.toFixed(4));
+        if(s > 0.55) aktiv = i;
+      }
+
+      if(aktiv !== letzterAktiv){
+        for(var k = 0; k < n; k++){
+          schritte[k].classList.toggle('is-aktiv', k === aktiv);
+        }
+        letzterAktiv = aktiv;
+      }
+    }
+
+    function anfordern(){
+      if(laeuft) return;
+      laeuft = true;
+      requestAnimationFrame(function(){ rechne(); laeuft = false; });
+    }
+
+    function anhaengen(){
+      window.addEventListener('scroll', anfordern, { passive:true });
+      window.addEventListener('resize', anfordern, { passive:true });
+    }
+    function abhaengen(){
+      window.removeEventListener('scroll', anfordern);
+      window.removeEventListener('resize', anfordern);
+    }
+
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(e){
+        var jetzt = e[0].isIntersecting;
+        if(jetzt === sichtbar) return;
+        sichtbar = jetzt;
+        if(sichtbar){ anhaengen(); }
+        else { abhaengen(); }
+        /* Auch beim Verlassen einmal rechnen: springt die Seite ueber den
+           Abschnitt hinweg - etwa per Ankerlink - bliebe die Timeline
+           sonst auf einem halben Stand stehen. */
+        anfordern();
+      }, { rootMargin:'120px 0px 120px 0px' }).observe(wurzel);
+    } else {
+      anhaengen();
+    }
+    rechne();
+
+    /* ----- Maus-Parallaxe, nur auf Zeigergeraeten ----- */
+    if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+      var wartet = false;
+      wurzel.addEventListener('pointermove', function(e){
+        if(wartet) return;
+        wartet = true;
+        requestAnimationFrame(function(){
+          wartet = false;
+          var r = wurzel.getBoundingClientRect();
+          szene.classList.add('is-zeigend');
+          szene.style.setProperty('--mx', (((e.clientX - r.left) / r.width  - 0.5) * 2).toFixed(3));
+          szene.style.setProperty('--my', (((e.clientY - r.top)  / r.height - 0.5) * 2).toFixed(3));
+        });
+      }, { passive:true });
+      wurzel.addEventListener('pointerleave', function(){
+        /* Weich in die Ruhelage zurueck statt hart zurueckschnappen */
+        szene.classList.remove('is-zeigend');
+        szene.style.setProperty('--mx', '0');
+        szene.style.setProperty('--my', '0');
+      });
+    }
+  })();
+
   var logoShowAPI = (function initLogoShowcase(){
 
     var LOGOS = [
