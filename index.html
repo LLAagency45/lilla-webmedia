@@ -13,15 +13,15 @@
   }catch(e){}
 })();
 </script>
-<title>Lilla Web & Media | Produktvideos, Webseiten & Markenauftritt</title>
-<meta name="description" content="Webdesign, Produktvideos und Markenauftritt aus dem Landkreis Fürstenfeldbruck bei München – für Unternehmen, Marken und Onlineshops in ganz Deutschland.">
+<title>Webdesign für Unternehmen in Fürstenfeldbruck | Lilla Web &amp; Media</title>
+<meta name="description" content="Moderne Webseiten für Handwerker, Dienstleister, Vereine und Unternehmen im Raum Fürstenfeldbruck und München. Persönlich erstellt, für Handy und Computer optimiert und verständlich umgesetzt. Auch Produktvideos und Grafikdesign.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://lilla-webmedia.de/">
 
 <!-- Open Graph -->
-<meta property="og:title" content="Lilla Web & Media | Produktvideos, Webseiten & Markenauftritt">
+<meta property="og:title" content="Webdesign für Unternehmen in Fürstenfeldbruck | Lilla Web & Media">
 <meta property="og:url" content="https://lilla-webmedia.de/">
-<meta property="og:description" content="Lilla Web & Media entwickelt hochwertige Produktvideos, Produktbilder, moderne Webseiten und optimierte Produktseiten für Marken, Unternehmen und Onlineshops.">
+<meta property="og:description" content="Moderne Webseiten für Handwerker, Dienstleister, Vereine und Unternehmen im Raum Fürstenfeldbruck und München. Persönlich erstellt und verständlich umgesetzt.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="de_DE">
 <!-- TIPP: og:image zeigt aktuell auf das Hero-Bild. Sobald ein eigens gestaltetes
@@ -32,8 +32,8 @@
 <meta property="og:image:width" content="1672">
 <meta property="og:image:height" content="941">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Lilla Web & Media | Produktvideos, Webseiten & Markenauftritt">
-<meta name="twitter:description" content="Lilla Web & Media entwickelt hochwertige Produktvideos, Produktbilder, moderne Webseiten und optimierte Produktseiten für Marken, Unternehmen und Onlineshops.">
+<meta name="twitter:title" content="Webdesign für Unternehmen in Fürstenfeldbruck | Lilla Web & Media">
+<meta name="twitter:description" content="Moderne Webseiten für Handwerker, Dienstleister, Vereine und Unternehmen im Raum Fürstenfeldbruck und München. Persönlich erstellt und verständlich umgesetzt.">
 <meta name="twitter:image" content="https://lilla-webmedia.de/assets/hero-background.jpg">
 <meta name="theme-color" content="#07080a">
 <!-- Favicon
@@ -786,8 +786,11 @@
   }
 
   .hero h1{
-    font-size:clamp(38px, 9.5vw, 98px);
-    max-width:980px;
+    /* Groesse an die Laenge des Textes angepasst: die Ueberschrift nennt
+       jetzt konkret das Angebot und ist damit deutlich laenger als die
+       fruehere Schlagzeile. Bei 98px brach sie in fuenf statt drei Zeilen. */
+    font-size:clamp(29px, 6.6vw, 74px);
+    max-width:1000px;
     letter-spacing:-0.03em;
   }
   .hero-heading.reveal{ opacity:1; transform:none; filter:none; transition:none; }
@@ -1518,6 +1521,24 @@
     .webcheck{ padding:26px 22px; margin-top:56px; gap:20px; }
     .webcheck-cta{ width:100%; }
   }
+
+  .pkg-hinweis{
+    max-width:660px; margin:28px auto 0;
+    text-align:center; font-size:13.5px; line-height:1.65; color:var(--text-2);
+  }
+
+  .hero-eyebrow{ margin-bottom:22px; }
+  /* Webdesign ist der Schwerpunkt - die Kachel traegt das sichtbar. */
+  .hero-badge.is-haupt{
+    border-color:var(--accent-line);
+    background:var(--accent-soft);
+    color:var(--text-0);
+  }
+  .hero-region{
+    font-size:13.5px; line-height:1.6; color:var(--text-2);
+    margin:26px 0 0; max-width:540px;
+  }
+  @media (max-width:768px){ .hero-region{ font-size:13px; margin-top:20px; } }
 
   /* Preisanker im Hero: sonst muss ein Interessent auf dem Handy rund
      22 Bildschirme scrollen, bevor er die erste Zahl sieht. */
@@ -3053,10 +3074,9 @@
            Hauptnavigation: es ist Vertrauensinhalt beim Lesen, aber kein
            Ziel, das jemand gezielt ansteuert. Bleibt als Bereich und im Footer. -->
       <li><a href="#top" class="nav-link">Start</a></li>
-      <li><a href="#webseiten" class="nav-link">Webseiten</a></li>
-      <li><a href="#leistungen" class="nav-link">Leistungen</a></li>
-      <li><a href="#projekte" class="nav-link">Projekte</a></li>
-      <li><a href="#grafikdesign" class="nav-link">Grafikdesign</a></li>
+      <li><a href="#webseiten" class="nav-link">Webdesign</a></li>
+      <li><a href="#ablauf" class="nav-link">Ablauf</a></li>
+      <li><a href="#leistungen" class="nav-link">Weitere Leistungen</a></li>
       <li><a href="#preise" class="nav-link">Preise</a></li>
       <li><a href="#kontakt" class="nav-link">Kontakt</a></li>
     </ul>
@@ -3075,10 +3095,9 @@
 <div class="mobile-menu" id="mobileMenu">
   <img src="assets/logo-dark.png" alt="Lilla Web & Media Logo" class="mobile-logo" id="mobileLogoImg" width="580" height="430" decoding="async">
   <a href="#top" class="nav-link">Start</a>
-  <a href="#webseiten" class="nav-link">Webseiten</a>
-  <a href="#leistungen" class="nav-link">Leistungen</a>
-  <a href="#projekte" class="nav-link">Projekte</a>
-  <a href="#grafikdesign" class="nav-link">Grafikdesign</a>
+  <a href="#webseiten" class="nav-link">Webdesign</a>
+  <a href="#ablauf" class="nav-link">Ablauf</a>
+  <a href="#leistungen" class="nav-link">Weitere Leistungen</a>
   <a href="#preise" class="nav-link">Preise</a>
   <a href="#kontakt" class="nav-link">Kontakt</a>
   <a href="#kontakt" class="btn btn-primary nav-link">Projekt anfragen</a>
@@ -3105,31 +3124,34 @@
 
   <div class="wrap">
     <div class="hero-badges reveal" style="transition-delay:.05s">
-      <span class="hero-badge"><span class="dot"></span>Premium Webseiten</span>
-      <span class="hero-badge"><span class="dot"></span>Premium Produktvideos</span>
+      <span class="hero-badge is-haupt"><span class="dot"></span>Webdesign</span>
+      <span class="hero-badge"><span class="dot"></span>Produktvideos</span>
       <span class="hero-badge"><span class="dot"></span>Produktbilder</span>
-      <span class="hero-badge"><span class="dot"></span>Social-Media-Inhalte</span>
-      <span class="hero-badge"><span class="dot"></span>Amazon- &amp; Shop-Optimierung</span>
-      <span class="hero-badge"><span class="dot"></span>Markenauftritt &amp; Design</span>
+      <span class="hero-badge"><span class="dot"></span>Logos &amp; Grafikdesign</span>
     </div>
 
+    <span class="eyebrow hero-eyebrow reveal" style="transition-delay:.1s">Webdesign für Unternehmen aus der Region</span>
+
     <h1 class="hero-heading reveal" style="transition-delay:.15s">
-      <span class="h-line"><span class="h-line-inner">Hochwertiger Auftritt.</span></span>
-      <span class="h-line"><span class="h-line-inner">Stärkere Marken.</span></span>
-      <span class="h-line"><span class="h-line-inner"><em>Mehr Wirkung.</em></span></span>
+      <span class="h-line"><span class="h-line-inner">Moderne Webseiten,</span></span>
+      <span class="h-line"><span class="h-line-inner">die dein Unternehmen</span></span>
+      <span class="h-line"><span class="h-line-inner"><em>richtig gut präsentieren.</em></span></span>
     </h1>
 
-    <p class="hero-sub reveal" style="transition-delay:.28s">Lilla Web & Media entwickelt moderne Webseiten, hochwertige Produktvideos, Produktbilder und optimierte Produktseiten für Unternehmen, Marken und Onlineshops, die professionell auftreten und nachhaltig wachsen möchten.</p>
+    <p class="hero-sub reveal" style="transition-delay:.28s">Du brauchst eine neue Website oder deine alte Seite wirkt nicht mehr zeitgemäß? Ich kümmere mich um Design, Aufbau und technische Umsetzung – persönlich, verständlich und ohne komplizierten Agenturprozess.</p>
 
     <p class="hero-preis reveal" style="transition-delay:.33s">
-      Webseiten <strong>ab 599&nbsp;€</strong> <em>(Einführungspreis)</em> ·
-      Produktvideos <strong>ab 199&nbsp;€</strong> · Grafikdesign auf Anfrage
+      Professionelle Websites <strong>ab 599&nbsp;€</strong> <em>(Einführungspreis)</em> ·
+      Persönliche Beratung · Für Smartphone und Computer optimiert
     </p>
 
     <div class="hero-actions reveal" style="transition-delay:.38s">
-      <a href="#kontakt" class="btn btn-primary nav-link btn-magnetic">Projekt anfragen</a>
-      <a href="#projekte" class="btn btn-ghost nav-link">Projekte ansehen</a>
+      <a href="#kontakt" class="btn btn-primary nav-link btn-magnetic">Kostenlos beraten lassen</a>
+      <a href="#website-pakete" class="btn btn-ghost nav-link">Beispiele ansehen</a>
     </div>
+
+    <p class="hero-region reveal" style="transition-delay:.44s">Für Handwerker, Dienstleister,
+      Gastronomie, Vereine und kleine Unternehmen im Raum Fürstenfeldbruck und München.</p>
 
     <!-- WILLKOMMENS-FILM: videos/willkommen.mp4, Poster: assets/willkommen-poster.jpg
          Läuft stumm und in Endlosschleife, sobald er im Bild ist. Kein
@@ -3221,8 +3243,8 @@
       <div class="webs-text reveal">
         <span class="eyebrow">Digitaler Markenauftritt</span>
         <h3>Webseiten, die wirklich gut sind.</h3>
-        <p><strong style="color:var(--text-0);">Diese Website, die du gerade siehst,</strong> ist selbst ein gutes Beispiel für unsere Arbeit.</p>
-        <p>Individuelle, moderne Webseiten, die auf jedem Gerät gut aussehen – mit hochwertigem Design, schnellen Ladezeiten und klarer Markenwirkung. Ideal für Unternehmen, Onlineshops, Start-ups und Selbstständige.</p>
+        <p><strong style="color:var(--text-0);">Diese Website, die du gerade siehst,</strong> ist selbst ein Beispiel für meine Arbeit.</p>
+        <p>Du erzählst mir, was dein Unternehmen anbietet und was dir wichtig ist. Ich kümmere mich anschließend um Aufbau, Design, mobile Darstellung und technische Einrichtung. Am Ende bekommst du eine fertige Website, die professionell aussieht und die du deinen Kunden gerne zeigst.</p>
       </div>
     </div>
 
@@ -3251,77 +3273,78 @@
     <div class="pkg-block" id="website-pakete">
       <div class="price-sub-head reveal">
         <h3>Die passenden Pakete.</h3>
-        <p>Drei aufeinander aufbauende Pakete – vom kompakten Onepager bis zum umfangreichen Markenauftritt. Alle Preise sind Startpreise.</p>
+        <p>Drei aufeinander aufbauende Pakete – vom kompakten Website auf einer Seite bis zum großen Auftritt mit mehreren Unterseiten. Alle Preise sind Startpreise.</p>
       </div>
 
       <div class="price-grid reveal reveal-stagger">
         <div class="price-card">
           <h4>Website Starter</h4>
-          <div class="price-from">Für deinen digitalen Auftritt</div>
+          <div class="price-from">Für kleine Betriebe, Selbstständige und Vereine, die erstmals professionell online auftreten möchten</div>
           <div class="price-amount">Ab 599&nbsp;€</div>
           <span class="price-einfuehrung">Einführungspreis</span>
           <ul>
-            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Individueller Onepager</li>
-            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Optimiert für Smartphone und Desktop</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Eine übersichtliche Website auf einer Seite</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Optimiert für Handy, Tablet und Computer</li>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Leistungs-, Über-uns- und Kontaktbereich</li>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Kontaktformular und Social-Media-Verlinkung</li>
-            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Grundlegende Suchmaschinenoptimierung</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Für Google vorbereitet (Grundlagen)</li>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Einbindung von Bildern und Videos</li>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Domain-Verknüpfung</li>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Eine Korrekturrunde</li>
           </ul>
-          <p class="price-card-note">Domain, Hosting und die rechtlichen Texte für Impressum und Datenschutz werden separat benötigt. Die technische Einbindung übernehmen wir, die Inhalte stellst du bereit.</p>
           <a href="#kontakt" class="btn btn-ghost nav-link" style="width:100%;" data-service="Website Starter" data-msg="Ich interessiere mich für das Website-Starter-Paket.">Starter anfragen</a>
         </div>
 
         <div class="price-card featured">
           <span class="price-tag">Beliebteste Wahl</span>
           <h4>Website Business</h4>
-          <div class="price-from">Für Unternehmen, die professionell überzeugen wollen</div>
+          <div class="price-from">Für Unternehmen mit mehreren Leistungen, Referenzen und eigenen Unterseiten</div>
           <div class="price-amount">Ab 999&nbsp;€</div>
           <span class="price-einfuehrung">Einführungspreis</span>
           <ul>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Individuelle Website mit bis zu 5 Unterseiten</li>
-            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Optimiert für Smartphone, Tablet und Desktop</li>
-            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Strategischer Aufbau für eine klare Nutzerführung</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Optimiert für Handy, Tablet und Computer</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Aufgebaut so, dass Besucher schnell finden, was sie suchen</li>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Individuelle Leistungs-, Über-uns- und Kontaktbereiche</li>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Kontaktformular und Social-Media-Verlinkung</li>
-            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Erweiterte Suchmaschinenoptimierung</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Für Google vorbereitet (erweitert)</li>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Einbindung von Bildern und Videos</li>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Dezente Animationen und moderne Interaktionen</li>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Google-Maps- und Bewertungs-Einbindung</li>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Domain-Verknüpfung und technische Einrichtung</li>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Zwei Korrekturrunden</li>
           </ul>
-          <p class="price-card-note">Domain, Hosting und die rechtlichen Texte für Impressum und Datenschutz werden separat benötigt. Die technische Einbindung übernehmen wir, die Inhalte stellst du bereit.</p>
           <a href="#kontakt" class="btn btn-primary nav-link" style="width:100%;" data-service="Website Business" data-msg="Ich interessiere mich für das Website-Business-Paket.">Business anfragen</a>
         </div>
 
         <div class="price-card">
           <h4>Website Premium</h4>
-          <div class="price-from">Für einen digitalen Auftritt, der nachhaltig Eindruck hinterlässt</div>
+          <div class="price-from">Für Unternehmen, die sich deutlich abheben und gezielt neue Anfragen gewinnen möchten</div>
           <div class="price-amount">Ab 1.499&nbsp;€</div>
           <span class="price-einfuehrung">Einführungspreis</span>
           <ul>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Individuelle Premium-Website mit bis zu 8 Unterseiten</li>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Maßgeschneidertes Design passend zur Marke</li>
-            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Optimiert für Smartphone, Tablet und Desktop</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Optimiert für Handy, Tablet und Computer</li>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Strategische Struktur mit Fokus auf Anfragen und Kundengewinnung</li>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Hochwertige Animationen und besondere Interaktionen</li>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Individuelle Leistungs-, Referenz- und Kontaktbereiche</li>
-            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Erweiterte Kontaktformulare und klare Handlungsaufforderungen</li>
-            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Umfassende technische Suchmaschinenoptimierung</li>
-            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Performance- und Ladezeitenoptimierung</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Erweiterte Kontaktformulare und klare Anfragemöglichkeiten</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Umfassend für Google vorbereitet</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Schnelle Ladezeiten</li>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Einbindung von Bildern, Videos, Bewertungen und Google Maps</li>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Analyse- und Tracking-Vorbereitung</li>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Domain-Verknüpfung und technische Einrichtung</li>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Drei Korrekturrunden</li>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Persönliche Einführung in die fertige Website</li>
           </ul>
-          <p class="price-card-note">Domain, Hosting und die rechtlichen Texte für Impressum und Datenschutz werden separat benötigt. Die technische Einbindung übernehmen wir, die Inhalte stellst du bereit.</p>
           <a href="#kontakt" class="btn btn-ghost nav-link" style="width:100%;" data-service="Website Premium" data-msg="Ich interessiere mich für das Website-Premium-Paket.">Premium anfragen</a>
         </div>
       </div>
+
+      <p class="pkg-hinweis reveal">Noch keine Domain oder kein Hosting vorhanden? Kein Problem –
+        ich helfe dir bei Auswahl und technischer Einrichtung. Externe Kosten für Domain, Hosting
+        und rechtlich geprüfte Texte sind nicht im Paketpreis enthalten.</p>
 
       <div class="price-note reveal">
         <p><strong>Einführungspreise für meine ersten Projekte.</strong> Ich baue gerade mein Portfolio auf – deshalb sind die Website-Pakete aktuell günstiger als später. Wer sich jetzt meldet, bekommt diesen Preis.</p>
@@ -3348,6 +3371,61 @@
 </section>
 
 <!-- =========================================================
+     ABLAUF
+========================================================= -->
+<section class="section" id="ablauf">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Ablauf</span>
+      <h2>Von der Idee bis zum fertigen Ergebnis.</h2>
+    </div>
+
+    <!-- ABLAUF-TIMELINE -------------------------------------------------
+         Gleiche vier Schritte, nur raeumlich: die Karten liegen auf
+         unterschiedlichen Z-Ebenen und kommen beim Scrollen der Reihe
+         nach nach vorn. Mobil wird daraus eine senkrechte Timeline. -->
+    <div class="pt reveal" id="ablaufTimeline">
+      <div class="pt-scene" id="ptScene">
+        <div class="pt-rail" aria-hidden="true">
+          <span class="pt-rail-track"></span>
+          <span class="pt-rail-fill"></span>
+        </div>
+        <div class="pt-steps">
+        <div class="pt-step">
+          <div class="pt-node"><span class="pt-num">01</span></div>
+          <div class="pt-text">
+            <h3>Anfrage</h3>
+            <p>Du erzählst mir kurz von deinem Unternehmen, deiner bisherigen Website und deinem Ziel.</p>
+          </div>
+        </div>
+        <div class="pt-step">
+          <div class="pt-node"><span class="pt-num">02</span></div>
+          <div class="pt-text">
+            <h3>Konzept</h3>
+            <p>Ich entwickle einen passenden Aufbau und einen modernen Stil für deinen neuen Auftritt.</p>
+          </div>
+        </div>
+        <div class="pt-step">
+          <div class="pt-node"><span class="pt-num">03</span></div>
+          <div class="pt-text">
+            <h3>Umsetzung</h3>
+            <p>Ich erstelle deine Website und optimiere sie für Handy, Tablet und Computer.</p>
+          </div>
+        </div>
+        <div class="pt-step">
+          <div class="pt-node"><span class="pt-num">04</span></div>
+          <div class="pt-text">
+            <h3>Fertigstellung</h3>
+            <p>Nach deiner Rückmeldung und den vereinbarten Anpassungen geht deine neue Website online.</p>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
      WEITERE LEISTUNGEN
 ========================================================= -->
 <section class="section" id="leistungen">
@@ -3368,8 +3446,8 @@
     </div>
 
     <div class="section-head reveal">
-      <span class="eyebrow">Weitere Leistungen</span>
-      <h2>Und das gehört bei uns auch dazu.</h2>
+      <span class="eyebrow">Neben Webdesign</span>
+      <h2>Das biete ich außerdem an.</h2>
     </div>
 
     <div class="service-grid reveal reveal-stagger">
@@ -3412,60 +3490,6 @@
   </div>
 </section>
 
-<!-- =========================================================
-     ABLAUF
-========================================================= -->
-<section class="section" id="ablauf">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="eyebrow">Ablauf</span>
-      <h2>Von der Idee bis zum fertigen Ergebnis.</h2>
-    </div>
-
-    <!-- ABLAUF-TIMELINE -------------------------------------------------
-         Gleiche vier Schritte, nur raeumlich: die Karten liegen auf
-         unterschiedlichen Z-Ebenen und kommen beim Scrollen der Reihe
-         nach nach vorn. Mobil wird daraus eine senkrechte Timeline. -->
-    <div class="pt reveal" id="ablaufTimeline">
-      <div class="pt-scene" id="ptScene">
-        <div class="pt-rail" aria-hidden="true">
-          <span class="pt-rail-track"></span>
-          <span class="pt-rail-fill"></span>
-        </div>
-        <div class="pt-steps">
-        <div class="pt-step">
-          <div class="pt-node"><span class="pt-num">01</span></div>
-          <div class="pt-text">
-            <h3>Anfrage</h3>
-            <p>Der Kunde beschreibt sein Produkt und das gewünschte Ergebnis.</p>
-          </div>
-        </div>
-        <div class="pt-step">
-          <div class="pt-node"><span class="pt-num">02</span></div>
-          <div class="pt-text">
-            <h3>Konzept</h3>
-            <p>Lilla Web & Media erstellt die visuelle Idee und den passenden Stil.</p>
-          </div>
-        </div>
-        <div class="pt-step">
-          <div class="pt-node"><span class="pt-num">03</span></div>
-          <div class="pt-text">
-            <h3>Produktion</h3>
-            <p>Produktvideo, Produktbilder, Webseite oder Amazon-Seite werden erstellt.</p>
-          </div>
-        </div>
-        <div class="pt-step">
-          <div class="pt-node"><span class="pt-num">04</span></div>
-          <div class="pt-text">
-            <h3>Lieferung</h3>
-            <p>Der Kunde erhält die fertigen Inhalte zur direkten Nutzung.</p>
-          </div>
-        </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- =========================================================
      PROJEKTE / PORTFOLIO
@@ -3584,7 +3608,7 @@
           <li>Einfache Produktbilder</li>
           <li>Schwache Produktseite</li>
           <li>Kein einheitliches Design</li>
-          <li>Wenig Markenwirkung</li>
+          <li>Wirkt nicht professionell</li>
         </ul>
       </div>
       <div class="ba-detail-col after">
@@ -3767,7 +3791,7 @@
       <div class="price-pointer">
         <p><strong>Website Starter, Business und Premium.</strong> Die drei Website-Pakete
           stehen mit allen Leistungen weiter oben im Webseiten-Bereich – dort siehst du
-          sie direkt neben Beispielen unserer Arbeit.</p>
+          sie direkt neben Beispielen meiner Arbeit.</p>
         <a href="#website-pakete" class="btn btn-ghost nav-link">Zu den Website-Paketen</a>
       </div>
     </div>
@@ -4006,8 +4030,8 @@
     <div class="contact-grid">
       <div class="reveal">
         <span class="eyebrow">Kontakt</span>
-        <h2>Lass uns deine Marke hochwertig präsentieren.</h2>
-        <p style="margin-top:20px; font-size:16px;">Du hast ein Projekt oder eine Idee? Schreib mir direkt über Instagram oder sende mir eine E-Mail. Ich melde mich schnellstmöglich bei dir.</p>
+        <h2>Du brauchst eine neue Website? Erzähl mir kurz von deinem Unternehmen.</h2>
+        <p style="margin-top:20px; font-size:16px;">Schreib mir, was du anbietest und ob bereits eine Website vorhanden ist. Ich melde mich persönlich bei dir und sage dir ehrlich, welche Lösung sinnvoll ist.</p>
         <p style="margin-top:14px; font-size:15px;">Ich sitze in Günzlhofen im Landkreis Fürstenfeldbruck. Im Umkreis von München
           gerne auch persönlich vor Ort – alles andere läuft unkompliziert digital.</p>
 
