@@ -1484,6 +1484,28 @@
   }
 
 
+  /* Ansprache fuer Unzufriedene - gleiche Formensprache wie .price-pointer,
+     nur mit etwas mehr Gewicht, weil es ein eigenes Angebot ist. */
+  .webcheck{
+    display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:26px;
+    margin-top:72px;
+    padding:34px 38px;
+    border:1px solid var(--accent-line);
+    border-radius:var(--radius);
+    background:var(--bg-1);
+    box-shadow:var(--card-shadow);
+  }
+  .webcheck-text{ max-width:620px; }
+  .webcheck h3{ font-size:clamp(19px,2vw,23px); margin-bottom:12px; }
+  .webcheck p{ font-size:14.5px; line-height:1.65; }
+  .webcheck p strong{ color:var(--text-0); font-weight:600; }
+  .webcheck-cta{ flex-shrink:0; }
+  @media (max-width:760px){
+    .webcheck{ padding:26px 22px; margin-top:56px; gap:20px; }
+    .webcheck-cta{ width:100%; }
+  }
+
   /* Preisanker im Hero: sonst muss ein Interessent auf dem Handy rund
      22 Bildschirme scrollen, bevor er die erste Zahl sieht. */
   .hero-preis{
@@ -3189,6 +3211,23 @@
       </div>
     </div>
 
+
+    <!-- ANSPRACHE FUER UNZUFRIEDENE ------------------------------------
+         Steht bewusst vor den Paketen: wer schon eine Seite hat und
+         unzufrieden ist, soll sich melden koennen, bevor er an einer
+         Preisliste haengenbleibt. Konkretes Angebot statt "melde dich". -->
+    <div class="webcheck reveal">
+      <div class="webcheck-text">
+        <h3>Du bist mit deiner jetzigen Website unzufrieden?</h3>
+        <p>Viele Seiten sind Jahre alt, auf dem Handy kaum bedienbar oder bringen
+          einfach keine Anfragen. Schick mir den Link – ich schaue sie mir an und sage dir
+          ehrlich, woran es liegt und ob sich eine Überarbeitung überhaupt lohnt.
+          <strong>Kostenlos und unverbindlich.</strong></p>
+      </div>
+      <a href="#kontakt" class="btn btn-primary nav-link webcheck-cta"
+         data-service="Premium Webseiten"
+         data-msg="Ich bin mit meiner jetzigen Website unzufrieden. Hier ist der Link: ">Website prüfen lassen</a>
+    </div>
 
     <!-- WEBSITE-PAKETE ------------------------------------------------
          Stehen bewusst hier und nicht im Preise-Bereich: wer sich für
