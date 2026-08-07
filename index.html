@@ -1484,6 +1484,19 @@
   }
 
 
+  /* Einfuehrungspreis: bewusst ohne durchgestrichenen Referenzpreis.
+     Ein Streichpreis, der nie verlangt wurde, waere nach § 11 PAngV ein
+     Mondpreis und damit abmahnfaehig. */
+  .price-einfuehrung{
+    display:inline-block;
+    margin:-18px 0 24px;
+    font-size:11.5px; font-weight:600;
+    letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--accent-ink);
+  }
+  .price-note p + p{ margin-top:12px; }
+  .price-note p strong{ color:var(--text-0); }
+
   /* Ansprache fuer Unzufriedene - gleiche Formensprache wie .price-pointer,
      nur mit etwas mehr Gewicht, weil es ein eigenes Angebot ist. */
   .webcheck{
@@ -1513,6 +1526,7 @@
     margin:22px 0 0; letter-spacing:0.01em;
   }
   .hero-preis strong{ color:var(--text-1); font-weight:600; }
+  .hero-preis em{ font-style:normal; color:var(--accent-ink); }
   @media (max-width:768px){ .hero-preis{ font-size:13.5px; margin-top:18px; } }
 
   /* ---------- Konzept-Galerie (Coverflow) ----------
@@ -3107,8 +3121,8 @@
     <p class="hero-sub reveal" style="transition-delay:.28s">Lilla Web & Media entwickelt moderne Webseiten, hochwertige Produktvideos, Produktbilder und optimierte Produktseiten für Unternehmen, Marken und Onlineshops, die professionell auftreten und nachhaltig wachsen möchten.</p>
 
     <p class="hero-preis reveal" style="transition-delay:.33s">
-      Webseiten <strong>ab 599&nbsp;€</strong> · Produktvideos <strong>ab 199&nbsp;€</strong> ·
-      Grafikdesign auf Anfrage
+      Webseiten <strong>ab 599&nbsp;€</strong> <em>(Einführungspreis)</em> ·
+      Produktvideos <strong>ab 199&nbsp;€</strong> · Grafikdesign auf Anfrage
     </p>
 
     <div class="hero-actions reveal" style="transition-delay:.38s">
@@ -3244,6 +3258,7 @@
           <h4>Website Starter</h4>
           <div class="price-from">Für deinen digitalen Auftritt</div>
           <div class="price-amount">Ab 599&nbsp;€</div>
+          <span class="price-einfuehrung">Einführungspreis</span>
           <ul>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Individueller Onepager</li>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Optimiert für Smartphone und Desktop</li>
@@ -3263,6 +3278,7 @@
           <h4>Website Business</h4>
           <div class="price-from">Für Unternehmen, die professionell überzeugen wollen</div>
           <div class="price-amount">Ab 999&nbsp;€</div>
+          <span class="price-einfuehrung">Einführungspreis</span>
           <ul>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Individuelle Website mit bis zu 5 Unterseiten</li>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Optimiert für Smartphone, Tablet und Desktop</li>
@@ -3284,6 +3300,7 @@
           <h4>Website Premium</h4>
           <div class="price-from">Für einen digitalen Auftritt, der nachhaltig Eindruck hinterlässt</div>
           <div class="price-amount">Ab 1.499&nbsp;€</div>
+          <span class="price-einfuehrung">Einführungspreis</span>
           <ul>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Individuelle Premium-Website mit bis zu 8 Unterseiten</li>
             <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Maßgeschneidertes Design passend zur Marke</li>
@@ -3306,6 +3323,7 @@
       </div>
 
       <div class="price-note reveal">
+        <p><strong>Einführungspreise für meine ersten Projekte.</strong> Ich baue gerade mein Portfolio auf – deshalb sind die Website-Pakete aktuell günstiger als später. Wer sich jetzt meldet, bekommt diesen Preis.</p>
         <p>Du bist unsicher, welches Paket passt? Beschreib mir kurz dein Vorhaben – ich sage dir ehrlich, was du wirklich brauchst.</p>
         <a href="#kontakt" class="btn btn-ghost nav-link">Projekt anfragen</a>
       </div>
