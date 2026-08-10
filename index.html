@@ -774,11 +774,18 @@
      darunter als Beleg - inhaltlich identisch, nur klarer gewichtet. */
   @media (max-width:768px){
     .hero .wrap{ display:flex; flex-direction:column; }
-    .hero-heading{ order:1; }
-    .hero-sub{ order:2; }
-    .hero-actions{ order:3; }
-    .hero-badges{ order:4; margin-bottom:0; margin-top:38px; gap:9px; }
-    .showreel{ order:5; }
+    /* Reihenfolge auf dem Handy: erst worum es geht, dann der Beweis.
+       Die drei spaeter ergaenzten Zeilen brauchen hier ebenfalls eine
+       Ordnungszahl - ohne sie standen Preis- und Regionzeile vor der
+       Ueberschrift. */
+    .hero-eyebrow{ order:1; margin-bottom:14px; }
+    .hero-heading{ order:2; }
+    .hero-sub{ order:3; }
+    .hero-actions{ order:4; }
+    .hero-preis{ order:5; margin-top:24px; }
+    .hero-region{ order:6; margin-top:6px; }
+    .hero-badges{ order:7; margin-bottom:0; margin-top:32px; gap:9px; }
+    .showreel{ order:8; }
     .hero-badge{ font-size:12px; padding:7px 14px; }
     /* Reveal-Verzögerung an die neue Position anpassen (überschreibt das
        inline gesetzte transition-delay, daher !important). */
@@ -786,11 +793,8 @@
   }
 
   .hero h1{
-    /* Groesse an die Laenge des Textes angepasst: die Ueberschrift nennt
-       jetzt konkret das Angebot und ist damit deutlich laenger als die
-       fruehere Schlagzeile. Bei 98px brach sie in fuenf statt drei Zeilen. */
-    font-size:clamp(29px, 6.6vw, 74px);
-    max-width:1000px;
+    font-size:clamp(38px, 9.5vw, 98px);
+    max-width:980px;
     letter-spacing:-0.03em;
   }
   .hero-heading.reveal{ opacity:1; transform:none; filter:none; transition:none; }
@@ -3133,12 +3137,12 @@
     <span class="eyebrow hero-eyebrow reveal" style="transition-delay:.1s">Webdesign für Unternehmen aus der Region</span>
 
     <h1 class="hero-heading reveal" style="transition-delay:.15s">
-      <span class="h-line"><span class="h-line-inner">Moderne Webseiten,</span></span>
-      <span class="h-line"><span class="h-line-inner">die dein Unternehmen</span></span>
-      <span class="h-line"><span class="h-line-inner"><em>richtig gut präsentieren.</em></span></span>
+      <span class="h-line"><span class="h-line-inner">Hochwertiger Auftritt.</span></span>
+      <span class="h-line"><span class="h-line-inner">Stärkere Marken.</span></span>
+      <span class="h-line"><span class="h-line-inner"><em>Mehr Wirkung.</em></span></span>
     </h1>
 
-    <p class="hero-sub reveal" style="transition-delay:.28s">Du brauchst eine neue Website oder deine alte Seite wirkt nicht mehr zeitgemäß? Ich kümmere mich um Design, Aufbau und technische Umsetzung – persönlich, verständlich und ohne komplizierten Agenturprozess.</p>
+    <p class="hero-sub reveal" style="transition-delay:.28s">Du brauchst eine neue Website oder deine alte wirkt nicht mehr zeitgemäß? Ich kümmere mich um Design, Aufbau und Technik – persönlich und ohne Agenturprozess.</p>
 
     <p class="hero-preis reveal" style="transition-delay:.33s">
       Professionelle Websites <strong>ab 599&nbsp;€</strong> <em>(Einführungspreis)</em> ·
