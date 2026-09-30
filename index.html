@@ -2300,64 +2300,140 @@
     display:grid; grid-template-columns:1.45fr 1fr; gap:46px; align-items:center;
   }
 
-  .ref-geraet{ display:block; }
+  /* ----- Laptop, vollstaendig in CSS -----
+     Kein Mockup-Bild: der Screenshot bleibt dadurch in jeder Groesse
+     scharf und das Geraet folgt dem Theme. Die Tiefe entsteht aus
+     gestapelten Verlaeufen und zwei Schatten - einem harten direkt unter
+     dem Unterteil und einem weichen darunter, so wie ein Geraet auf einer
+     Flaeche wirklich aufliegt. */
+  .ref-geraet{ display:block; perspective:1700px; }
+  .ref-buehne{
+    display:block;
+    transform-style:preserve-3d;
+    transition:transform .7s var(--ease-luxe);
+  }
+
   .ref-deckel{
-    /* span-Elemente sind von Haus aus inline - ohne block haette der Fuss
-       keine Breite und der Deckel kein sauberes Kastenmodell. */
     display:block;
     position:relative;
-    padding:12px 12px 14px;
-    border-radius:14px 14px 5px 5px;
-    background:linear-gradient(170deg, #2a2c30, #17181b 60%);
-    border:1px solid rgba(255,255,255,0.1);
-    box-shadow:0 34px 70px -30px rgba(0,0,0,0.8);
-    transition:transform .6s var(--ease-luxe), box-shadow .6s var(--ease-luxe);
+    padding:11px 11px 20px;          /* unten mehr: dort sitzt der Steg */
+    border-radius:13px 13px 6px 6px;
+    background:
+      linear-gradient(180deg,
+        #52565d 0px, #3a3d43 1.5px,
+        #26282c 14%, #1b1d20 62%, #17181b 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.22),
+      inset 0 0 0 1px rgba(255,255,255,0.045),
+      inset 0 -1px 0 rgba(0,0,0,0.5),
+      0 30px 62px -30px rgba(0,0,0,0.85);
+    transition:box-shadow .6s var(--ease-luxe);
   }
+  /* Kameraauge */
   .ref-deckel::before{
     content:''; position:absolute; top:5px; left:50%; margin-left:-2px;
-    width:4px; height:4px; border-radius:50%;
-    background:rgba(255,255,255,0.22);
+    width:3px; height:3px; border-radius:50%;
+    background:rgba(255,255,255,0.3);
+    box-shadow:0 0 2px rgba(255,255,255,0.25);
   }
+  /* Schriftzug-Steg unter dem Bildschirm */
+  .ref-deckel::after{
+    content:''; position:absolute; bottom:7px; left:50%; margin-left:-22px;
+    width:44px; height:3px; border-radius:2px;
+    background:rgba(255,255,255,0.13);
+  }
+
   .ref-schirm{
-    display:block; overflow:hidden;
-    border-radius:4px;
+    display:block; position:relative; overflow:hidden;
+    border-radius:3px;
     aspect-ratio:16/10;
     background:#0b0b0d;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,0.85);
   }
   .ref-schirm img{ width:100%; height:100%; object-fit:cover; display:block; }
+  /* Glasreflex - macht aus der Flaeche eine Scheibe */
+  .ref-schirm::after{
+    content:''; position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(113deg,
+      rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.05) 16%,
+      rgba(255,255,255,0) 38%);
+  }
+
+  /* Scharnier: schmale dunkle Fuge zwischen Deckel und Unterteil */
+  .ref-scharnier{
+    display:block; height:4px; margin:0 8%;
+    border-radius:0 0 3px 3px;
+    background:linear-gradient(180deg, #121316, #0a0b0d);
+  }
+
+  /* Unterteil: etwas breiter als der Deckel und nach unten verjuengt */
   .ref-fuss{
-    display:block;
-    position:relative;
-    height:12px; margin:0 -5%;
-    border-radius:0 0 12px 12px;
-    background:linear-gradient(180deg, #3a3d42, #202226);
-    box-shadow:0 14px 26px -14px rgba(0,0,0,0.85);
+    display:block; position:relative;
+    height:13px; margin:0 -4.5%;
+    background:linear-gradient(180deg,
+      #5b5f66 0px, #43464c 1.5px, #2e3136 55%, #1d1f23 100%);
+    clip-path:polygon(0 0, 100% 0, 98.6% 100%, 1.4% 100%);
   }
+  /* Griffmulde vorne */
+  .ref-fuss::before{
+    content:''; position:absolute; top:0; left:50%; margin-left:-46px;
+    width:92px; height:5px;
+    border-radius:0 0 8px 8px;
+    background:rgba(0,0,0,0.45);
+  }
+  /* Aufliegeschatten */
   .ref-fuss::after{
-    content:''; position:absolute; top:0; left:50%; margin-left:-42px;
-    width:84px; height:6px;
-    border-radius:0 0 7px 7px;
-    background:rgba(0,0,0,0.42);
+    content:''; position:absolute; left:4%; right:4%; top:100%;
+    height:26px;
+    background:radial-gradient(60% 100% at 50% 0%, rgba(0,0,0,0.5), transparent 72%);
+    pointer-events:none;
   }
+
   @media (hover:hover) and (pointer:fine){
+    .ref-geraet:hover .ref-buehne{ transform:translateY(-6px) rotateX(2deg); }
     .ref-geraet:hover .ref-deckel{
-      transform:translateY(-5px);
-      box-shadow:0 44px 84px -30px rgba(0,0,0,0.85),
-                 0 0 0 1px rgba(47,180,196,0.16);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.26),
+        inset 0 0 0 1px rgba(47,180,196,0.14),
+        inset 0 -1px 0 rgba(0,0,0,0.5),
+        0 44px 80px -30px rgba(0,0,0,0.88);
     }
   }
   .ref-geraet:focus-visible{ outline:2px solid var(--accent); outline-offset:8px; border-radius:16px; }
 
+  /* Hell-Modus: gebuerstetes Aluminium statt eines schwarzen Blocks */
   :root[data-theme="light"] .ref-deckel{
-    background:linear-gradient(170deg, #d9dbdf, #b9bcc2 60%);
-    border-color:rgba(10,14,18,0.14);
-    box-shadow:0 26px 54px -28px rgba(20,22,26,0.4);
+    background:linear-gradient(180deg,
+      #ffffff 0px, #e7e9ec 1.5px, #d2d5da 16%, #bcc0c6 66%, #adb1b8 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.9),
+      inset 0 0 0 1px rgba(10,14,18,0.09),
+      inset 0 -1px 0 rgba(10,14,18,0.14),
+      0 24px 52px -28px rgba(20,22,26,0.42);
+  }
+  :root[data-theme="light"] .ref-deckel::before{ background:rgba(10,14,18,0.3); box-shadow:none; }
+  :root[data-theme="light"] .ref-deckel::after{ background:rgba(10,14,18,0.16); }
+  :root[data-theme="light"] .ref-scharnier{
+    background:linear-gradient(180deg, #9aa0a8, #7e848c);
   }
   :root[data-theme="light"] .ref-fuss{
-    background:linear-gradient(180deg, #e2e4e8, #c2c5cb);
-    box-shadow:0 12px 22px -14px rgba(20,22,26,0.4);
+    background:linear-gradient(180deg,
+      #ffffff 0px, #e9ebee 1.5px, #cdd1d6 55%, #b0b4bb 100%);
   }
-  :root[data-theme="light"] .ref-deckel::before{ background:rgba(10,14,18,0.28); }
+  :root[data-theme="light"] .ref-fuss::before{ background:rgba(10,14,18,0.2); }
+  :root[data-theme="light"] .ref-fuss::after{
+    background:radial-gradient(60% 100% at 50% 0%, rgba(20,22,26,0.22), transparent 72%);
+  }
+  :root[data-theme="light"] .ref-schirm{ box-shadow:inset 0 0 0 1px rgba(10,14,18,0.35); }
+  @media (hover:hover) and (pointer:fine){
+    :root[data-theme="light"] .ref-geraet:hover .ref-deckel{
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.95),
+        inset 0 0 0 1px rgba(26,138,151,0.22),
+        inset 0 -1px 0 rgba(10,14,18,0.14),
+        0 34px 66px -28px rgba(20,22,26,0.45);
+    }
+  }
 
   .ref-text h3{ font-size:19px; margin-bottom:6px; }
   .ref-branche{
@@ -3302,6 +3378,7 @@
         <a class="ref-geraet" href="https://handelsagentur-tretter.schuhgefluester.de"
            target="_blank" rel="noopener"
            aria-label="Website der Handelsagentur Tretter in neuem Tab öffnen">
+          <span class="ref-buehne">
           <span class="ref-deckel">
             <span class="ref-schirm">
               <img src="assets/referenzen/tretter-1440.jpg"
@@ -3311,7 +3388,9 @@
                    loading="lazy" decoding="async" width="1440" height="900">
             </span>
           </span>
+          <span class="ref-scharnier"></span>
           <span class="ref-fuss"></span>
+          </span>
         </a>
 
         <div class="ref-text">
