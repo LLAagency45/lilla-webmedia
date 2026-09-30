@@ -2273,6 +2273,113 @@
   }
 
 
+  /* ---------- Echte Referenz -------------------------------------
+     Steht bewusst vor den Konzeptarbeiten: ein realer Auftrag wiegt
+     mehr als jeder Entwurf. Deshalb auch kein Konzept-Hinweis, sondern
+     ein Link auf die echte, laufende Seite.
+
+     Der Laptop ist komplett in CSS gebaut - kein Mockup-Bild, damit der
+     Screenshot in jeder Groesse scharf bleibt und sich das Geraet dem
+     Theme anpasst. */
+  .ref{ margin-bottom:96px; }
+  .ref-kopf{ max-width:640px; margin:0 0 36px; }
+  .ref-kopf h3{ font-size:clamp(22px,2.4vw,29px); }
+  .ref-kopf p{ margin-top:14px; font-size:15.5px; }
+  .ref-marke{
+    display:inline-flex; align-items:center; gap:9px;
+    font-size:11.5px; font-weight:700; letter-spacing:0.12em;
+    text-transform:uppercase; color:var(--accent-ink);
+    margin-bottom:16px;
+  }
+  .ref-marke::before{
+    content:''; width:6px; height:6px; border-radius:50%;
+    background:var(--accent); flex-shrink:0;
+  }
+
+  .ref-grid{
+    display:grid; grid-template-columns:1.45fr 1fr; gap:46px; align-items:center;
+  }
+
+  .ref-geraet{ display:block; }
+  .ref-deckel{
+    /* span-Elemente sind von Haus aus inline - ohne block haette der Fuss
+       keine Breite und der Deckel kein sauberes Kastenmodell. */
+    display:block;
+    position:relative;
+    padding:12px 12px 14px;
+    border-radius:14px 14px 5px 5px;
+    background:linear-gradient(170deg, #2a2c30, #17181b 60%);
+    border:1px solid rgba(255,255,255,0.1);
+    box-shadow:0 34px 70px -30px rgba(0,0,0,0.8);
+    transition:transform .6s var(--ease-luxe), box-shadow .6s var(--ease-luxe);
+  }
+  .ref-deckel::before{
+    content:''; position:absolute; top:5px; left:50%; margin-left:-2px;
+    width:4px; height:4px; border-radius:50%;
+    background:rgba(255,255,255,0.22);
+  }
+  .ref-schirm{
+    display:block; overflow:hidden;
+    border-radius:4px;
+    aspect-ratio:16/10;
+    background:#0b0b0d;
+  }
+  .ref-schirm img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .ref-fuss{
+    display:block;
+    position:relative;
+    height:12px; margin:0 -5%;
+    border-radius:0 0 12px 12px;
+    background:linear-gradient(180deg, #3a3d42, #202226);
+    box-shadow:0 14px 26px -14px rgba(0,0,0,0.85);
+  }
+  .ref-fuss::after{
+    content:''; position:absolute; top:0; left:50%; margin-left:-42px;
+    width:84px; height:6px;
+    border-radius:0 0 7px 7px;
+    background:rgba(0,0,0,0.42);
+  }
+  @media (hover:hover) and (pointer:fine){
+    .ref-geraet:hover .ref-deckel{
+      transform:translateY(-5px);
+      box-shadow:0 44px 84px -30px rgba(0,0,0,0.85),
+                 0 0 0 1px rgba(47,180,196,0.16);
+    }
+  }
+  .ref-geraet:focus-visible{ outline:2px solid var(--accent); outline-offset:8px; border-radius:16px; }
+
+  :root[data-theme="light"] .ref-deckel{
+    background:linear-gradient(170deg, #d9dbdf, #b9bcc2 60%);
+    border-color:rgba(10,14,18,0.14);
+    box-shadow:0 26px 54px -28px rgba(20,22,26,0.4);
+  }
+  :root[data-theme="light"] .ref-fuss{
+    background:linear-gradient(180deg, #e2e4e8, #c2c5cb);
+    box-shadow:0 12px 22px -14px rgba(20,22,26,0.4);
+  }
+  :root[data-theme="light"] .ref-deckel::before{ background:rgba(10,14,18,0.28); }
+
+  .ref-text h3{ font-size:19px; margin-bottom:6px; }
+  .ref-branche{
+    font-size:12px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--text-2); font-weight:600; display:block; margin-bottom:18px;
+  }
+  .ref-text p{ font-size:14.5px; line-height:1.65; margin-bottom:14px; }
+  .ref-liste{ margin:18px 0 24px; }
+  .ref-liste li{
+    display:flex; gap:10px; align-items:flex-start;
+    font-size:14px; color:var(--text-1);
+    padding:8px 0; border-top:1px solid var(--border);
+  }
+  .ref-liste li:first-child{ border-top:none; }
+  .ref-liste svg{ flex-shrink:0; margin-top:3px; color:var(--accent); }
+
+  @media (max-width:900px){
+    .ref{ margin-bottom:72px; }
+    .ref-grid{ grid-template-columns:1fr; gap:32px; }
+    .ref-fuss{ margin:0 -3%; height:10px; }
+  }
+
   /* ---------- Logo-Showcase --------------------------------------
      Bewusst anders aufgebaut als die Konzept-Galerie: dort gleiten
      Karten durch den Raum, hier steht die Komposition still und die
@@ -3179,6 +3286,52 @@
 ========================================================= -->
 <section class="section" id="webseiten">
   <div class="wrap">
+    <!-- ECHTE REFERENZ ---------------------------------------------------
+         Steht vor den Konzeptarbeiten: ein realer, laufender Auftrag ist
+         der staerkste Beleg. Das Geraet ist in CSS gebaut, der Screenshot
+         stammt von der Live-Seite. Der ganze Laptop ist der Link. -->
+    <div class="ref reveal">
+      <div class="ref-kopf">
+        <span class="ref-marke">Kundenprojekt</span>
+        <h2>Zuletzt gebaut: der Auftritt der Handelsagentur Tretter.</h2>
+        <p>Eine echte Website, online und im Einsatz – kein Entwurf. Klick auf den
+          Bildschirm, dann siehst du sie selbst.</p>
+      </div>
+
+      <div class="ref-grid">
+        <a class="ref-geraet" href="https://handelsagentur-tretter.schuhgefluester.de"
+           target="_blank" rel="noopener"
+           aria-label="Website der Handelsagentur Tretter in neuem Tab öffnen">
+          <span class="ref-deckel">
+            <span class="ref-schirm">
+              <img src="assets/referenzen/tretter-1440.jpg"
+                   srcset="assets/referenzen/tretter-800.jpg 800w, assets/referenzen/tretter-1440.jpg 1440w"
+                   sizes="(max-width:900px) 92vw, 640px"
+                   alt="Startseite der Handelsagentur Tretter: schwarz-goldener Auftritt mit der Überschrift „Fünf Marken. Eine persönliche Ansprechpartnerin.“"
+                   loading="lazy" decoding="async" width="1440" height="900">
+            </span>
+          </span>
+          <span class="ref-fuss"></span>
+        </a>
+
+        <div class="ref-text">
+          <h3>Handelsagentur Tretter</h3>
+          <span class="ref-branche">Handelsvertretung · MOC München</span>
+          <p>Melanie Tretter vertritt fünf Schuhmarken im Ordercenter München. Ihre Kunden
+            sind Fachhändler – die wollen auf einen Blick wissen, welche Marken sie führt
+            und wie sie einen Termin bekommt.</p>
+          <ul class="ref-liste">
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Alle fünf Marken auf einen Blick</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Terminanfrage von jeder Stelle aus erreichbar</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Standort und Sortimente klar benannt</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Auf Handy, Tablet und Computer optimiert</li>
+          </ul>
+          <a href="https://handelsagentur-tretter.schuhgefluester.de" target="_blank" rel="noopener"
+             class="btn btn-ghost">Seite ansehen</a>
+        </div>
+      </div>
+    </div>
+
     <!-- KONZEPT-GALERIE ------------------------------------------------
          Ersetzt das frühere Übersichtsvideo: gleiche Aufgabe, aber der
          Besucher kann selbst blättern, wischen und ein Konzept gross
@@ -3187,7 +3340,7 @@
     <div class="cg" id="konzeptGalerie">
       <div class="price-sub-head reveal">
         <span class="eyebrow">Website-Konzepte</span>
-        <h2>So unterschiedlich kann dein digitaler Auftritt aussehen.</h2>
+        <h3>So unterschiedlich kann dein digitaler Auftritt aussehen.</h3>
         <p>Von modernem Handwerk bis zur hochwertigen Premium-Marke: Entdecke verschiedene
           Designrichtungen und finde heraus, welcher Stil zu deinem Unternehmen passt.</p>
       </div>
